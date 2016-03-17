@@ -8,8 +8,6 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import com.mogujie.jarvis.server.interceptor.OperationLog;
-import com.mogujie.jarvis.server.service.LogService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,6 +99,7 @@ import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.BizGroupService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.LogService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -499,24 +498,31 @@ public class JobActor extends UntypedActor {
     private void modifyJobStatus(RestModifyJobStatusRequest msg) throws Exception {
         ServerModifyJobStatusResponse response;
         try {
-            long jobId = msg.getJobId();
-            // 参数检查
-            Job job = msg2Job(msg);
-            validService.checkJob(CheckMode.EDIT_STATUS, job);
+            List<Long> jobIds = msg.getJobIdList();
+            int status = msg.getStatus();
+            for (long jobId : jobIds) {
+                Job job = new Job();
+                job.setJobId(jobId);
+                job.setStatus(status);
+                validService.checkJob(CheckMode.EDIT_STATUS, job);
 
-            // 1. update job to DB
-            JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
-            if (oldStatus.equals(JobStatus.DELETED)) {
-                response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false)
-                        .setMessage("已进入垃圾箱的job不允许修改状态")
-                        .build();
-            } else {
-                jobService.updateJob(job);
-                JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
-                plan.modifyJobFlag(jobId, oldStatus, newStatus);
-                jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
-                response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
+                // 1. update job to DB
+                Job oldJob = jobService.get(jobId).getJob();
+                JobStatus oldStatus = JobStatus.parseValue(oldJob.getStatus());
+                if (oldStatus.equals(JobStatus.DELETED)) {
+                    response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false)
+                            .setMessage("job[id=" + jobId + ", name=" + oldJob.getJobName() + "]已进入垃圾箱, 不允许修改状态")
+                            .build();
+                    getSender().tell(response, getSelf());
+                    return;
+                } else {
+                    jobService.updateJob(job);
+                    JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
+                    plan.modifyJobFlag(jobId, oldStatus, newStatus);
+                    jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
+                }
             }
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
@@ -665,13 +671,6 @@ public class JobActor extends UntypedActor {
         job.setUpdateUser(msg.getUser());
         Date currentTime = DateTime.now().toDate();
         job.setUpdateTime(currentTime);
-        return job;
-    }
-
-    public Job msg2Job(RestModifyJobStatusRequest msg) {
-        Job job = new Job();
-        job.setJobId(msg.getJobId());
-        job.setStatus(msg.getStatus());
         return job;
     }
 

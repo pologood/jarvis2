@@ -422,7 +422,7 @@ public class TestJobActor extends DBTestBased {
         ServerModifyJobStatusResponse response = null;
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
         RestModifyJobStatusRequest request = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(JobStatus.DELETED.getValue())
-                .setUser("qinghuo").setJobId(jobId).build();
+                .setUser("qinghuo").addJobId(jobId).build();
         ActorSelection serverActor = getServerActor(system, actorPath);
         try {
             response = (ServerModifyJobStatusResponse) FutureUtils.awaitResult(serverActor, request, 30);

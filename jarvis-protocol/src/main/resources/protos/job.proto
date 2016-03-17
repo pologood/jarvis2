@@ -99,7 +99,7 @@ message ServerModifyJobScheduleExpResponse {
 message RestModifyJobStatusRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
-    required int64 job_id = 3;
+    repeated int64 job_id = 3;
     required int32 status = 4;
 }
 

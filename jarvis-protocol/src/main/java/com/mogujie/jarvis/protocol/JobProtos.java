@@ -11488,14 +11488,19 @@ public final class JobProtos {
         com.google.protobuf.ByteString getUserBytes();
 
         /**
-         * <code>required int64 job_id = 3;</code>
+         * <code>repeated int64 job_id = 3;</code>
          */
-        boolean hasJobId();
+        java.util.List<java.lang.Long> getJobIdList();
 
         /**
-         * <code>required int64 job_id = 3;</code>
+         * <code>repeated int64 job_id = 3;</code>
          */
-        long getJobId();
+        int getJobIdCount();
+
+        /**
+         * <code>repeated int64 job_id = 3;</code>
+         */
+        long getJobId(int index);
 
         /**
          * <code>required int32 status = 4;</code>
@@ -11549,6 +11554,7 @@ public final class JobProtos {
         private RestModifyJobStatusRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             initFields();
+            int mutable_bitField0_ = 0;
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
             try {
                 boolean done = false;
@@ -11584,12 +11590,28 @@ public final class JobProtos {
                             break;
                         }
                         case 24: {
-                            bitField0_ |= 0x00000004;
-                            jobId_ = input.readInt64();
+                            if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                                jobId_ = new java.util.ArrayList<java.lang.Long>();
+                                mutable_bitField0_ |= 0x00000004;
+                            }
+                            jobId_.add(input.readInt64());
+                            break;
+                        }
+                        case 26: {
+                            int length = input.readRawVarint32();
+                            int limit = input.pushLimit(length);
+                            if (!((mutable_bitField0_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
+                                jobId_ = new java.util.ArrayList<java.lang.Long>();
+                                mutable_bitField0_ |= 0x00000004;
+                            }
+                            while (input.getBytesUntilLimit() > 0) {
+                                jobId_.add(input.readInt64());
+                            }
+                            input.popLimit(limit);
                             break;
                         }
                         case 32: {
-                            bitField0_ |= 0x00000008;
+                            bitField0_ |= 0x00000004;
                             status_ = input.readInt32();
                             break;
                         }
@@ -11600,6 +11622,9 @@ public final class JobProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
+                if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                    jobId_ = java.util.Collections.unmodifiableList(jobId_);
+                }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
             }
@@ -11702,22 +11727,30 @@ public final class JobProtos {
         }
 
         public static final int JOB_ID_FIELD_NUMBER = 3;
-        private long jobId_;
+        private java.util.List<java.lang.Long> jobId_;
 
         /**
-         * <code>required int64 job_id = 3;</code>
+         * <code>repeated int64 job_id = 3;</code>
          */
         @Override
-        public boolean hasJobId() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
+        public java.util.List<java.lang.Long> getJobIdList() {
+            return jobId_;
         }
 
         /**
-         * <code>required int64 job_id = 3;</code>
+         * <code>repeated int64 job_id = 3;</code>
          */
         @Override
-        public long getJobId() {
-            return jobId_;
+        public int getJobIdCount() {
+            return jobId_.size();
+        }
+
+        /**
+         * <code>repeated int64 job_id = 3;</code>
+         */
+        @Override
+        public long getJobId(int index) {
+            return jobId_.get(index);
         }
 
         public static final int STATUS_FIELD_NUMBER = 4;
@@ -11728,7 +11761,7 @@ public final class JobProtos {
          */
         @Override
         public boolean hasStatus() {
-            return ((bitField0_ & 0x00000008) == 0x00000008);
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
@@ -11742,7 +11775,7 @@ public final class JobProtos {
         private void initFields() {
             appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             user_ = "";
-            jobId_ = 0L;
+            jobId_ = java.util.Collections.emptyList();
             status_ = 0;
         }
 
@@ -11761,10 +11794,6 @@ public final class JobProtos {
                 return false;
             }
             if (!hasUser()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasJobId()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -11789,10 +11818,10 @@ public final class JobProtos {
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 output.writeBytes(2, getUserBytes());
             }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeInt64(3, jobId_);
+            for (int i = 0; i < jobId_.size(); i++) {
+                output.writeInt64(3, jobId_.get(i));
             }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeInt32(4, status_);
             }
             getUnknownFields().writeTo(output);
@@ -11813,10 +11842,15 @@ public final class JobProtos {
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getUserBytes());
             }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(3, jobId_);
+            {
+                int dataSize = 0;
+                for (int i = 0; i < jobId_.size(); i++) {
+                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(jobId_.get(i));
+                }
+                size += dataSize;
+                size += 1 * getJobIdList().size();
             }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(4, status_);
             }
             size += getUnknownFields().getSerializedSize();
@@ -11957,7 +11991,7 @@ public final class JobProtos {
                 bitField0_ = (bitField0_ & ~0x00000001);
                 user_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
-                jobId_ = 0L;
+                jobId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000004);
                 status_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000008);
@@ -12006,12 +12040,13 @@ public final class JobProtos {
                     to_bitField0_ |= 0x00000002;
                 }
                 result.user_ = user_;
-                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-                    to_bitField0_ |= 0x00000004;
+                if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                    jobId_ = java.util.Collections.unmodifiableList(jobId_);
+                    bitField0_ = (bitField0_ & ~0x00000004);
                 }
                 result.jobId_ = jobId_;
                 if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-                    to_bitField0_ |= 0x00000008;
+                    to_bitField0_ |= 0x00000004;
                 }
                 result.status_ = status_;
                 result.bitField0_ = to_bitField0_;
@@ -12040,8 +12075,15 @@ public final class JobProtos {
                     user_ = other.user_;
                     onChanged();
                 }
-                if (other.hasJobId()) {
-                    setJobId(other.getJobId());
+                if (!other.jobId_.isEmpty()) {
+                    if (jobId_.isEmpty()) {
+                        jobId_ = other.jobId_;
+                        bitField0_ = (bitField0_ & ~0x00000004);
+                    } else {
+                        ensureJobIdIsMutable();
+                        jobId_.addAll(other.jobId_);
+                    }
+                    onChanged();
                 }
                 if (other.hasStatus()) {
                     setStatus(other.getStatus());
@@ -12057,10 +12099,6 @@ public final class JobProtos {
                     return false;
                 }
                 if (!hasUser()) {
-
-                    return false;
-                }
-                if (!hasJobId()) {
 
                     return false;
                 }
@@ -12294,40 +12332,75 @@ public final class JobProtos {
                 return this;
             }
 
-            private long jobId_;
+            private java.util.List<java.lang.Long> jobId_ = java.util.Collections.emptyList();
 
-            /**
-             * <code>required int64 job_id = 3;</code>
-             */
-            @Override
-            public boolean hasJobId() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
+            private void ensureJobIdIsMutable() {
+                if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+                    jobId_ = new java.util.ArrayList<java.lang.Long>(jobId_);
+                    bitField0_ |= 0x00000004;
+                }
             }
 
             /**
-             * <code>required int64 job_id = 3;</code>
+             * <code>repeated int64 job_id = 3;</code>
              */
             @Override
-            public long getJobId() {
-                return jobId_;
+            public java.util.List<java.lang.Long> getJobIdList() {
+                return java.util.Collections.unmodifiableList(jobId_);
             }
 
             /**
-             * <code>required int64 job_id = 3;</code>
+             * <code>repeated int64 job_id = 3;</code>
              */
-            public Builder setJobId(long value) {
-                bitField0_ |= 0x00000004;
-                jobId_ = value;
+            @Override
+            public int getJobIdCount() {
+                return jobId_.size();
+            }
+
+            /**
+             * <code>repeated int64 job_id = 3;</code>
+             */
+            @Override
+            public long getJobId(int index) {
+                return jobId_.get(index);
+            }
+
+            /**
+             * <code>repeated int64 job_id = 3;</code>
+             */
+            public Builder setJobId(int index, long value) {
+                ensureJobIdIsMutable();
+                jobId_.set(index, value);
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int64 job_id = 3;</code>
+             * <code>repeated int64 job_id = 3;</code>
+             */
+            public Builder addJobId(long value) {
+                ensureJobIdIsMutable();
+                jobId_.add(value);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated int64 job_id = 3;</code>
+             */
+            public Builder addAllJobId(java.lang.Iterable<? extends java.lang.Long> values) {
+                ensureJobIdIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, jobId_);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated int64 job_id = 3;</code>
              */
             public Builder clearJobId() {
+                jobId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000004);
-                jobId_ = 0L;
                 onChanged();
                 return this;
             }
@@ -21568,7 +21641,7 @@ public final class JobProtos {
                 "odifyJobScheduleExpResponse\022\017\n\007success\030\001"
                         + " \002(\010\022\021\n\007message\030\002 \001(\t:\000\"f\n\032RestModifyJob"
                         + "StatusRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAut"
-                        + "h\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\016\n\006statu"
+                        + "h\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \003(\003\022\016\n\006statu"
                         + "s\030\004 \002(\005\"C\n\035ServerModifyJobStatusResponse"
                         + "\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\016"
                         + "JobStatusEntry\022\016\n\006job_id\030\001 \002(\003\022\016\n\006status"

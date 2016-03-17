@@ -106,12 +106,11 @@ public class OperationLogInterceptor implements MethodInterceptor {
       operationLog.setRefer(String.valueOf(msg.getJobId()));
     } else if (obj instanceof JobProtos.RestModifyJobStatusRequest) {
       JobProtos.RestModifyJobStatusRequest msg = (JobProtos.RestModifyJobStatusRequest) obj;
-      String operation = OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription();
-      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
-      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-      operationLog.setOperator(msg.getUser());
-      operationLog.setTitle(job.getJobName());
-      operationLog.setRefer(String.valueOf(msg.getJobId()));
+      for(long jobId : msg.getJobIdList()) {
+        Job job = this.jobMapper.selectByPrimaryKey(jobId);
+        this.batchModifyJob(job, msg);
+        return;
+      }
     }
 
     operationLog.setType("job");
@@ -202,4 +201,27 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
     this.operationLogMapper.insert(operationLog);
   }
+
+  /**
+   * batch update job status
+   *
+   * @param job
+   * @param msg
+   */
+  private void batchModifyJob(Job job, JobProtos.RestModifyJobStatusRequest msg) {
+    // TODO add batch operation
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
+
+    String operation = OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription();
+    operationLog.setOperator(msg.getUser());
+    operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+    operationLog.setTitle(job.getJobName());
+    operationLog.setRefer(String.valueOf(job.getJobId()));
+    operationLog.setType("job");
+    DateTime now = DateTime.now();
+    operationLog.setOpeDate(now.toDate());
+
+    this.operationLogMapper.insert(operationLog);
+  }
+
 }

@@ -152,9 +152,7 @@ public class SentinelController extends AbstractController {
                     return new BaseRet(ResponseCodeEnum.FAILED, err);
                 } else {
                     long taskId = taskEntryList.get(0).getTaskId();
-                    int attemptId = taskEntryList.get(0).getAttemptId();
-                    String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
-                    RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
+                    RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).addTaskId(taskId).build();
                     ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
                     if (response.getSuccess()) {
                         return new BaseRet(ResponseCodeEnum.SUCCESS, "jobId: " + jobId + " 任务删除成功");

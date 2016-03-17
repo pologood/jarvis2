@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -203,17 +204,21 @@ public class JobController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long jobId = para.getLongNotNull("jobId");
+            List<Long> jobIds = para.getList("jobIds", new TypeToken<List<Long>>(){}.getType());
             int status = para.getIntegerNotNull("status");
 
             // 构造请求
-            RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobId)
-                    .setStatus(status);
-
-            // 发送请求到server
-            ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
-
-            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+            RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setUser(user).setStatus(status);
+            if (jobIds != null && !jobIds.isEmpty()) {
+                for (long jobId : jobIds) {
+                    builder.addJobId(jobId);
+                }
+                // 发送请求到server
+                ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
+                return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+            } else {
+                return errorResult("jobIds不能为空");
+            }
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
             return errorResult(e);

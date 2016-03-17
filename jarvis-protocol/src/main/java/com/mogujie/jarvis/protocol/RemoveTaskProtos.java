@@ -30,14 +30,19 @@ public final class RemoveTaskProtos {
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
         /**
-         * <code>required int64 task_id = 2;</code>
+         * <code>repeated int64 task_id = 2;</code>
          */
-        boolean hasTaskId();
+        java.util.List<java.lang.Long> getTaskIdList();
 
         /**
-         * <code>required int64 task_id = 2;</code>
+         * <code>repeated int64 task_id = 2;</code>
          */
-        long getTaskId();
+        int getTaskIdCount();
+
+        /**
+         * <code>repeated int64 task_id = 2;</code>
+         */
+        long getTaskId(int index);
     }
 
     /**
@@ -77,6 +82,7 @@ public final class RemoveTaskProtos {
         private RestServerRemoveTaskRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             initFields();
+            int mutable_bitField0_ = 0;
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
             try {
                 boolean done = false;
@@ -106,8 +112,24 @@ public final class RemoveTaskProtos {
                             break;
                         }
                         case 16: {
-                            bitField0_ |= 0x00000002;
-                            taskId_ = input.readInt64();
+                            if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                                taskId_ = new java.util.ArrayList<java.lang.Long>();
+                                mutable_bitField0_ |= 0x00000002;
+                            }
+                            taskId_.add(input.readInt64());
+                            break;
+                        }
+                        case 18: {
+                            int length = input.readRawVarint32();
+                            int limit = input.pushLimit(length);
+                            if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                                taskId_ = new java.util.ArrayList<java.lang.Long>();
+                                mutable_bitField0_ |= 0x00000002;
+                            }
+                            while (input.getBytesUntilLimit() > 0) {
+                                taskId_.add(input.readInt64());
+                            }
+                            input.popLimit(limit);
                             break;
                         }
                     }
@@ -117,6 +139,9 @@ public final class RemoveTaskProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
+                if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                    taskId_ = java.util.Collections.unmodifiableList(taskId_);
+                }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
             }
@@ -175,27 +200,35 @@ public final class RemoveTaskProtos {
         }
 
         public static final int TASK_ID_FIELD_NUMBER = 2;
-        private long taskId_;
+        private java.util.List<java.lang.Long> taskId_;
 
         /**
-         * <code>required int64 task_id = 2;</code>
+         * <code>repeated int64 task_id = 2;</code>
          */
         @Override
-        public boolean hasTaskId() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+        public java.util.List<java.lang.Long> getTaskIdList() {
+            return taskId_;
         }
 
         /**
-         * <code>required int64 task_id = 2;</code>
+         * <code>repeated int64 task_id = 2;</code>
          */
         @Override
-        public long getTaskId() {
-            return taskId_;
+        public int getTaskIdCount() {
+            return taskId_.size();
+        }
+
+        /**
+         * <code>repeated int64 task_id = 2;</code>
+         */
+        @Override
+        public long getTaskId(int index) {
+            return taskId_.get(index);
         }
 
         private void initFields() {
             appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-            taskId_ = 0L;
+            taskId_ = java.util.Collections.emptyList();
         }
 
         private byte memoizedIsInitialized = -1;
@@ -209,10 +242,6 @@ public final class RemoveTaskProtos {
                 return false;
 
             if (!hasAppAuth()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasTaskId()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -230,8 +259,8 @@ public final class RemoveTaskProtos {
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 output.writeMessage(1, appAuth_);
             }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeInt64(2, taskId_);
+            for (int i = 0; i < taskId_.size(); i++) {
+                output.writeInt64(2, taskId_.get(i));
             }
             getUnknownFields().writeTo(output);
         }
@@ -248,8 +277,13 @@ public final class RemoveTaskProtos {
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
             }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, taskId_);
+            {
+                int dataSize = 0;
+                for (int i = 0; i < taskId_.size(); i++) {
+                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(taskId_.get(i));
+                }
+                size += dataSize;
+                size += 1 * getTaskIdList().size();
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -383,7 +417,7 @@ public final class RemoveTaskProtos {
                     appAuthBuilder_.clear();
                 }
                 bitField0_ = (bitField0_ & ~0x00000001);
-                taskId_ = 0L;
+                taskId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
@@ -426,8 +460,9 @@ public final class RemoveTaskProtos {
                 } else {
                     result.appAuth_ = appAuthBuilder_.build();
                 }
-                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-                    to_bitField0_ |= 0x00000002;
+                if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                    taskId_ = java.util.Collections.unmodifiableList(taskId_);
+                    bitField0_ = (bitField0_ & ~0x00000002);
                 }
                 result.taskId_ = taskId_;
                 result.bitField0_ = to_bitField0_;
@@ -451,8 +486,15 @@ public final class RemoveTaskProtos {
                 if (other.hasAppAuth()) {
                     mergeAppAuth(other.getAppAuth());
                 }
-                if (other.hasTaskId()) {
-                    setTaskId(other.getTaskId());
+                if (!other.taskId_.isEmpty()) {
+                    if (taskId_.isEmpty()) {
+                        taskId_ = other.taskId_;
+                        bitField0_ = (bitField0_ & ~0x00000002);
+                    } else {
+                        ensureTaskIdIsMutable();
+                        taskId_.addAll(other.taskId_);
+                    }
+                    onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -461,10 +503,6 @@ public final class RemoveTaskProtos {
             @Override
             public final boolean isInitialized() {
                 if (!hasAppAuth()) {
-
-                    return false;
-                }
-                if (!hasTaskId()) {
 
                     return false;
                 }
@@ -615,40 +653,75 @@ public final class RemoveTaskProtos {
                 return appAuthBuilder_;
             }
 
-            private long taskId_;
+            private java.util.List<java.lang.Long> taskId_ = java.util.Collections.emptyList();
 
-            /**
-             * <code>required int64 task_id = 2;</code>
-             */
-            @Override
-            public boolean hasTaskId() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
+            private void ensureTaskIdIsMutable() {
+                if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+                    taskId_ = new java.util.ArrayList<java.lang.Long>(taskId_);
+                    bitField0_ |= 0x00000002;
+                }
             }
 
             /**
-             * <code>required int64 task_id = 2;</code>
+             * <code>repeated int64 task_id = 2;</code>
              */
             @Override
-            public long getTaskId() {
-                return taskId_;
+            public java.util.List<java.lang.Long> getTaskIdList() {
+                return java.util.Collections.unmodifiableList(taskId_);
             }
 
             /**
-             * <code>required int64 task_id = 2;</code>
+             * <code>repeated int64 task_id = 2;</code>
              */
-            public Builder setTaskId(long value) {
-                bitField0_ |= 0x00000002;
-                taskId_ = value;
+            @Override
+            public int getTaskIdCount() {
+                return taskId_.size();
+            }
+
+            /**
+             * <code>repeated int64 task_id = 2;</code>
+             */
+            @Override
+            public long getTaskId(int index) {
+                return taskId_.get(index);
+            }
+
+            /**
+             * <code>repeated int64 task_id = 2;</code>
+             */
+            public Builder setTaskId(int index, long value) {
+                ensureTaskIdIsMutable();
+                taskId_.set(index, value);
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int64 task_id = 2;</code>
+             * <code>repeated int64 task_id = 2;</code>
+             */
+            public Builder addTaskId(long value) {
+                ensureTaskIdIsMutable();
+                taskId_.add(value);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated int64 task_id = 2;</code>
+             */
+            public Builder addAllTaskId(java.lang.Iterable<? extends java.lang.Long> values) {
+                ensureTaskIdIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, taskId_);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated int64 task_id = 2;</code>
              */
             public Builder clearTaskId() {
+                taskId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000002);
-                taskId_ = 0L;
                 onChanged();
                 return this;
             }
@@ -1276,7 +1349,7 @@ public final class RemoveTaskProtos {
     static {
         java.lang.String[] descriptorData = {
                 "\n\021remove_task.proto\032\016app_auth.proto\"J\n\033R" + "estServerRemoveTaskRequest\022\032\n\010app_auth\030\001"
-                        + " \002(\0132\010.AppAuth\022\017\n\007task_id\030\002 \002(\003\">\n\030Serve"
+                        + " \002(\0132\010.AppAuth\022\017\n\007task_id\030\002 \003(\003\">\n\030Serve"
                         + "rRemoveTaskResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007"
                         + "message\030\002 \001(\t:\000B/\n\033com.mogujie.jarvis.pr" + "otocolB\020RemoveTaskProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
