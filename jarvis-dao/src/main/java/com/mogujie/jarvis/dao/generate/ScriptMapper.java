@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Script;
 import com.mogujie.jarvis.dto.generate.ScriptExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ScriptMapper {
@@ -15,9 +16,9 @@ public interface ScriptMapper {
 
     int insertSelective(Script record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Script> selectByExampleWithBLOBs(ScriptExample example);
+    List<Script> selectByExampleWithBLOBs(ScriptExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Script> selectByExample(ScriptExample example);
+    List<Script> selectByExample(ScriptExample example);
 
     Script selectByPrimaryKey(Integer id);
 

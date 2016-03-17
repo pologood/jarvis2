@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface JobScheduleExpressionMapper {
@@ -15,7 +16,7 @@ public interface JobScheduleExpressionMapper {
 
     int insertSelective(JobScheduleExpression record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.JobScheduleExpression> selectByExample(JobScheduleExpressionExample example);
+    List<JobScheduleExpression> selectByExample(JobScheduleExpressionExample example);
 
     JobScheduleExpression selectByPrimaryKey(Long id);
 

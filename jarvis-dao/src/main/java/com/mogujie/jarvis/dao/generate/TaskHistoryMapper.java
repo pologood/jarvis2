@@ -3,6 +3,7 @@ package com.mogujie.jarvis.dao.generate;
 import com.mogujie.jarvis.dto.generate.TaskHistory;
 import com.mogujie.jarvis.dto.generate.TaskHistoryExample;
 import com.mogujie.jarvis.dto.generate.TaskHistoryKey;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TaskHistoryMapper {
@@ -16,9 +17,9 @@ public interface TaskHistoryMapper {
 
     int insertSelective(TaskHistory record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.TaskHistory> selectByExampleWithBLOBs(TaskHistoryExample example);
+    List<TaskHistory> selectByExampleWithBLOBs(TaskHistoryExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.TaskHistory> selectByExample(TaskHistoryExample example);
+    List<TaskHistory> selectByExample(TaskHistoryExample example);
 
     TaskHistory selectByPrimaryKey(TaskHistoryKey key);
 

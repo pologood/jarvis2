@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface JobMapper {
@@ -15,9 +16,9 @@ public interface JobMapper {
 
     int insertSelective(Job record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Job> selectByExampleWithBLOBs(JobExample example);
+    List<Job> selectByExampleWithBLOBs(JobExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Job> selectByExample(JobExample example);
+    List<Job> selectByExample(JobExample example);
 
     Job selectByPrimaryKey(Long jobId);
 

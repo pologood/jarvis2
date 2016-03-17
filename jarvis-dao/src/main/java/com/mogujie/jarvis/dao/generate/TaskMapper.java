@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TaskMapper {
@@ -15,9 +16,9 @@ public interface TaskMapper {
 
     int insertSelective(Task record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Task> selectByExampleWithBLOBs(TaskExample example);
+    List<Task> selectByExampleWithBLOBs(TaskExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Task> selectByExample(TaskExample example);
+    List<Task> selectByExample(TaskExample example);
 
     Task selectByPrimaryKey(Long taskId);
 

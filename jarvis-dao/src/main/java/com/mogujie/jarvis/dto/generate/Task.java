@@ -37,6 +37,8 @@ public class Task {
 
     private Date updateTime;
 
+    private Integer alarmEnable;
+
     private String content;
 
     public Long getTaskId() {
@@ -173,6 +175,14 @@ public class Task {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getAlarmEnable() {
+        return alarmEnable;
+    }
+
+    public void setAlarmEnable(Integer alarmEnable) {
+        this.alarmEnable = alarmEnable;
     }
 
     public String getContent() {

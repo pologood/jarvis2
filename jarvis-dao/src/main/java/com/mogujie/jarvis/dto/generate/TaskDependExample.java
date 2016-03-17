@@ -9,7 +9,7 @@ public class TaskDependExample {
 
     protected boolean distinct;
 
-    protected java.util.List<Criteria> oredCriteria;
+    protected List<Criteria> oredCriteria;
 
     public TaskDependExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class TaskDependExample {
         return distinct;
     }
 
-    public java.util.List<Criteria> getOredCriteria() {
+    public List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class TaskDependExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected java.util.List<Criterion> criteria;
+        protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class TaskDependExample {
             return criteria;
         }
 
-        public java.util.List<Criterion> getCriteria() {
+        public List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdIn(java.util.List<java.lang.Long> values) {
+        public Criteria andTaskIdIn(List<Long> values) {
             addCriterion("taskId in", values, "taskId");
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdNotIn(java.util.List<java.lang.Long> values) {
+        public Criteria andTaskIdNotIn(List<Long> values) {
             addCriterion("taskId not in", values, "taskId");
             return (Criteria) this;
         }
@@ -205,12 +205,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeIn(List<Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeNotIn(List<Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }

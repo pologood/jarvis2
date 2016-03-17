@@ -8,7 +8,7 @@ public class ScriptExample {
 
     protected boolean distinct;
 
-    protected java.util.List<Criteria> oredCriteria;
+    protected List<Criteria> oredCriteria;
 
     public ScriptExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -30,7 +30,7 @@ public class ScriptExample {
         return distinct;
     }
 
-    public java.util.List<Criteria> getOredCriteria() {
+    public List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -64,7 +64,7 @@ public class ScriptExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected java.util.List<Criterion> criteria;
+        protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -79,7 +79,7 @@ public class ScriptExample {
             return criteria;
         }
 
-        public java.util.List<Criterion> getCriteria() {
+        public List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -144,12 +144,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andIdIn(List<Integer> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andIdNotIn(List<Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
@@ -214,12 +214,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andTitleIn(java.util.List<java.lang.String> values) {
+        public Criteria andTitleIn(List<String> values) {
             addCriterion("title in", values, "title");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andTitleNotIn(List<String> values) {
             addCriterion("title not in", values, "title");
             return (Criteria) this;
         }
@@ -284,12 +284,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(java.util.List<java.lang.String> values) {
+        public Criteria andTypeIn(List<String> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andTypeNotIn(List<String> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
@@ -354,12 +354,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIn(java.util.List<java.lang.String> values) {
+        public Criteria andCreatorIn(List<String> values) {
             addCriterion("creator in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andCreatorNotIn(List<String> values) {
             addCriterion("creator not in", values, "creator");
             return (Criteria) this;
         }
@@ -414,12 +414,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(java.util.List<java.lang.Long> values) {
+        public Criteria andCreateTimeIn(List<Long> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(java.util.List<java.lang.Long> values) {
+        public Criteria andCreateTimeNotIn(List<Long> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -474,12 +474,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(java.util.List<java.lang.Long> values) {
+        public Criteria andUpdateTimeIn(List<Long> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(java.util.List<java.lang.Long> values) {
+        public Criteria andUpdateTimeNotIn(List<Long> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }
@@ -544,12 +544,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andLast_editorIn(java.util.List<java.lang.String> values) {
+        public Criteria andLast_editorIn(List<String> values) {
             addCriterion("last_editor in", values, "last_editor");
             return (Criteria) this;
         }
 
-        public Criteria andLast_editorNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andLast_editorNotIn(List<String> values) {
             addCriterion("last_editor not in", values, "last_editor");
             return (Criteria) this;
         }
@@ -604,12 +604,12 @@ public class ScriptExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }

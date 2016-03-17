@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -23,11 +21,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
+import com.mogujie.jarvis.dao.generate.TaskHistoryMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 import com.mogujie.jarvis.dto.generate.TaskHistory;
+import com.mogujie.jarvis.dto.generate.TaskHistoryExample;
 
 /**
  * @author guangming
@@ -38,6 +38,9 @@ public class TaskService {
     private TaskMapper taskMapper;
 
     @Inject
+    private TaskHistoryMapper taskHistoryMapper;
+
+    @Inject
     private TaskDependService taskDependService;
 
     @Inject
@@ -45,11 +48,6 @@ public class TaskService {
 
     @Inject
     private JobService jobService;
-
-    @Inject
-    private ScriptService scriptService;
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
@@ -64,7 +62,8 @@ public class TaskService {
         if (job != null) {
             DateTime scheduleDateTime = new DateTime(scheduleDate).withTimeAtStartOfDay();
             TaskExample example = new TaskExample();
-            example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(), scheduleDateTime.plusDays(1).toDate());
+            example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(),
+                    scheduleDateTime.plusDays(1).toDate());
             List<Task> tasks = taskMapper.selectByExample(example);
             if (tasks != null && !tasks.isEmpty()) {
                 return tasks.get(0);
@@ -84,7 +83,7 @@ public class TaskService {
             float totalUseTime = 0;
             for (int i = 0; i < size; i++) {
                 Task task = tasks.get(i);
-                totalUseTime += ((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()) /1000/60); //单位分
+                totalUseTime += ((float) (task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()) / 1000 / 60); //单位分
             }
             avgTime = totalUseTime / size;
         }
@@ -260,9 +259,8 @@ public class TaskService {
 
     public List<Task> getTasksBetween(long jobId, Range<DateTime> range, TaskType taskType) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-        .andScheduleTimeBetween(range.lowerEndpoint().toDate(), range.upperEndpoint().toDate())
-        .andTypeEqualTo(taskType.getValue());
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(range.lowerEndpoint().toDate(), range.upperEndpoint().toDate())
+                .andTypeEqualTo(taskType.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
             tasks = Lists.newArrayList();
@@ -272,8 +270,7 @@ public class TaskService {
 
     public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeLessThan(new DateTime(scheduleTime).toDate())
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime).toDate())
                 .andTypeEqualTo(taskType.getValue());
         example.setOrderByClause("scheduleTime desc");
         List<Task> taskList = taskMapper.selectByExample(example);
@@ -281,6 +278,20 @@ public class TaskService {
             return taskList.get(0);
         }
         return null;
+    }
+
+    public void updateAlarmStatus(List<Long> taskIds, int status) {
+        Task task = new Task();
+        task.setAlarmEnable(status);
+        TaskExample taskExample = new TaskExample();
+        taskExample.createCriteria().andTaskIdIn(taskIds);
+        taskMapper.updateByExampleSelective(task, taskExample);
+
+        TaskHistory taskHistory = new TaskHistory();
+        taskHistory.setAlarmEnable(status);
+        TaskHistoryExample taskHistoryExample = new TaskHistoryExample();
+        taskExample.createCriteria().andTaskIdIn(taskIds);
+        taskHistoryMapper.updateByExampleSelective(taskHistory, taskHistoryExample);
     }
 
     @VisibleForTesting

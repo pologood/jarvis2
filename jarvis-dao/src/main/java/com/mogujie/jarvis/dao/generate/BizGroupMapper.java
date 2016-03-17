@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BizGroupMapper {
@@ -15,7 +16,7 @@ public interface BizGroupMapper {
 
     int insertSelective(BizGroup record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.BizGroup> selectByExample(BizGroupExample example);
+    List<BizGroup> selectByExample(BizGroupExample example);
 
     BizGroup selectByPrimaryKey(Integer id);
 
