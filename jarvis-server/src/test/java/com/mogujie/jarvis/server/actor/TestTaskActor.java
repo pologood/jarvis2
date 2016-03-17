@@ -1,7 +1,13 @@
 package com.mogujie.jarvis.server.actor;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +19,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
@@ -46,11 +57,6 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.typesafe.config.Config;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import scala.concurrent.Await;
-import scala.concurrent.duration.Duration;
 
 /**
  * Location www.mogujie.com
@@ -165,15 +171,10 @@ public class TestTaskActor {
         List<Integer> statusList = Lists.newArrayList();
         statusList.add(TaskStatus.READY.getValue());
         //        statusList.add(TaskStatus.RUNNING.getValue());
-        Long killTaskId = getRandomTaskId(statusList);
+        long killTaskId = getRandomTaskId(statusList);
         Task killTask = taskService.get(killTaskId);
-        long jobId = killTask.getJobId();
-        long attemptId = killTask.getAttemptId();
 
-        StringBuffer fullId = new StringBuffer(String.valueOf(jobId));
-        fullId.append("_").append(String.valueOf(killTaskId)).append("_").append(String.valueOf(attemptId));
-
-        request = KillTaskProtos.RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId.toString()).build();
+        request = KillTaskProtos.RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).addTaskId(killTaskId).build();
         try {
             response = (KillTaskProtos.ServerKillTaskResponse) FutureUtils.awaitResult(serverActor, request, 15);
         } catch (Exception e) {

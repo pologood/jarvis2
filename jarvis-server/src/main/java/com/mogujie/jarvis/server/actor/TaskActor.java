@@ -34,6 +34,7 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -157,16 +158,33 @@ public class TaskActor extends UntypedActor {
         LOGGER.info("start killTask");
         ServerKillTaskResponse response;
         try {
-            String fullId = msg.getFullId();
-            WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
-            if (workerInfo != null) {
+            List<Long> taskIds = msg.getTaskIdList();
+            for (long taskId : taskIds) {
+                Task task = taskService.get(taskId);
+                if (task == null) {
+                    response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("can't find task, taskId=" + taskId).build();
+                    getSender().tell(response, getSelf());
+                    return;
+                }
+
+                String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
+                WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
+                if (workerInfo == null) {
+                    response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("can't find worker by fullId=" + fullId).build();
+                    getSender().tell(response, getSelf());
+                    return;
+                }
+
                 ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
                 ServerKillTaskRequest serverRequest = ServerKillTaskRequest.newBuilder().setFullId(fullId).build();
                 WorkerKillTaskResponse workerResponse = (WorkerKillTaskResponse) FutureUtils.awaitResult(actorSelection, serverRequest, 30);
-                response = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage()).build();
-            } else {
-                response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("can't find worker by fullId=" + fullId).build();
+                if (!workerResponse.getSuccess()) {
+                    response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage(workerResponse.getMessage()).build();
+                    getSender().tell(response, getSelf());
+                    return;
+                }
             }
+            response = ServerKillTaskResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
