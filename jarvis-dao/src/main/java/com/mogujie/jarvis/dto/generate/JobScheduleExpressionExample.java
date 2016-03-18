@@ -9,7 +9,7 @@ public class JobScheduleExpressionExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public JobScheduleExpressionExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class JobScheduleExpressionExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class JobScheduleExpressionExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class JobScheduleExpressionExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Long> values) {
+        public Criteria andIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<Long> values) {
+        public Criteria andIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
@@ -205,12 +205,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIn(List<Long> values) {
+        public Criteria andJobIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(List<Long> values) {
+        public Criteria andJobIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId not in", values, "jobId");
             return (Criteria) this;
         }
@@ -265,12 +265,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andExpressionTypeIn(List<Integer> values) {
+        public Criteria andExpressionTypeIn(java.util.List<java.lang.Integer> values) {
             addCriterion("expressionType in", values, "expressionType");
             return (Criteria) this;
         }
 
-        public Criteria andExpressionTypeNotIn(List<Integer> values) {
+        public Criteria andExpressionTypeNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("expressionType not in", values, "expressionType");
             return (Criteria) this;
         }
@@ -335,12 +335,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andExpressionIn(List<String> values) {
+        public Criteria andExpressionIn(java.util.List<java.lang.String> values) {
             addCriterion("expression in", values, "expression");
             return (Criteria) this;
         }
 
-        public Criteria andExpressionNotIn(List<String> values) {
+        public Criteria andExpressionNotIn(java.util.List<java.lang.String> values) {
             addCriterion("expression not in", values, "expression");
             return (Criteria) this;
         }
@@ -395,12 +395,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -455,12 +455,12 @@ public class JobScheduleExpressionExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Date> values) {
+        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Date> values) {
+        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }

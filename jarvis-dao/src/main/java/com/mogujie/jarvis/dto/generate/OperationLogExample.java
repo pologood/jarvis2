@@ -9,7 +9,7 @@ public class OperationLogExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public OperationLogExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class OperationLogExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class OperationLogExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class OperationLogExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(List<Integer> values) {
+        public Criteria andIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(List<Integer> values) {
+        public Criteria andIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
@@ -215,12 +215,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andTitleIn(List<String> values) {
+        public Criteria andTitleIn(java.util.List<java.lang.String> values) {
             addCriterion("title in", values, "title");
             return (Criteria) this;
         }
 
-        public Criteria andTitleNotIn(List<String> values) {
+        public Criteria andTitleNotIn(java.util.List<java.lang.String> values) {
             addCriterion("title not in", values, "title");
             return (Criteria) this;
         }
@@ -285,12 +285,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andOperatorIn(List<String> values) {
+        public Criteria andOperatorIn(java.util.List<java.lang.String> values) {
             addCriterion("operator in", values, "operator");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorNotIn(List<String> values) {
+        public Criteria andOperatorNotIn(java.util.List<java.lang.String> values) {
             addCriterion("operator not in", values, "operator");
             return (Criteria) this;
         }
@@ -355,12 +355,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andReferIn(List<String> values) {
+        public Criteria andReferIn(java.util.List<java.lang.String> values) {
             addCriterion("refer in", values, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andReferNotIn(List<String> values) {
+        public Criteria andReferNotIn(java.util.List<java.lang.String> values) {
             addCriterion("refer not in", values, "refer");
             return (Criteria) this;
         }
@@ -415,12 +415,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateIn(List<Date> values) {
+        public Criteria andOpeDateIn(java.util.List<java.util.Date> values) {
             addCriterion("opeDate in", values, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateNotIn(List<Date> values) {
+        public Criteria andOpeDateNotIn(java.util.List<java.util.Date> values) {
             addCriterion("opeDate not in", values, "opeDate");
             return (Criteria) this;
         }
@@ -485,12 +485,12 @@ public class OperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<String> values) {
+        public Criteria andTypeIn(java.util.List<java.lang.String> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
+        public Criteria andTypeNotIn(java.util.List<java.lang.String> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }

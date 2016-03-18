@@ -16,9 +16,9 @@ public interface TaskMapper {
 
     int insertSelective(Task record);
 
-    List<Task> selectByExampleWithBLOBs(TaskExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Task> selectByExampleWithBLOBs(TaskExample example);
 
-    List<Task> selectByExample(TaskExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Task> selectByExample(TaskExample example);
 
     Task selectByPrimaryKey(Long taskId);
 

@@ -17,7 +17,7 @@ public interface AppWorkerGroupMapper {
 
     int insertSelective(AppWorkerGroup record);
 
-    List<AppWorkerGroup> selectByExample(AppWorkerGroupExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.AppWorkerGroup> selectByExample(AppWorkerGroupExample example);
 
     AppWorkerGroup selectByPrimaryKey(AppWorkerGroupKey key);
 

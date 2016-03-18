@@ -16,7 +16,7 @@ public interface BizGroupMapper {
 
     int insertSelective(BizGroup record);
 
-    List<BizGroup> selectByExample(BizGroupExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.BizGroup> selectByExample(BizGroupExample example);
 
     BizGroup selectByPrimaryKey(Integer id);
 

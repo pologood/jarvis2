@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mogujie.jarvis.dao.generate.JobDependMapper">
-  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.JobDepend">
-    <id column="jobId" jdbcType="BIGINT" property="jobId" />
-    <id column="preJobId" jdbcType="BIGINT" property="preJobId" />
-    <result column="commonStrategy" jdbcType="INTEGER" property="commonStrategy" />
-    <result column="offsetStrategy" jdbcType="VARCHAR" property="offsetStrategy" />
+<mapper namespace="com.mogujie.jarvis.dao.generate.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.Department">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="updateUser" jdbcType="VARCHAR" property="updateUser" />
@@ -69,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    jobId, preJobId, commonStrategy, offsetStrategy, createTime, updateTime, updateUser
+    id, name, createTime, updateTime, updateUser
   </sql>
-  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.JobDependExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from job_depend
+    from department
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,46 +83,39 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobDependKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from job_depend
-    where jobId = #{jobId,jdbcType=BIGINT}
-      and preJobId = #{preJobId,jdbcType=BIGINT}
+    from department
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobDependKey">
-    delete from job_depend
-    where jobId = #{jobId,jdbcType=BIGINT}
-      and preJobId = #{preJobId,jdbcType=BIGINT}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from department
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.JobDependExample">
-    delete from job_depend
+  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentExample">
+    delete from department
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.JobDepend">
-    insert into job_depend (jobId, preJobId, commonStrategy, 
-      offsetStrategy, createTime, updateTime, 
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.Department">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into department (name, createTime, updateTime, 
       updateUser)
-    values (#{jobId,jdbcType=BIGINT}, #{preJobId,jdbcType=BIGINT}, #{commonStrategy,jdbcType=INTEGER}, 
-      #{offsetStrategy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.JobDepend">
-    insert into job_depend
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Department">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into department
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="jobId != null">
-        jobId,
-      </if>
-      <if test="preJobId != null">
-        preJobId,
-      </if>
-      <if test="commonStrategy != null">
-        commonStrategy,
-      </if>
-      <if test="offsetStrategy != null">
-        offsetStrategy,
+      <if test="name != null">
+        name,
       </if>
       <if test="createTime != null">
         createTime,
@@ -137,17 +128,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="jobId != null">
-        #{jobId,jdbcType=BIGINT},
-      </if>
-      <if test="preJobId != null">
-        #{preJobId,jdbcType=BIGINT},
-      </if>
-      <if test="commonStrategy != null">
-        #{commonStrategy,jdbcType=INTEGER},
-      </if>
-      <if test="offsetStrategy != null">
-        #{offsetStrategy,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -160,26 +142,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.JobDependExample" resultType="java.lang.Integer">
-    select count(*) from job_depend
+  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentExample" resultType="java.lang.Integer">
+    select count(*) from department
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update job_depend
+    update department
     <set>
-      <if test="record.jobId != null">
-        jobId = #{record.jobId,jdbcType=BIGINT},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.preJobId != null">
-        preJobId = #{record.preJobId,jdbcType=BIGINT},
-      </if>
-      <if test="record.commonStrategy != null">
-        commonStrategy = #{record.commonStrategy,jdbcType=INTEGER},
-      </if>
-      <if test="record.offsetStrategy != null">
-        offsetStrategy = #{record.offsetStrategy,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null">
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -196,11 +172,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update job_depend
-    set jobId = #{record.jobId,jdbcType=BIGINT},
-      preJobId = #{record.preJobId,jdbcType=BIGINT},
-      commonStrategy = #{record.commonStrategy,jdbcType=INTEGER},
-      offsetStrategy = #{record.offsetStrategy,jdbcType=VARCHAR},
+    update department
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR}
@@ -208,14 +182,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.JobDepend">
-    update job_depend
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.Department">
+    update department
     <set>
-      <if test="commonStrategy != null">
-        commonStrategy = #{commonStrategy,jdbcType=INTEGER},
-      </if>
-      <if test="offsetStrategy != null">
-        offsetStrategy = #{offsetStrategy,jdbcType=VARCHAR},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -227,17 +198,14 @@
         updateUser = #{updateUser,jdbcType=VARCHAR},
       </if>
     </set>
-    where jobId = #{jobId,jdbcType=BIGINT}
-      and preJobId = #{preJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobDepend">
-    update job_depend
-    set commonStrategy = #{commonStrategy,jdbcType=INTEGER},
-      offsetStrategy = #{offsetStrategy,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Department">
+    update department
+    set name = #{name,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}
-    where jobId = #{jobId,jdbcType=BIGINT}
-      and preJobId = #{preJobId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

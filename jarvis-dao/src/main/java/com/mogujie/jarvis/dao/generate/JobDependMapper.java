@@ -17,7 +17,7 @@ public interface JobDependMapper {
 
     int insertSelective(JobDepend record);
 
-    List<JobDepend> selectByExample(JobDependExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.JobDepend> selectByExample(JobDependExample example);
 
     JobDepend selectByPrimaryKey(JobDependKey key);
 

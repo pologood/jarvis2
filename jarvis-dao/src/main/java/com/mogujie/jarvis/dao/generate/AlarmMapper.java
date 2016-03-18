@@ -16,7 +16,7 @@ public interface AlarmMapper {
 
     int insertSelective(Alarm record);
 
-    List<Alarm> selectByExample(AlarmExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Alarm> selectByExample(AlarmExample example);
 
     Alarm selectByPrimaryKey(Integer id);
 

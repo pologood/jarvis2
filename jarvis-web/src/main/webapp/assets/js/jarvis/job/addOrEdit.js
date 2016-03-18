@@ -23,6 +23,7 @@ $(function () {
 
     formatDateTimePicker();         //格式化-时间选择器
     initSearchScriptModal();        //初始化搜索Script模式框
+    //initJobScheduleModal();         //初始化任务计划模式框
 
     initJobData();
 
@@ -153,7 +154,7 @@ function changeJobType() {
         $(script).radioEnable(true);
         $(jar).radioEnable(false);
         //if (!$(text).prop('checked') && !$(script).prop('checked')) {
-            $(text).prop('checked', true).trigger("change");
+        $(text).prop('checked', true).trigger("change");
         //}
     } else if (curJobType == CONST.JOB_TYPE.JAVA || curJobType == CONST.JOB_TYPE.MAPREDUCE) {
         $(text).radioEnable(false);
@@ -167,7 +168,7 @@ function changeJobType() {
         $(script).radioEnable(false);
         $(jar).radioEnable(false);
         //if (!$(text).prop('checked')) {
-            $(text).prop('checked', true).trigger("change");
+        $(text).prop('checked', true).trigger("change");
         //}
     } else if (curJobType == CONST.JOB_TYPE.DUMMY) {
         $(text).radioEnable(true);
@@ -762,7 +763,7 @@ function resetJob() {
     });
 }
 
-
+//------------------------------ 1.1 选择脚本  --------------------------------
 //初始化——选择脚本-模态框
 function initSearchScriptModal() {
 
@@ -808,7 +809,7 @@ function showSearchScriptModal() {
     $("#searchScriptModal").modal("show");
 }
 
-
+//------------------------------ 1.2 任务参数  ------------------------------
 //显示-任务参数-模态框
 function showParaModal() {
     if ($("#jobType").val() == CONST.JOB_TYPE.SPARK_LAUNCHER) {
@@ -969,6 +970,45 @@ function validSparkLauncherParas(key, val, desc, required) {
     }
     return true;
 }
+
+//------------------------------ 1.3 执行计划  ------------------------------
+function initJobScheduleModal(){
+    initPerDaySelect();
+    initPerWeekSelect();
+}
+
+//初始化-perDay
+function initPerDaySelect() {
+    var newData = [];
+    for (var i = 1; i <= 31; i++) {
+        newData.push({id: i, text: i + "日"});
+    }
+
+    var selector = $("#perDay");
+    $(selector).select2({
+        data: newData,
+        width: '100%'
+    });
+}
+
+//初始化-perWeek
+function initPerWeekSelect() {
+    var newData = [{id: 1, text: "星期一"}, {id: 2, text: "星期二"}, {id: 3, text: "星期三"}
+        ,{id: 4, text: "星期四"}, {id: 5, text: "星期五"}, {id: 6, text: "星期六"},{id: 7, text: "星期天"}];
+
+    var selector = $("#perWeek");
+    $(selector).select2({
+        data: newData,
+        width: '100%'
+    });
+}
+
+//显示-任务计划-模态框
+function showJobScheduleModal() {
+    $("#jobScheduleModal").modal("show");
+}
+
+
 
 //------------------------------  2.job依赖相关 ----------------------------------
 

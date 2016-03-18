@@ -16,7 +16,7 @@ public interface JobScheduleExpressionMapper {
 
     int insertSelective(JobScheduleExpression record);
 
-    List<JobScheduleExpression> selectByExample(JobScheduleExpressionExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.JobScheduleExpression> selectByExample(JobScheduleExpressionExample example);
 
     JobScheduleExpression selectByPrimaryKey(Long id);
 
