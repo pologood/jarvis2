@@ -44,7 +44,7 @@ public class TaskController {
 
     @RequestMapping(value = "detail")
     @Passport(JarvisAuthType.task)
-    public String dependency(ModelMap modelMap, Long taskId) {
+    public String dependency(ModelMap modelMap, Long taskId, Integer debug) {
         TaskVo taskVo = taskService.getTaskById(taskId);
         Long jobId = taskVo.getJobId();
         JobVo jobVo = jobService.getJobById(jobId);
@@ -95,6 +95,7 @@ public class TaskController {
         modelMap.put("taskVo", taskVo);
         modelMap.put("jobVo", jobVo);
         modelMap.put("taskVoList", JsonHelper.toJson(taskVoList));
+        modelMap.put("debug", debug !=null && debug == 1 ? 1 : 0);
 
         return "task/detail";
     }

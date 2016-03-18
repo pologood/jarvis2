@@ -128,7 +128,7 @@
                                     <li role="presentation">
                                         <a href="#log" data-toggle="tab">日志</a>
                                     </li>
-                                    <c:if test="${taskVo.jobType != 'hive'}">
+                                    <c:if test="${debug == 1}">
                                         <li role="presentation">
                                             <a href="#logMore" data-toggle="tab">日志(标准输出)</a>
                                         </li>
@@ -141,7 +141,7 @@
                                     </div>
 
                                     <pre id="log" class="tab-pane"></pre>
-                                    <c:if test="${taskVo.jobType != 'hive'}">
+                                    <c:if test="${debug == 1}">
                                         <pre id="logMore" class="tab-pane"></pre>
                                     </c:if>
                                 </div>
