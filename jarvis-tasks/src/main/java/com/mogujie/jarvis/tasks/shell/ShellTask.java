@@ -104,13 +104,21 @@ public class ShellTask extends AbstractTask {
                     .append(" && exit $JARVIS_EXIT_CODE");
 
             ProcessBuilder processBuilder = ShellUtils.createProcessBuilder(sb.toString());
+            if (redirectStream()) {
+                processBuilder.redirectErrorStream(true);
+            }
             shellProcess = processBuilder.start();
 
-            Thread stdoutStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_OUT);
-            stdoutStreamProcessor.start();
+            if (redirectStream()) {
+                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_ERR);
+                stderrStreamProcessor.start();
+            } else {
+                Thread stdoutStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_OUT);
+                stdoutStreamProcessor.start();
 
-            Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getErrorStream(), StreamType.STD_ERR);
-            stderrStreamProcessor.start();
+                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getErrorStream(), StreamType.STD_ERR);
+                stderrStreamProcessor.start();
+            }
 
             boolean result = (shellProcess.waitFor() == 0);
             return result;
@@ -134,6 +142,10 @@ public class ShellTask extends AbstractTask {
         if (shellProcess != null) {
             shellProcess.destroy();
         }
+        return true;
+    }
+
+    public boolean redirectStream() {
         return true;
     }
 

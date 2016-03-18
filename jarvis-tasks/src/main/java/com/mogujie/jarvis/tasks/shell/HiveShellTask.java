@@ -196,4 +196,9 @@ public class HiveShellTask extends ShellTask {
         return task.getContent();
     }
 
+    @Override
+    public boolean redirectStream() {
+        return false;
+    }
+
 }
