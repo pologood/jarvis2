@@ -77,7 +77,7 @@ public class JsonParameters {
     public Integer getInteger(String key, Integer defaultVal) {
         if (data.containsKey(key)) {
             try {
-                return convert2Integer(data.get(key));
+                return convert2Integer(data.get(key), defaultVal);
             } catch (NumberFormatException Ex) {
                 throw new IllegalArgumentException("获取Integer值失败；key='" + key + "';value=" + data.get(key).toString());
             }
@@ -101,7 +101,7 @@ public class JsonParameters {
     public Long getLong(String key, Long defaultVal) {
         if (data.containsKey(key)) {
             try {
-                return convert2Long(data.get(key));
+                return convert2Long(data.get(key), defaultVal);
             } catch (NumberFormatException Ex) {
                 throw new IllegalArgumentException("获取Long值失败；key='" + key + "';value=" + data.get(key).toString());
             }
@@ -142,36 +142,42 @@ public class JsonParameters {
         return JsonHelper.fromJson(getString(key), typeOfT);
     }
 
-    private Long convert2Long(Object value) throws NumberFormatException{
-        if(value.getClass() == Long.class){
+    private Long convert2Long(Object value, Long defaultVal) throws NumberFormatException {
+        if (value.getClass() == Long.class) {
             return (Long) value;
         }
-        if(value.getClass() == String.class){
-            return Long.parseLong((String)value);
+        if (value.getClass() == String.class) {
+            if (value.equals("")) {
+                return defaultVal;
+            }
+            return Long.parseLong((String) value);
         }
 
-        if(value.getClass() != Double.class){
+        if (value.getClass() != Double.class) {
             throw new NumberFormatException();
         }
-        Double d =  (Double) value;
-        if( d - d.longValue() != 0){
+        Double d = (Double) value;
+        if (d - d.longValue() != 0) {
             throw new NumberFormatException();
         }
         return d.longValue();
     }
 
-    private Integer convert2Integer(Object value) throws NumberFormatException {
-        if(value.getClass() == Integer.class){
+    private Integer convert2Integer(Object value, Integer defaultVal) throws NumberFormatException {
+        if (value.getClass() == Integer.class) {
             return (Integer) value;
         }
-        if(value.getClass() == String.class){
-            return Integer.parseInt((String)value);
+        if (value.getClass() == String.class) {
+            if (value.equals("")) {
+                return defaultVal;
+            }
+            return Integer.parseInt((String) value);
         }
-        if(value.getClass() != Double.class){
+        if (value.getClass() != Double.class) {
             throw new NumberFormatException();
         }
-        Double d =  (Double) value;
-        if(d - d.longValue() != 0  || d.intValue() != d.longValue()){
+        Double d = (Double) value;
+        if (d - d.longValue() != 0 || d.intValue() != d.longValue()) {
             throw new NumberFormatException();
         }
         return d.intValue();
