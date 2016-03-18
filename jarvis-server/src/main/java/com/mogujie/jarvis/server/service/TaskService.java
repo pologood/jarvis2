@@ -135,7 +135,8 @@ public class TaskService {
         record.setScheduleTime(new Date(scheduleTime));
         record.setDataTime(new Date(dataTime));
         record.setStatus(TaskStatus.WAITING.getValue());
-        record.setProgress((float) 0);
+        record.setProgress(0F);
+        record.setAlarmEnable(1);
         Job job = jobService.get(jobId).getJob();
         if (job.getIsTemp()) {
             //如果是临时任务，设置task类型为TEMP
@@ -227,6 +228,7 @@ public class TaskService {
         history.setExecuteUser(task.getExecuteUser());
         history.setExecuteStartTime(task.getExecuteStartTime());
         history.setExecuteEndTime(task.getExecuteEndTime());
+        history.setAlarmEnable(1);
         Date currentTime = DateTime.now().toDate();
         history.setCreateTime(currentTime);
         history.setUpdateTime(currentTime);
