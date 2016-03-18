@@ -77,7 +77,14 @@ public class LocalLogStream implements LogStream {
 
         try (RandomAccessFile raf = new RandomAccessFile(logFile, "r")) {
             if (offset > raf.length()) {
-                return new LogReadResult(true, "", raf.length());
+                raf.seek(raf.length() - 1);
+                int c = raf.read();
+
+                if (c == LogConstants.END_OF_LOG) {
+                    return new LogReadResult(true, "", raf.length());
+                } else {
+                    return new LogReadResult(false, "", offset);
+                }
             }
             raf.seek(offset);
             StringBuilder sb = new StringBuilder();
@@ -86,8 +93,10 @@ public class LocalLogStream implements LogStream {
             boolean isEnd = false;
             while (true) {
                 c = readUtfChar(raf);
-                if (c == -1 || c == LogConstants.END_OF_LOG) {
+                if (c == LogConstants.END_OF_LOG) {
                     isEnd = true;
+                    break;
+                } else if (c == -1) {
                     break;
                 }
 

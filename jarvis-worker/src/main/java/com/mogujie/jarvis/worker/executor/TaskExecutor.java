@@ -20,7 +20,6 @@ import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.AcceptanceException;
-import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.TaskPool;
@@ -118,10 +117,13 @@ public class TaskExecutor extends Thread {
                 LOGGER.info("task[fullId={}] execute finished, result={}.", fullId, result);
                 task.postExecute();
                 LOGGER.info("task[fullId={}] postExecute finished.", fullId);
-            } catch (TaskException e) {
-                logCollector.collectStderr(e.getMessage(), true);
+            } catch (Exception e) {
+                logCollector.collectStderr(e.getMessage());
                 LOGGER.error("", e);
             }
+
+            logCollector.collectStderr("", true);
+            logCollector.collectStdout("", true);
 
             if (result) {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.SUCCESS.getValue())

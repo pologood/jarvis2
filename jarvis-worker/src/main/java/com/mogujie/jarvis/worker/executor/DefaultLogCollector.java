@@ -30,7 +30,7 @@ import akka.actor.ActorSelection;
  */
 public class DefaultLogCollector extends AbstractLogCollector {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger LOGGER = LogManager.getLogger();
 
     private ActorSelection actor;
     private String fullId;
@@ -42,14 +42,14 @@ public class DefaultLogCollector extends AbstractLogCollector {
     }
 
     private void sendLog(String line, boolean isEnd, StreamType streamType) {
-        logger.info("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
+        LOGGER.info("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
 
         String text = (line != null && line.length() > 0) ? line + JarvisConstants.LINE_SEPARATOR : "";
         byte[] bytes = (text).getBytes(StandardCharsets.UTF_8);
         int srcLen = bytes.length;
         int i = 0;
         boolean sendEnd = false;
-        while ((srcLen - maxBytes * i) >= 0 ) {
+        while ((srcLen - maxBytes * i) >= 0) {
             int needSize = maxBytes;
             if ((srcLen - maxBytes * (i + 1)) <= 0) {
                 needSize = srcLen - maxBytes * i;
@@ -63,6 +63,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
 
             WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(streamType.getValue())
                     .setLog(ByteString.copyFrom(dest)).setIsEnd(sendEnd).build();
+
             LogStorageWriteLogResponse response;
             try {
                 response = (LogStorageWriteLogResponse) FutureUtils.awaitResult(actor, request, 10);
@@ -70,7 +71,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
                     i++;
                 }
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error(e);
             }
         }
     }

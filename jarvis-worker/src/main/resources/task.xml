@@ -19,7 +19,7 @@
 		</task>
 		<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbcTask" />
 		<task type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
-		<task type="sparkLauncher" class="com.mogujie.jarvis.tasks.shell.sparkLauncherTask" />
-		<task type="java" class="com.mogujie.jarvis.tasks.shell.javaTask" />
+		<task type="sparkLauncher" class="com.mogujie.jarvis.tasks.shell.SparkLauncherTask" />
+		<task type="java" class="com.mogujie.jarvis.tasks.shell.JavaTask" />
 	</tasks>
 </configuration>
