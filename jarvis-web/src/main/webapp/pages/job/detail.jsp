@@ -9,6 +9,15 @@
 
 <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/d3/d3-collapsible-tree.css"/>
 
+<style>
+    a:link,a:visited {
+        color:#337ab7;
+    }
+    .fixed-table-body{
+        padding-bottom: 0px;
+    }
+</style>
+
 
 <div class="container">
 
@@ -40,7 +49,9 @@
     </div>
 
     <div class="row" id="jobDetail">
+
         <div class="col-md-12">
+            <h5 class="text-info">任务基本信息</h5>
             <table class="table table-bordered table-striped">
                 <tbody>
                 <tr>
@@ -168,6 +179,17 @@
         </div>
     </div>
 
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="text-info">执行记录</h5>
+            <table id="taskList"></table>
+        </div>
+
+    </div>
+
+    <hr>
     <div>
         <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>启用</span>
         <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>禁用</span>
