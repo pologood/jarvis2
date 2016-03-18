@@ -506,7 +506,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
     })).get().on('pnotify.confirm', function () {
             var data = {};
             data["jobId"] = jobId;
-            data["taskId"] = taskId;
+            data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
             requestRemoteRestApi(url, text, data,true);
         }).on('pnotify.cancel', function () {
