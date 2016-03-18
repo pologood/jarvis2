@@ -308,5 +308,8 @@
     height: 100%;
 }
 
+.fixed-table-body{
+    padding-bottom: 80px;
+}
 
 

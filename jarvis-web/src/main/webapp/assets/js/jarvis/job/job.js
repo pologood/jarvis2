@@ -336,7 +336,7 @@ function initData() {
 }
 //更新job的状态
 function updateJobStatus(jobId, jobStatus) {
-    var data = {jobId: jobId, status: jobStatus};
+    var data = {jobIds: [jobId], status: jobStatus};
     requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
     search();
 }

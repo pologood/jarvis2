@@ -1,6 +1,7 @@
 var taskStatusJson = null;
 var taskStatusColor = null;
 var taskOperation = null;
+var taskDetailUrl=contextPath+"/task/detail?taskId=";
 
 $(function () {
     createDatetimePickerById("executeDate");
@@ -339,7 +340,8 @@ var columns = [{
     title: '执行ID',
     switchable: true,
     sortable:true,
-    visible: true
+    visible: true,
+    formatter:taskDetailFormatter
 }, {
     field: 'attemptId',
     title: '最后尝试ID',
@@ -374,7 +376,7 @@ var columns = [{
     visible: false
 }, {
     field: 'executeUser',
-    title: '执行用户',
+    title: '执行人',
     sortable:true,
     switchable: true
 }, {
@@ -461,7 +463,8 @@ var columns = [{
     sortable:true,
     title: '应用名',
     switchable: true,
-    visible: true
+    visible: true,
+    formatter:appNameFormatter
 }, {
     field: 'priority',
     title: '任务优先级',
@@ -477,6 +480,11 @@ var columns = [{
 }];
 
 
+function taskDetailFormatter(value,row,index){
+    var result="<a href='"+taskDetailUrl+value+"'>"+value+"</a>";
+
+    return result;
+}
 
 //重试还是kill，type与rest接口一一对应
 function TaskOperate(jobId, taskId, attemptId, url, text) {
@@ -498,7 +506,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
     })).get().on('pnotify.confirm', function () {
             var data = {};
             data["jobId"] = jobId;
-            data["taskId"] = taskId;
+            data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
             requestRemoteRestApi(url, text, data,true);
         }).on('pnotify.cancel', function () {
@@ -521,9 +529,6 @@ function operateFormatter(value, row, index) {
         '<ul class="dropdown-menu">',
         '<li><a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看当前执行依赖" target="_blank">',
         '<i class="glyphicon glyphicon-object-align-horizontal text-success"></i>执行依赖',
-        '</a></li>',
-        '<li><a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
-        '<i class="glyphicon glyphicon-list-alt text-success"></i>执行详情',
         '</a></li>',
         '<li><a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试记录">',
         '<i class="glyphicon glyphicon-list text-success"></i>重试记录',
@@ -610,7 +615,7 @@ function showTaskHistory(taskId) {
 }
 
 function jobNameFormatter(value, row, index) {
-    var result = '<a target="_blank" href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
+    var result = '<a href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
 
     return result;
 }
@@ -637,4 +642,10 @@ function formatResult(result) {
 //格式化结果选择框
 function formatResultSelection(result) {
     return result.id;
+}
+function appNameFormatter(value,row,index){
+
+    var result="<div style='white-space: nowrap'>"+value+"</div>";
+
+    return result;
 }

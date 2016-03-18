@@ -1,75 +1,246 @@
 var dependencyUrl = contextPath + "/api/job/getDepend?jobId=";
 var url = dependencyUrl + jobVo.jobId;
 var detailUrl = contextPath + "/job/detail?jobId=";
-
+var taskDetailUrl = contextPath + "/task/detail?taskId=";
+var taskStatusColor = null;
 
 $(function () {
     if (undefined != jobVo.jobId) {
         initJobData();     //初始化job详细信息
+        initJobStatusColor();
+        initGraph();
 
-        $.ajax({
-            url: contextPath + "/assets/json/jobStatusColor.json",
-            async: false,
-            success: function (data) {
-                stautsColor = data;
-            },
-            error: function (jqXHR, exception) {
-                var msg = getMsg4ajaxError(jqXHR, exception);
-                showMsg('warning', '初始化状态颜色', msg);
-            }
-        })
-        var level = 1;
-        var size = 5;
-        var parentLevel = 0;
-        var childLevel = 0;
-        $.ajax({
-            url: url,
-            async: false,
-            success: function (data) {
-                var children = data.children;
-                var parents = data.parents;
+        initTaskStatusColor();
+        initData(jobVo.jobId);
 
-                parentLevel = parents.length % size == 0 ? parents.length / size : parseInt(parents.length / size) + 1;
-                childLevel = children.length % size == 0 ? children.length / size : parseInt(children.length / size) + 1;
-
-                level = level + parentLevel + childLevel;
-            },
-            error: function (jqXHR, exception) {
-                var msg = getMsg4ajaxError(jqXHR, exception);
-                showMsg('warning', '初始化执行用户', msg);
-            }
-        });
-
-        var y = 0;
-        var width = 1140;
-        var height = 100;
-        if (level > 1) {
-            height = (level - 1) * 120 + 200;
-        }
-        else {
-            height = 140;
-        }
-
-        if (parentLevel == 0 && childLevel != 0) {
-            y = 50;
-        }
-        else if (parentLevel != 0 && childLevel == 0) {
-            y = height - 50;
-        }
-        else if (parentLevel == 0 && childLevel == 0) {
-            y = height / 2;
-        }
-        else {
-            y = height * parentLevel / (level - 1)+20;
-        }
-        //console.log(y);
-        //console.log(height);
-
-
-        var tree = CollapsibleTree("#dependTree", width, height,y);
-        tree.init(url);
     }
 });
+
+function initTaskStatusColor() {
+    $.ajax({
+        url: contextPath + "/assets/json/taskStatusColor.json",
+        async: false,
+        success: function (data) {
+            taskStatusColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行状态颜色', msg);
+        }
+    });
+}
+
+//字段配置
+var columns = [{
+    field: 'taskId',
+    title: '执行ID',
+    switchable: true,
+    sortable: true,
+    visible: true,
+    formatter: taskDetailFormatter
+}, {
+    field: 'attemptId',
+    title: '最后尝试ID',
+    switchable: true,
+    sortable: true,
+    visible: false
+}, {
+    field: 'executeUser',
+    title: '执行用户',
+    sortable: true,
+    switchable: true
+}, {
+    field: 'scheduleTime',
+    title: '调度时间',
+    switchable: true,
+    sortable: true,
+    formatter: formatDateTimeWithoutYear
+}, {
+    field: 'dataTime',
+    title: '数据时间',
+    switchable: true,
+    sortable: true,
+    formatter: formatDateTimeWithoutYear
+}, {
+    field: 'progress',
+    title: '进度',
+    switchable: true,
+    sortable: true,
+    visible: false,
+    formatter: progressFormatter
+}, {
+    field: 'executeStartTime',
+    title: '开始执行时间',
+    sortable: true,
+    switchable: true,
+    visible: true,
+    formatter: formatDateTimeWithoutYear
+}, {
+    field: 'executeEndTime',
+    title: '执行结束时间',
+    sortable: true,
+    switchable: true,
+    visible: true,
+    formatter: formatDateTimeWithoutYear
+}, {
+    field: 'executeTime',
+    title: '执行时长',
+    sortable: true,
+    switchable: false,
+    visible: true,
+    formatter: formatTimeInterval
+}, {
+    field: 'status',
+    title: '状态',
+    switchable: true,
+    sortable: true,
+    width: '7%',
+    formatter: taskStatusFormatter
+}, {
+    field: 'createTime',
+    title: '执行创建时间',
+    switchable: false,
+    sortable: true,
+    visible: false,
+    formatter: formatDateTime
+}, {
+    field: 'updateTime',
+    title: '执行更新时间',
+    switchable: true,
+    sortable: true,
+    visible: false,
+    formatter: formatDateTime
+}];
+
+function initData(jobId) {
+    $("#taskList").bootstrapTable({
+        columns: columns,
+        pagination: true,
+        sidePagination: 'server',
+        search: false,
+        url: contextPath + '/api/task/getTasks',
+        queryParams: function (params) {
+            var queryParams = {};
+            queryParams["jobIdList"] = JSON.stringify([jobId]);
+            for (var key in queryParams) {
+                var value = queryParams[key];
+                params[key] = value;
+            }
+            return params;
+        }, responseHandler: function (res) {
+            if (res.status) {
+                showMsg("error", "初始化执行列表", res.status.msg);
+                return res;
+            }
+            else {
+                return res;
+            }
+        },
+        showColumns: false,
+        showHeader: true,
+        showToggle: false,
+        sortable: true,
+        pageSize: 5,
+        pageList: [10, 20, 50, 100, 200, 500, 1000],
+        paginationFirstText: '首页',
+        paginationPreText: '上一页',
+        paginationNextText: '下一页',
+        paginationLastText: '末页',
+        showExport: false,
+        exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+        exportDataType: 'basic'
+    });
+}
+//百分比格式化
+function progressFormatter(value, row, index) {
+    var result = value * 100 + "%";
+    return result;
+}
+//执行状态格式化
+function taskStatusFormatter(value, row, index) {
+    var color = taskStatusColor[value].color;
+    var text = taskStatusColor[value].text;
+    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
+
+    result = "<div style='white-space:nowrap;'>" + result + "</div?";
+
+    return result;
+}
+function taskDetailFormatter(value,row,index){
+
+    var result="<a href='"+taskDetailUrl+value+"'>"+value+"</a>";
+
+    return result;
+}
+
+
+function initJobStatusColor() {
+    $.ajax({
+        url: contextPath + "/assets/json/jobStatusColor.json",
+        async: false,
+        success: function (data) {
+            stautsColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化状态颜色', msg);
+        }
+    })
+}
+
+function initGraph() {
+    var level = 1;
+    var size = 5;
+    var parentLevel = 0;
+    var childLevel = 0;
+    $.ajax({
+        url: url,
+        async: false,
+        success: function (data) {
+            var children = data.children;
+            var parents = data.parents;
+
+            parentLevel = parents.length % size == 0 ? parents.length / size : parseInt(parents.length / size) + 1;
+            childLevel = children.length % size == 0 ? children.length / size : parseInt(children.length / size) + 1;
+
+            level = level + parentLevel + childLevel;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行用户', msg);
+        }
+    });
+
+    var y = 0;
+    var width = 1140;
+    var height = 100;
+    if (level > 1) {
+        height = (level - 1) * 120 + 200;
+    }
+    else {
+        height = 140;
+    }
+
+    if (parentLevel == 0 && childLevel != 0) {
+        y = 50;
+    }
+    else if (parentLevel != 0 && childLevel == 0) {
+        y = height - 50;
+    }
+    else if (parentLevel == 0 && childLevel == 0) {
+        y = height / 2;
+    }
+    else {
+        y = height * parentLevel / (level - 1) + 20;
+    }
+    //console.log(y);
+    //console.log(height);
+
+
+    var tree = CollapsibleTree("#dependTree", width, height, y);
+    tree.init(url);
+}
+
 
 function jumpToNode(d) {
     if (!d.rootFlag) {
