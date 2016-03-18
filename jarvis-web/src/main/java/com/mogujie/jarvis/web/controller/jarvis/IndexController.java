@@ -20,7 +20,7 @@ public class IndexController {
             return "index";
         } else {
             mp.clear();
-            return "redirect:/plan";
+            return "redirect:/task";
         }
     }
 }
