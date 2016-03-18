@@ -16,6 +16,7 @@ public interface ServerConigKeys {
     public static final String TASK_ACTOR_NUM = "task.actor.num";
     public static final String APP_TOKEN_VERIFY_ENABLE = "app.token.verify.enable";
     public static final String ALARM_APP_NAME = "alarm.app.name";
+    public static final String ALARM_ENABLE = "alarm.enable";
     public static final String ALARM_SERVICE_URL = "alarm.service.url";
     public static final String WORKER_SELECTOR = "worker.selector";
     public static final String TASK_REJECT_INTERVAL = "task.reject.interval";

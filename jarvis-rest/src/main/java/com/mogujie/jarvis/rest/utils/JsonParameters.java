@@ -1,10 +1,11 @@
 package com.mogujie.jarvis.rest.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.util.JsonHelper;
 
 /**
@@ -135,6 +136,10 @@ public class JsonParameters {
 
     public Double getDouble(String key) {
         return getDouble(key, null);
+    }
+
+    public <T> List<T> getList(String key, Type typeOfT) {
+        return JsonHelper.fromJson(getString(key), typeOfT);
     }
 
     private Long convert2Long(Object value) throws NumberFormatException{

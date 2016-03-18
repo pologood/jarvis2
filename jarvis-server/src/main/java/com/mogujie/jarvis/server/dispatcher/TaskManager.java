@@ -79,4 +79,8 @@ public class TaskManager {
     public void updateAppMaxParallelism(int appId, int maxParallelism) {
         maxParallelismMap.put(appId, maxParallelism);
     }
+
+    public Map<Integer, Long> getAppCounter() {
+        return parallelismCounter.asMap();
+    }
 }

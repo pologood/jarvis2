@@ -141,35 +141,32 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     @AllowConcurrentEvents
     public void handleRemoveTaskEvent(RemoveTaskEvent e) {
-        long jobId = e.getJobId();
-        long taskId = e.getTaskId();
-        long scheduleTime = e.getScheduleTime();
-        TaskType taskType = e.getTaskType();
-        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
+        List<Long> taskIds = e.getTaskIds();
+        LOGGER.info("start handleRemoveTaskEvent, taskIds={}", taskIds);
+        if (taskIds != null) {
+            for (long taskId : taskIds) {
+                // 1. update taskService
+                taskService.updateStatus(taskId, TaskStatus.REMOVED);
 
-        // 1. update taskService
-        taskService.updateStatus(taskId, TaskStatus.REMOVED);
+                // 2. remove from taskGraph
+                taskGraph.removeTask(taskId);
 
-        // 2. schedule child tasks
-        scheduleChildTask(jobId, taskId, scheduleTime, taskType);
+                // 3. remove from TaskQueue
+                PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
+                Task task = taskService.get(taskId);
+                String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
+                taskQueue.removeByKey(fullId);
 
-        // 3. remove from taskGraph
-        taskGraph.removeTask(taskId);
+                // 4. remove from RetryScheduler
+                String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
+                TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
+                retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
+                retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
 
-        // 4. remove from TaskQueue
-        PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
-        Task task = taskService.get(taskId);
-        String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
-        taskQueue.removeByKey(fullId);
-
-        // 5. remove from RetryScheduler
-        String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
-        TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
-        retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
-        retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
-
-        // 6. reduce task number
-        reduceTaskNum(taskId);
+                // 5. reduce task number
+                reduceTaskNum(taskId);
+            }
+        }
     }
 
     @Subscribe

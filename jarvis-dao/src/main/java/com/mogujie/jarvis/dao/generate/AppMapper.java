@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AppMapper {
@@ -15,7 +16,7 @@ public interface AppMapper {
 
     int insertSelective(App record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.App> selectByExample(AppExample example);
+    List<App> selectByExample(AppExample example);
 
     App selectByPrimaryKey(Integer appId);
 

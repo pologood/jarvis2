@@ -3,6 +3,7 @@ package com.mogujie.jarvis.dao.generate;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependExample;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface JobDependMapper {
@@ -16,7 +17,7 @@ public interface JobDependMapper {
 
     int insertSelective(JobDepend record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.JobDepend> selectByExample(JobDependExample example);
+    List<JobDepend> selectByExample(JobDependExample example);
 
     JobDepend selectByPrimaryKey(JobDependKey key);
 

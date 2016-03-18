@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.TaskDepend;
 import com.mogujie.jarvis.dto.generate.TaskDependExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TaskDependMapper {
@@ -15,9 +16,9 @@ public interface TaskDependMapper {
 
     int insertSelective(TaskDepend record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.TaskDepend> selectByExampleWithBLOBs(TaskDependExample example);
+    List<TaskDepend> selectByExampleWithBLOBs(TaskDependExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.TaskDepend> selectByExample(TaskDependExample example);
+    List<TaskDepend> selectByExample(TaskDependExample example);
 
     TaskDepend selectByPrimaryKey(Long taskId);
 

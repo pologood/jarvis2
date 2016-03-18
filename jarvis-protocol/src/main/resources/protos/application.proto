@@ -54,3 +54,21 @@ message ServerSetApplicationWorkerGroupResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }
+
+
+// search app counter
+message AppCounterEntry {
+	required int32 app_id = 1;
+	required int32 counter = 2;
+}
+
+message RestSearchAppCounterRequest {
+	required AppAuth app_auth = 1;
+    required string user = 2;
+}
+
+message ServerSearchAppCounterResponse {
+	required bool success = 1;
+	repeated AppCounterEntry app_counter_entry = 2;
+    optional string message = 3 [default = ""];
+}

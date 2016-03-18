@@ -8,7 +8,10 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
-import com.mogujie.jarvis.core.domain.TaskType;
+import java.util.List;
+
+import com.mogujie.jarvis.core.observer.Event;
+
 
 /**
  * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
@@ -19,37 +22,22 @@ import com.mogujie.jarvis.core.domain.TaskType;
  * @author guangming
  *
  */
-public class RemoveTaskEvent extends DAGTaskEvent {
-    private long scheduleTime;
-    private TaskType taskType;
+public class RemoveTaskEvent implements Event {
+    private List<Long> taskIds;
 
     /**
-     * @param jobId
-     * @param taskId
-     * @param scheduleTime
-     * @param taskType
-     * @param reason
+     * @param taskIds
      */
-    public RemoveTaskEvent(long jobId, long taskId, long scheduleTime, TaskType taskType) {
-        super(jobId, taskId);
-        this.scheduleTime = scheduleTime;
-        this.taskType = taskType;
+    public RemoveTaskEvent(List<Long> taskIds) {
+        this.taskIds = taskIds;
     }
 
-    public long getScheduleTime() {
-        return scheduleTime;
+    public List<Long> getTaskIds() {
+        return taskIds;
     }
 
-    public void setScheduleTime(long scheduleTime) {
-        this.scheduleTime = scheduleTime;
-    }
-
-    public TaskType getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(TaskType taskType) {
-        this.taskType = taskType;
+    public void setTaskIds(List<Long> taskIds) {
+        this.taskIds = taskIds;
     }
 
 }

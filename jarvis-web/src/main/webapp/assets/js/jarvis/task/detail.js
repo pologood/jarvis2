@@ -1,5 +1,6 @@
 $(function () {
     initLog();
+    initLogMore();
     initChart(echarts);
 });
 
@@ -96,22 +97,40 @@ function initLog() {
     data["jobId"] = jobId;
     data["attemptId"] = attemptId;
     data["offset"] = 0;
-    data["lines"] = 1000;
+    data["size"] = 10000;
 
     var url;
-    if (page.jobType == CONST.JOB_TYPE.HIVE) {
-        url = "/api/log/readExecuteLog";
-    } else {
-        url = "/api/log/readResult";
-    }
-
+    url = "/api/log/readExecuteLog";
     var result = requestRemoteRestApi(url, "读取执行日志", data);
     if (result.flag == true) {
-        
         var log = result.data.data.log;
         $("#log").html(log);
         $("#errorNotifyMsg").html(result.data.errorNotify);
-
     }
 }
+
+
+//显示更多的日志信息(标准输出)
+function initLogMore() {
+
+    //标准输出div不存在,则推出
+    if($("#logMore").length == 0){
+        return;
+    }
+
+    var data = {};
+    data["taskId"] = taskId;
+    data["jobId"] = jobId;
+    data["attemptId"] = attemptId;
+    data["offset"] = 0;
+    data["size"] = 10000;
+    var url;
+    url = "/api/log/readResult";
+    var result = requestRemoteRestApi(url, "读取执行日志", data);
+    if (result.flag == true) {
+        var log = result.data.data.log;
+        $("#logMore").html(log);
+    }
+}
+
 
