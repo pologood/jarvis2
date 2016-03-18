@@ -26,6 +26,19 @@
 
     <hr>
 
+    <div id="popoverContainer"></div>
+
+    <div id="pattern" style="display: none">
+        <div class="input-group">
+            <span class="input-group-addon">任务Id</span>
+            <div name="jobId" class="form-control"></div>
+        </div>
+        <div class="input-group top-buffer">
+            <span class="input-group-addon">提交者</span>
+            <div name="submitUser" class="form-control"></div>
+        </div>
+    </div>
+
     <div class="row" id="jobDetail">
         <div class="col-md-12">
             <table class="table table-bordered table-striped">
@@ -155,6 +168,14 @@
         </div>
     </div>
 
+    <div>
+        <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>启用</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>禁用</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>过期</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>删除</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #FFDC00"></i>暂停</span>
+    </div>
+
     <div id="dependTree"></div>
 </div>
 
@@ -165,8 +186,9 @@
 
 <script type="text/javascript">
     var jobVo =${jobVo};
+    var stautsColor={};
 </script>
-<%--<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/delete_concept-graph.js" charset="UTF-8"></script>--%>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/concept-graph.js" charset="UTF-8"></script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/detail.js"></script>
 

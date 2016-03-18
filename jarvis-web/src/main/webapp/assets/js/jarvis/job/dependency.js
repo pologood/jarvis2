@@ -2,11 +2,18 @@ var apiUrl = contextPath + "/api/job/getDepend?jobId=";
 var dependUrl = contextPath + "/job/dependency?jobId=";
 
 $(function () {
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
-        stautsColor = data;
-    });
-    $.ajaxSettings.async = true;
+    $.ajax({
+        url:contextPath + "/assets/json/taskStatusColor.json",
+        async:false,
+        success:function(data){
+            stautsColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化状态颜色', msg);
+        }
+    })
+
     var tree = CollapsibleTree("#dependTree");
     tree.init(apiUrl + query.jobId);
 });

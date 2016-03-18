@@ -2,11 +2,18 @@ var apiUrl = contextPath + "/api/task/getDepend?taskId=";
 var taskUrl = contextPath + "/task/dependency?taskId=";
 
 $(function () {
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
-        stautsColor = data;
-    });
-    $.ajaxSettings.async = true;
+    $.ajax({
+        url:contextPath + "/assets/json/taskStatusColor.json",
+        async:false,
+        success:function(data){
+            stautsColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行状态颜色', msg);
+        }
+    })
+
     var tree = CollapsibleTree("#dependTree");
     tree.init(apiUrl + taskDependQo.taskId);
 });

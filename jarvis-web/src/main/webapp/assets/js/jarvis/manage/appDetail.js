@@ -43,85 +43,104 @@ function getAppDetail() {
 }
 
 function initAppStatus() {
-    $.getJSON(contextPath + "/api/app/getAppStatus", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            if (c["id"] != 3) {
-                var item = {};
-                item["id"] = c["id"];
-                item["text"] = c["text"];
-                newData.push(item);
+
+    $.ajax({
+        url: contextPath + "/api/app/getAppStatus",
+        success: function (data) {
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                if (c["id"] != 3) {
+                    var item = {};
+                    item["id"] = c["id"];
+                    item["text"] = c["text"];
+                    newData.push(item);
+                }
+            });
+
+            $("#status").select2({
+                data: newData,
+                width: '100%'
+            });
+
+            if (app != undefined) {
+                $("#status").val(app.status).trigger("change");
             }
-        });
-
-        $("#status").select2({
-            data: newData,
-            width: '100%'
-        });
-
-        if (app != undefined) {
-            $("#status").val(app.status).trigger("change");
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化应用状态', msg);
         }
-    });
+    })
 }
 
 //初始化维护人
 function initAppOwner() {
-    $.getJSON(contextPath + "/api/common/getAllUser", function (data) {
-        if (data.code == 1000) {
-            var userData = new Array();
-            $(data.rows).each(function (i, c) {
-                var item = {};
-                item["id"] = c.uname;
-                item["text"] = c.nick;
-                userData.push(item);
-            });
-
-            $("#owner").select2({
-                data: userData,
-                width: '100%'
-            });
-
-            if (null != app && '' != app.owner) {
-                var owner = app.owner.trim().split(",");
-                var newData = new Array();
-                $(owner).each(function (i, c) {
-                    newData.push(c);
+    $.ajax({
+        url: contextPath + "/api/common/getAllUser",
+        success: function (data) {
+            if (data.code == 1000) {
+                var userData = new Array();
+                $(data.rows).each(function (i, c) {
+                    var item = {};
+                    item["id"] = c.uname;
+                    item["text"] = c.nick;
+                    userData.push(item);
                 });
-                $("#owner").val(newData).trigger("change");
+
+                $("#owner").select2({
+                    data: userData,
+                    width: '100%'
+                });
+
+                if (null != app && '' != app.owner) {
+                    var owner = app.owner.trim().split(",");
+                    var newData = new Array();
+                    $(owner).each(function (i, c) {
+                        newData.push(c);
+                    });
+                    $("#owner").val(newData).trigger("change");
+                }
             }
-        }
-        else {
-            new PNotify({
-                title: '获取内网用户信息',
-                text: data.msg,
-                type: 'error',
-                icon: true,
-                styling: 'bootstrap3'
-            });
+            else {
+                new PNotify({
+                    title: '获取内网用户信息',
+                    text: data.msg,
+                    type: 'error',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化用户列表', msg);
         }
     })
-
-
 }
 
 //初始化workerGroup
 function initAppWorkerGroup() {
-    $.getJSON(contextPath + "/api/workerGroup/getAllWorkerGroup", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c.id;
-            item["text"] = c.name;
-            newData.push(item);
-        });
+    $.ajax({
+        url: contextPath + "/api/workerGroup/getAllWorkerGroup",
+        success: function (data) {
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c.id;
+                item["text"] = c.name;
+                newData.push(item);
+            });
 
-        $("#workerGroup").select2({
-            data: newData,
-            width: '100%'
-        });
-
-        resetWorkGroupData(true);
+            $("#workerGroup").select2({
+                data: newData,
+                width: '100%'
+            });
+            resetWorkGroupData(true);
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化workerGroup列表', msg);
+        }
     });
 }
 

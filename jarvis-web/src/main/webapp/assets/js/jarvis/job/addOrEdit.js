@@ -25,10 +25,7 @@ $(function () {
     initSearchScriptModal();        //初始化搜索Script模式框
     //initJobScheduleModal();         //初始化任务计划模式框
 
-    //由于后续的参数依赖于job详细信息，所以获取job详细信息禁用ajax请求，改为同步操作
-    $.ajaxSettings.async = false;
     initJobData();
-    $.ajaxSettings.async = true;
 
     //job标签页
     initJobType();              //初始化作业类型
@@ -64,44 +61,54 @@ function formatDateTimePicker() {
 //初始化job数据
 function initJobData() {
     if (null != jobId && '' != jobId) {
-        $.getJSON(contextPath + "/api/job/getById", {jobId: jobId}, function (data) {
-            if (data.code != CONST.MSG_CODE.SUCCESS) {
-                alert("获取job数据出错(jobId=" + jobId + ").\n" + data.msg);
-                jobId = null;
-                return;
-            }
+        $.ajax({
+            url:contextPath+'/api/job/getById',
+            data:{jobId: jobId},
+            async:false,
+            success:function(data){
+                if (data.code != CONST.MSG_CODE.SUCCESS) {
+                    alert("获取job数据出错(jobId=" + jobId + ").\n" + data.msg);
+                    jobId = null;
+                    return;
+                }
 
-            job = data.data;
-            $("#jobName").val(job.jobName);
-            $("#department").val(job.department);
-            var startDate = job.activeStartDate;
-            if (startDate != null && startDate != CONST.JOB_ACTIVE_DATE.MIN_DATE) {
-                $("#activeStartDate").val(moment(startDate).format("YYYY-MM-DD"));
-            }
-            var endDate = job.activeEndDate;
-            if (endDate != null && endDate != CONST.JOB_ACTIVE_DATE.MAX_DATE) {
-                $("#activeEndDate").val(moment(endDate).format("YYYY-MM-DD"));
-            }
+                job = data.data;
+                $("#jobName").val(job.jobName);
+                $("#department").val(job.department);
+                var startDate = job.activeStartDate;
+                if (startDate != null && startDate != CONST.JOB_ACTIVE_DATE.MIN_DATE) {
+                    $("#activeStartDate").val(moment(startDate).format("YYYY-MM-DD"));
+                }
+                var endDate = job.activeEndDate;
+                if (endDate != null && endDate != CONST.JOB_ACTIVE_DATE.MAX_DATE) {
+                    $("#activeEndDate").val(moment(endDate).format("YYYY-MM-DD"));
+                }
 
-            if (job.contentType == CONST.CONTENT_TYPE.SCRIPT) {
-                $("#scriptId").val(job.scriptId);
-                $("#scriptTitle").val(job.scriptTitle);
-                $("#jobContent").val(job.scriptContent);
-            } else {
-                $("#jobContent").val(job.content);
-            }
-            jobContentBuffer[job.contentType] = $("#jobContent").val();
+                if (job.contentType == CONST.CONTENT_TYPE.SCRIPT) {
+                    $("#scriptId").val(job.scriptId);
+                    $("#scriptTitle").val(job.scriptTitle);
+                    $("#jobContent").val(job.scriptContent);
+                } else {
+                    $("#jobContent").val(job.content);
+                }
+                jobContentBuffer[job.contentType] = $("#jobContent").val();
 
-            $("#expression").val(job.expression);
-            $("#failedAttempts").val(job.failedAttempts);
-            $("#failedInterval").val(job.failedInterval);
+                $("#expression").val(job.expression);
+                $("#failedAttempts").val(job.failedAttempts);
+                $("#failedInterval").val(job.failedInterval);
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '获取任务信息', msg);
+            }
         })
+
     }
 }
 
 //初始化-job类型
 function initJobType() {
-    console.log("initJobType");
+    //console.log("initJobType");
     var newData = [];
     var object = CONST.JOB_TYPE;
     for (var prop in object) {
@@ -264,114 +271,146 @@ function initJobParams() {
 
 //初始化-job权重
 function initJobPriority() {
-    $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            if (this.id != 'all') {
-                newData.push(this);
+    $.ajax({
+        url:contextPath + "/assets/json/jobPriority.json",
+        success:function(data){
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                if (this.id != 'all') {
+                    newData.push(this);
+                }
+            });
+            $("#priority").select2({
+                data: newData,
+                width: '100%'
+            });
+            if (null != job) {
+                $("#priority").val(job.priority).trigger("change");
             }
-        });
-        $("#priority").select2({
-            data: newData,
-            width: '100%'
-        });
-        if (null != job) {
-            $("#priority").val(job.priority).trigger("change");
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化权重信息', msg);
         }
-    });
+    })
+
 }
 
 //初始化-表达式类型
 function initExpressionType() {
-    $.getJSON(contextPath + "/api/job/getExpressionType", function (data) {
-        var newData = new Array();
-        var no = {};
-        no["id"] = "no";
-        no["text"] = "无";
-        newData.push(no);
+    $.ajax({
+        url:contextPath + "/api/job/getExpressionType",
+        success:function(data){
+            var newData = new Array();
+            var no = {};
+            no["id"] = "no";
+            no["text"] = "无";
+            newData.push(no);
 
-        $(data).each(function (i, c) {
-            newData.push(c);
-        });
+            $(data).each(function (i, c) {
+                newData.push(c);
+            });
 
-        $("#expressionType").select2({
-            data: newData,
-            width: '100%'
-        });
+            $("#expressionType").select2({
+                data: newData,
+                width: '100%'
+            });
 
-        $("#expressionType").on("select2:select", function (e) {
-            if ("no" == $("#expressionType").val()) {
-                $("#expression").val("");
-                $("#expression").attr("disabled", "disabled");
+            $("#expressionType").on("select2:select", function (e) {
+                if ("no" == $("#expressionType").val()) {
+                    $("#expression").val("");
+                    $("#expression").attr("disabled", "disabled");
+                }
+                else {
+                    $("#expression").removeAttr("disabled");
+                    $("#expression").val("");
+                }
+            })
+            if (job != null) {
+                expressionId = job.expressionId;
+                if (expressionId == null) {
+                    $("#expressionType").val("no").trigger("change");
+                    //$("#expression").attr("disabled", "disabled");
+                }
+                else {
+                    $("#expressionType").val(job.expressionType).trigger("change");
+                }
             }
-            else {
-                $("#expression").removeAttr("disabled");
-                $("#expression").val("");
-            }
-        })
-        if (job != null) {
-            expressionId = job.expressionId;
-            if (expressionId == null) {
-                $("#expressionType").val("no").trigger("change");
-                //$("#expression").attr("disabled", "disabled");
-            }
-            else {
-                $("#expressionType").val(job.expressionType).trigger("change");
-            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化表达式类型', msg);
         }
-    });
+    })
+
 }
 
 
 //初始化-业务类型
 function initBizGroupName() {
-    $.getJSON(contextPath + "/api/bizGroup/getAllByCondition", {status: 1}, function (data) {
-        if (data.code == 1000) {
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getAllByCondition",
+        data:{status: 1},
+        success:function(data){
+            if (data.code == 1000) {
+                var newData = new Array();
+                $(data.data).each(function (i, c) {
+                    var item = {};
+                    item["id"] = c.id;
+                    item["text"] = c.name;
+                    newData.push(item);
+                });
+
+                $("#bizGroups").select2({
+                    data: newData,
+                    width: '100%'
+                });
+                if (job != null && job.bizGroups != "") {
+                    $("#bizGroups").val(job.bizGroups.split(",")).trigger("change");
+                }
+            }
+            else {
+                new PNotify({
+                    title: '获取业务标签类型',
+                    text: data.msg,
+                    type: 'error',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化业务组信息', msg);
+        }
+    });
+}
+
+//初始化-WorkerGroup
+function initWorkerGroup() {
+    $.ajax({
+        url:contextPath + "/api/workerGroup/getByAppId",
+        data:{appId: appId},
+        success:function(data){
             var newData = new Array();
-            $(data.data).each(function (i, c) {
+            $(data.rows).each(function (i, c) {
                 var item = {};
                 item["id"] = c.id;
                 item["text"] = c.name;
                 newData.push(item);
             });
-
-            $("#bizGroups").select2({
+            $("#workerGroupId").select2({
                 data: newData,
                 width: '100%'
             });
-            if (job != null && job.bizGroups != "") {
-                $("#bizGroups").val(job.bizGroups.split(",")).trigger("change");
+
+            if (null != job) {
+                $("#workerGroupId").val(job.workerGroupId).trigger("change");
             }
-        }
-        else {
-            new PNotify({
-                title: '获取业务标签类型',
-                text: data.msg,
-                type: 'error',
-                icon: true,
-                styling: 'bootstrap3'
-            });
-        }
-    })
-}
-
-//初始化-WorkerGroup
-function initWorkerGroup() {
-    $.getJSON(contextPath + "/api/workerGroup/getByAppId", {appId: appId}, function (data) {
-        var newData = new Array();
-        $(data.rows).each(function (i, c) {
-            var item = {};
-            item["id"] = c.id;
-            item["text"] = c.name;
-            newData.push(item);
-        });
-        $("#workerGroupId").select2({
-            data: newData,
-            width: '100%'
-        });
-
-        if (null != job) {
-            $("#workerGroupId").val(job.workerGroupId).trigger("change");
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化workerGroup', msg);
         }
     })
 }
@@ -740,19 +779,25 @@ function initSearchScriptModal() {
     });
 
     $("#searchScriptList").on("dblclick", "a", function () {
-        $.ajaxSettings.async = false;
-        $.getJSON(contextPath + "/api/script/getScriptById?id=" + $(this).attr("data-id"), function (json) {
-            if (json.code == 1000 && json.data != null) {
-                var script = json.data;
-                $("#scriptId").val(script.id);
-                $("#scriptTitle").val(script.title);
-                $("#jobContent").val(script.content);
-                $("#searchScriptModal").modal("hide");
-            } else {
-                alert(json.msg);
+        $.ajax({
+            url:contextPath + "/api/script/getScriptById?id=" + $(this).attr("data-id"),
+            async:false,
+            success:function(data){
+                if (json.code == 1000 && json.data != null) {
+                    var script = json.data;
+                    $("#scriptId").val(script.id);
+                    $("#scriptTitle").val(script.title);
+                    $("#jobContent").val(script.content);
+                    $("#searchScriptModal").modal("hide");
+                } else {
+                    alert(json.msg);
+                }
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '初始化脚本', msg);
             }
         })
-        $.ajaxSettings.async = true;
     });
 
 }
@@ -969,19 +1014,26 @@ function showJobScheduleModal() {
 
 //初始化通用策略
 function initCommonStrategy() {
-    $.getJSON(contextPath + "/api/job/getCommonStrategy", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            if (this.id != 'all') {
-                newData.push(this);
-            }
-        });
-        $(newData).each(function (i, c) {
-            var option = $("<option></option>");
-            option.attr("value", c.id);
-            option.text(c.text);
-            $("#strategyPattern select[name=commonStrategy]").append(option);
-        });
+    $.ajax({
+        url:contextPath + "/api/job/getCommonStrategy",
+        success:function(data){
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                if (this.id != 'all') {
+                    newData.push(this);
+                }
+            });
+            $(newData).each(function (i, c) {
+                var option = $("<option></option>");
+                option.attr("value", c.id);
+                option.text(c.text);
+                $("#strategyPattern select[name=commonStrategy]").append(option);
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化通用策略', msg);
+        }
     });
 }
 
@@ -1034,38 +1086,45 @@ function generateStrategy() {
 
 //初始化依赖任务，如果是编辑则初始化已经依赖job
 function initDependJobs() {
-    $.getJSON(contextPath + "/api/job/getAllJobIdAndName", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c.jobId;
-            item["text"] = c.jobName;
-            newData.push(item);
-        });
-        $("#dependJobIds").select2({
-            data: newData,
-            width: '100%'
-        });
-        if (null != jobId && '' != jobId) {
-            $.ajax({
-                url: contextPath + "/api/job/getParentsById",
-                async: false,
-                data: {jobId: jobId},
-                success: function (data) {
-                    var newData = new Array();
-                    $(data.data).each(function (i, c) {
-                        dependJobs[c.jobId] = c;
-                        newData.push(c.jobId);
-                        dependIds.push(c.jobId);
-                    });
+    $.ajax({
+        url:contextPath + "/api/job/getAllJobIdAndName",
+        success:function(data){
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c.jobId;
+                item["text"] = c.jobName;
+                newData.push(item);
+            });
+            $("#dependJobIds").select2({
+                data: newData,
+                width: '100%'
+            });
+            if (null != jobId && '' != jobId) {
+                $.ajax({
+                    url: contextPath + "/api/job/getParentsById",
+                    async: false,
+                    data: {jobId: jobId},
+                    success: function (data) {
+                        var newData = new Array();
+                        $(data.data).each(function (i, c) {
+                            dependJobs[c.jobId] = c;
+                            newData.push(c.jobId);
+                            dependIds.push(c.jobId);
+                        });
 
-                    $("#dependJobIds").val(newData).trigger("change");
-                },
-                error: function (jqXHR, exception) {
-                    var msg = getMsg4ajaxError(jqXHR, exception);
-                    showMsg('warning', '获取父任务', msg);
-                }
-            })
+                        $("#dependJobIds").val(newData).trigger("change");
+                    },
+                    error: function (jqXHR, exception) {
+                        var msg = getMsg4ajaxError(jqXHR, exception);
+                        showMsg('warning', '获取父任务', msg);
+                    }
+                })
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化依赖', msg);
         }
     });
 }
@@ -1265,37 +1324,44 @@ function generateAlarmUsers() {
 
 //初始化报警类型
 function initAlarmType() {
-    $.getJSON(contextPath + "/api/alarm/getAlarmType", function (data) {
-        $(data).each(function (i, c) {
-            var input = $('<input name="alarmType" type="checkbox" value="' + c.id + '" />');
-            $("#alarmType").append(input);
-            $("#alarmType").append(c.text + "&nbsp;&nbsp;");
-        });
-
-        if (null != jobId && '' != jobId) {
-            $.getJSON(contextPath + "/api/alarm/getByJobId", {jobId: jobId}, function (data) {
-                //不存在的时候返回的是null,所以需要排除
-                if (data.data.jobId != null) {
-                    var alarmType = data.data.alarmType;
-                    var receiver = data.data.receiver;
-                    var alarmTypes = alarmType.split(",");
-                    var status = data.data.status;
-
-                    $("#alarmStatus input[value=" + status + "]").click();
-
-                    var inputs = $("#alarmType input[name=alarmType]");
-                    $(inputs).each(function (i, c) {
-                        $(alarmTypes).each(function (innerIndex, innerContent) {
-                            if ($(c).val() == innerContent) {
-                                $(c).click();
-                                return false;
-                            }
-                        });
-                    });
-
-                    $("#alarm").val(stringToArr(receiver)).trigger("change");
-                }
+    $.ajax({
+        url:contextPath + "/api/alarm/getAlarmType",
+        success:function(data){
+            $(data).each(function (i, c) {
+                var input = $('<input name="alarmType" type="checkbox" value="' + c.id + '" />');
+                $("#alarmType").append(input);
+                $("#alarmType").append(c.text + "&nbsp;&nbsp;");
             });
+
+            if (null != jobId && '' != jobId) {
+                $.getJSON(contextPath + "/api/alarm/getByJobId", {jobId: jobId}, function (data) {
+                    //不存在的时候返回的是null,所以需要排除
+                    if (data.data.jobId != null) {
+                        var alarmType = data.data.alarmType;
+                        var receiver = data.data.receiver;
+                        var alarmTypes = alarmType.split(",");
+                        var status = data.data.status;
+
+                        $("#alarmStatus input[value=" + status + "]").click();
+
+                        var inputs = $("#alarmType input[name=alarmType]");
+                        $(inputs).each(function (i, c) {
+                            $(alarmTypes).each(function (innerIndex, innerContent) {
+                                if ($(c).val() == innerContent) {
+                                    $(c).click();
+                                    return false;
+                                }
+                            });
+                        });
+
+                        $("#alarm").val(stringToArr(receiver)).trigger("change");
+                    }
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化报警类型', msg);
         }
     });
 }

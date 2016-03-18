@@ -34,8 +34,8 @@
                     #{priority}
                 </foreach>
             </if>
-            <if test="executeUserList!=null and executeUserList!=''">
-                AND executeUser IN
+            <if test="executeUserList!=null and executeUserList.size()>0">
+                AND submitUser IN
                 <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
                     #{executeUser}
                 </foreach>
@@ -60,41 +60,21 @@
     </sql>
 
     <select id="getPlanCountByCondition" parameterType="PlanQo" resultType="Integer">
-        SELECT COUNT(1) FROM(
-        SELECT
-        t.jobId,
-        t.scheduleTime,
-        t.status,
-        t.executeUser,
-        job.jobName,
-        job.jobType,
-        job.priority,
-        job.appId,
-        job.workerGroupId,
-        job.bizGroups,
-        job.createTime,
-        job.updateTime
-        FROM
-        (
-        SELECT jobId,scheduleTime,status,executeUser FROM task
-        <if test="unInitial!=null and unInitial==true">
-            UNION SELECT plan.jobId,plan.planTime as scheduleTime,NULL AS status,job.submitUser AS executeUser FROM plan
-              LEFT JOIN job ON plan.jobId=job.jobId
-        </if>)t LEFT JOIN job ON t.jobId=job.jobId)t
-
+        SELECT COUNT(1)
+          FROM plan LEFT JOIN job ON plan.jobId=job.jobId
+            LEFT JOIN app ON job.appId = app.appId
+              LEFT JOIN worker_group on job.workerGroupId = worker_group.id
         <include refid="planCondition"/>
     </select>
 
     <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
-        SELECT * FROM (
         SELECT
-        t.jobId,
-        t.status,
-        t.executeUser,
-        t.scheduleTime,
+        plan.jobId,
+        plan.planTime as scheduleTime,
         job.jobName,
         job.jobType,
         job.priority,
+        job.submitUser,
         job.appId,
         job.workerGroupId,
         job.bizGroups,
@@ -102,24 +82,16 @@
         job.updateTime,
         app.appName,
         worker_group.name as workerGroupName
-
-        FROM (
-        SELECT jobId,scheduleTime,status,executeUser FROM task
-        <if test="unInitial!=null and unInitial==true">
-            UNION SELECT plan.jobId,plan.planTime as scheduleTime,NULL AS status,job.submitUser AS executeUser FROM plan
-            LEFT JOIN job ON plan.jobId=job.jobId
-        </if>)t
-        LEFT JOIN job ON t.jobId=job.jobId
+        FROM plan LEFT JOIN job ON plan.jobId=job.jobId
         LEFT JOIN app ON job.appId = app.appId
         LEFT JOIN worker_group on job.workerGroupId = worker_group.id
-        )t
         <include refid="planCondition"/>
         <choose>
             <when test="sort!=null and sort!='' and order!=null and order!=''">
                 ORDER BY ${sort} ${order}
             </when>
             <otherwise>
-                ORDER BY scheduleTime DESC
+                ORDER BY scheduleTime ASC
             </otherwise>
         </choose>
 

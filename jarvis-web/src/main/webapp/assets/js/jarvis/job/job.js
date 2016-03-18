@@ -2,42 +2,67 @@ var jobTypeJson = null;
 var jobStatus = null;
 var jobPriority = {};
 var bizGroup = {};
+
 $(function () {
+
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
 
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
-        jobTypeJson = data;
-        $("#jobType").select2({
-            data: data,
-            width: '100%',
-            tags: true
-        });
+    $.ajax({
+        url:contextPath + "/assets/json/jobType.json",
+        async:false,
+        success:function(data){
+            jobTypeJson = data;
+            $("#jobType").select2({
+                data: data,
+                width: '100%',
+                tags: true
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务类型', msg);
+        }
     });
 
-    $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
-        jobStatus = data;
-        $("#jobStatus").select2({
-            data: data,
-            width: '100%'
-        });
-    });
+    $.ajax({
+        url:contextPath + "/api/job/getJobStatus",
+        async:false,
+        success:function(data){
+            jobStatus = data;
+            $("#jobStatus").select2({
+                data: data,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务状态信息', msg);
+        }
+    })
 
-    $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
-        $(data).each(function (i, c) {
-            var key = c.id;
-            var text = c.text;
-            jobPriority[key] = text;
-        });
+    $.ajax({
+        url:contextPath + "/assets/json/jobPriority.json",
+        async:false,
+        success:function(data){
+            $(data).each(function (i, c) {
+                var key = c.id;
+                var text = c.text;
+                jobPriority[key] = text;
+            });
 
 
-        $("#jobPriority").select2({
-            data: data,
-            width: '100%'
-        });
-    });
-    $.ajaxSettings.async = true;
+            $("#jobPriority").select2({
+                data: data,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务优先级信息', msg);
+        }
+    })
+
     getBizGroup();
     initSubmitUser();
     initApp();
@@ -55,9 +80,17 @@ $(function () {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务Id',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -83,9 +116,17 @@ $(function () {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务名',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -105,51 +146,75 @@ $(function () {
 
 
 function initSubmitUser() {
-    $.getJSON(contextPath + "/api/job/getSubmitUsers", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c;
-            item["text"] = c;
-            newData.push(item);
-        });
-        $("#submitUser").select2({
-            data: newData,
-            width: '100%'
-        });
-    });
+    $.ajax({
+        url:contextPath + "/api/job/getSubmitUsers",
+        success:function(data){
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
+            $("#submitUser").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化提交用户', msg);
+        }
+    })
+
 }
 
 function initApp() {
-    $.getJSON(contextPath + "/api/app/getApps", function (data) {
-        var newData = new Array();
-        $(data.rows).each(function (i, c) {
-            var item = {};
-            item["id"] = c.appId;
-            item["text"] = c.appName;
-            newData.push(item);
-        });
-        $("#appId").select2({
-            data: newData,
-            width: '100%'
-        });
-    });
+    $.ajax({
+        url:contextPath + "/api/app/getApps",
+        success:function(data){
+            var newData = new Array();
+            $(data.rows).each(function (i, c) {
+                var item = {};
+                item["id"] = c.appId;
+                item["text"] = c.appName;
+                newData.push(item);
+            });
+            $("#appId").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取应用列表', msg);
+        }
+    })
+
 }
 
 function initWorkerGroup() {
-    $.getJSON(contextPath + "/api/workerGroup/getAllWorkerGroup", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c.id;
-            item["text"] = c.name;
-            newData.push(item);
-        });
-        $("#workerGroupId").select2({
-            data: newData,
-            width: '100%'
-        });
-    });
+    $.ajax({
+        url:contextPath + "/api/workerGroup/getAllWorkerGroup",
+        success:function(data){
+            var newData = new Array();
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c.id;
+                item["text"] = c.name;
+                newData.push(item);
+            });
+            $("#workerGroupId").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取workerGroup列表', msg);
+        }
+    })
+
 }
 
 //查找
@@ -214,13 +279,19 @@ function getQueryPara() {
 }
 
 function getBizGroup() {
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/bizGroup/getAllByCondition", function (data) {
-        $(data.data).each(function (i, c) {
-            bizGroup[c.id] = c.name;
-        });
-    });
-    $.ajaxSettings.async = true;
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getAllByCondition",
+        async:false,
+        success:function(data){
+            $(data.data).each(function (i, c) {
+                bizGroup[c.id] = c.name;
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取业务组列表', msg);
+        }
+    })
 }
 
 //初始化数据及分页
@@ -238,6 +309,15 @@ function initData() {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化任务列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,
@@ -396,16 +476,22 @@ function appNameFormatter(value, row, index) {
 function jobPriorityFormatter(value, row, index) {
     var text = jobPriority[value];
     if (text == null) {
-        $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
-            $(data).each(function (i, c) {
-                var key = c.id;
-                if (value == key) {
-                    text = c.text;
-                    return false;
-                }
-            });
-
-        });
+        $.ajax({
+            url:contextPath + "/assets/json/jobPriority.json",
+            success:function(data){
+                $(data).each(function (i, c) {
+                    var key = c.id;
+                    if (value == key) {
+                        text = c.text;
+                        return false;
+                    }
+                });
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '初始化优先级信息', msg);
+            }
+        })
     }
 
     return text;
@@ -423,13 +509,7 @@ function operateFormatter(value, row, index) {
 
 
     var result = [
-        '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-vertical"></i>依赖',
-        '</a>  ',
-        '<a  href="' + contextPath + '/job/detail?jobId=' + jobId + '" title="查看任务详情" target="_blank">',
-        '<i class="glyphicon glyphicon-list-alt"></i>详情',
-        '</a>  '
-    ].join('');
+        ].join('');
 
     if (appId == jobAppId) {
         var edit = [

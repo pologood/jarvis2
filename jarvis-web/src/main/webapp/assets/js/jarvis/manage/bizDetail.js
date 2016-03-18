@@ -8,75 +8,97 @@ $(function () {
 
 //初始化业务标签
 function initBizGroup() {
-    $.ajaxSettings.async = false;
     if (null != id && '' != id) {
-        $.getJSON(contextPath + "/api/bizGroup/getById", {id: id}, function (data) {
-            if (data.code == 1000) {
-                bizGroup = data.data;
-                $("#name").val(bizGroup.name);
+        $.ajax({
+            url:contextPath + "/api/bizGroup/getById",
+            data:{id: id},
+            async:false,
+            success:function(data){
+                if (data.code == 1000) {
+                    bizGroup = data.data;
+                    $("#name").val(bizGroup.name);
+                }
+                else {
+                    new PNotify({
+                        title: '获取业务标签详情',
+                        text: data.msg,
+                        type: 'warning',
+                        icon: true,
+                        styling: 'bootstrap3'
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '获取业务组信息', msg);
             }
-            else {
-                new PNotify({
-                    title: '获取业务标签详情',
-                    text: data.msg,
-                    type: 'warning',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
-            }
-        });
+        })
     }
-    $.ajaxSettings.async = true;
 
 }
 
 //初始化内网用户
 function initUsers() {
-    $.getJSON(contextPath + "/api/common/getAllUser", function (data) {
-        if (1000 == data.code) {
-            var users = data.rows;
-            var newData = new Array();
+    $.ajax({
+        url:contextPath + "/api/common/getAllUser",
+        success:function(data){
+            if (1000 == data.code) {
+                var users = data.rows;
+                var newData = new Array();
 
-            $(users).each(function (i, c) {
-                var item = {};
-                item["id"] = c.uname;
-                item["text"] = c.nick;
-                newData.push(item);
-            });
+                $(users).each(function (i, c) {
+                    var item = {};
+                    item["id"] = c.uname;
+                    item["text"] = c.nick;
+                    newData.push(item);
+                });
 
-            $("#owner").select2({
-                data: newData,
-                width: '100%'
-            });
-            if (null != bizGroup) {
-                var owner = bizGroup.owner;
-                var arr = owner.trim().split(",");
-                $("#owner").val(arr).trigger("change");
+                $("#owner").select2({
+                    data: newData,
+                    width: '100%'
+                });
+                if (null != bizGroup) {
+                    var owner = bizGroup.owner;
+                    var arr = owner.trim().split(",");
+                    $("#owner").val(arr).trigger("change");
+                }
             }
-        }
-        else {
-            new PNotify({
-                title: '获取内网用户信息',
-                text: data.msg,
-                type: 'error',
-                icon: true,
-                styling: 'bootstrap3'
-            });
+            else {
+                new PNotify({
+                    title: '获取内网用户信息',
+                    text: data.msg,
+                    type: 'error',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化用户列表', msg);
         }
     })
+
 }
 //
 function initStatus() {
-    $.getJSON(contextPath + "/api/bizGroup/getBizGroupStatus", function (data) {
-        $(data).each(function (i, c) {
-            var input = '<input type="radio" name="status" value="' + c.id + '" />' + c.text + " ";
-            $("#status").append(input);
-        });
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getBizGroupStatus",
+        success:function(data){
+            $(data).each(function (i, c) {
+                var input = '<input type="radio" name="status" value="' + c.id + '" />' + c.text + " ";
+                $("#status").append(input);
+            });
 
-        if (null != bizGroup) {
-            $("#status input[value=" + bizGroup.status + "]").click();
+            if (null != bizGroup) {
+                $("#status input[value=" + bizGroup.status + "]").click();
+            }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化业务组状态', msg);
         }
-    });
+    })
 }
 
 
@@ -97,26 +119,34 @@ function getData() {
         return null;
     }
     var hasName = false;
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/bizGroup/getByName", {name: name}, function (data) {
-        if (null == data.data) {
-            hasName = true;
-        }
-        else {
-            if (null == id || '' == id) {
-                hasName = false;
+
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getByName",
+        data:{name: name},
+        async:false,
+        success:function(data){
+            if (null == data.data) {
+                hasName = true;
             }
             else {
-                if (id == data.data.id) {
-                    hasName = true;
-                }
-                else {
+                if (null == id || '' == id) {
                     hasName = false;
                 }
+                else {
+                    if (id == data.data.id) {
+                        hasName = true;
+                    }
+                    else {
+                        hasName = false;
+                    }
+                }
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '检查业务名称', msg);
         }
-    });
-    $.ajaxSettings.async = true;
+    })
 
     if (!hasName) {
         new PNotify({

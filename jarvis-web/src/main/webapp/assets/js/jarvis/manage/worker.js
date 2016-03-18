@@ -76,10 +76,9 @@ var workerColumns = [{
 function getHeartbeatInfo() {
     workerPage.heartbeatInfo = {};
 
-    $.ajaxSettings.async = false;
-    var response = requestRemoteRestApi("/api/worker/heartbeat/get", "获取worker在线状态", {});
+
+    var response = requestRemoteRestApi("/api/worker/heartbeat/get", "获取worker在线状态", {},false);
     var list = response.flag == true ? response.data.data.list : [];
-    $.ajaxSettings.async = true;
 
     if (list.length == 0) {
         return;
@@ -211,6 +210,15 @@ function initWorkerData() {
             }
             return params;
         },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化Worker列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
+        },
         showColumns: true,
         showHeader: true,
         showToggle: true,
@@ -307,6 +315,15 @@ function initWorkerGroupData() {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化workerGroup列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,

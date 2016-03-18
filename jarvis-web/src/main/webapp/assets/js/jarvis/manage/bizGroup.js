@@ -9,71 +9,92 @@ $(function () {
 
 //初始化标签名
 function initName() {
-    $.getJSON(contextPath + "/api/bizGroup/getBizGroupName", function (data) {
-        var newData = new Array();
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getBizGroupName",
+        success:function(data){
+            var newData = new Array();
 
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
 
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c;
-            item["text"] = c;
-            newData.push(item);
-        });
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
 
-        $("#name").select2({
-            data: newData,
-            width: '100%'
-        });
+            $("#name").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化业务组信息', msg);
+        }
     })
 }
 //初始化标签状态
 function initStatus() {
-    $.getJSON(contextPath + "/api/bizGroup/getBizGroupStatus", function (data) {
-        var newData = new Array();
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getBizGroupStatus",
+        success:function(data){
+            var newData = new Array();
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
 
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c.id;
-            item["text"] = c.text;
-            newData.push(item);
-            bizGroupStatus[c.id] = c.text;
-        });
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c.id;
+                item["text"] = c.text;
+                newData.push(item);
+                bizGroupStatus[c.id] = c.text;
+            });
 
-        $("#status").select2({
-            data: newData,
-            width: '100%'
-        });
-    });
+            $("#status").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化业务组状态', msg);
+        }
+    })
 }
 //初始化维护人
 function initOwner() {
-    $.getJSON(contextPath + "/api/bizGroup/getBizGroupOwner", function (data) {
-        var newData = new Array();
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
+    $.ajax({
+        url:contextPath + "/api/bizGroup/getBizGroupOwner",
+        success:function(data){
+            var newData = new Array();
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
 
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c;
-            item["text"] = c;
-            newData.push(item);
-        });
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
 
-        $("#owner").select2({
-            data: newData,
-            width: '100%'
-        });
-    });
+            $("#owner").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化维护人', msg);
+        }
+    })
 }
 //搜索
 function search() {
@@ -121,6 +142,15 @@ function initData() {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化业务组列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,

@@ -14,30 +14,44 @@ $(function () {
 
 function initJobType() {
     //初始化作业类型内容
-    $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
-        $("#jobType").select2({
-            data: data,
-            width: '100%',
-            tags: true
-        });
-    });
+    $.ajax({
+        url:contextPath + "/assets/json/jobType.json",
+        success:function(data){
+            $("#jobType").select2({
+                data: data,
+                width: '100%',
+                tags: true
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务类型', msg);
+        }
+    })
 }
 function initJobPriority() {
     //初始化权重
-    $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
+    $.ajax({
+        url:contextPath + "/assets/json/jobPriority.json",
+        success:function(data){
+            $(data).each(function (i, c) {
+                var key = c.id;
+                var value = c.text;
+                if (key != 'all') {
+                    priority[key] = value;
+                }
+            });
+            $("#priority").select2({
+                data: data,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务权重', msg);
+        }
+    })
 
-        $(data).each(function (i, c) {
-            var key = c.id;
-            var value = c.text;
-            if (key != 'all') {
-                priority[key] = value;
-            }
-        });
-        $("#priority").select2({
-            data: data,
-            width: '100%'
-        });
-    });
 }
 
 function initJobId() {
@@ -53,9 +67,17 @@ function initJobId() {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务Id',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -83,9 +105,17 @@ function initJobName() {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务名',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -101,23 +131,30 @@ function initJobName() {
 }
 
 function initExecuteUser() {
-    $.getJSON(contextPath + "/api/common/getExecuteUsers", function (data) {
-        var newData = [];
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
+    $.ajax({
+        url:contextPath + "/api/common/getExecuteUsers",
+        success:function(data){
+            var newData = [];
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
 
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c;
-            item["text"] = c;
-            newData.push(item);
-        });
-        $("#executeUser").select2({
-            data: newData,
-            width: '100%'
-        });
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
+            $("#executeUser").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行用户', msg);
+        }
     })
 }
 
@@ -208,7 +245,7 @@ function getQueryPara() {
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["priorityList"] = JSON.stringify(priorityList);
-    queryPara["taskStatusList"] = JSON.stringify(taskStatusList);
+    //queryPara["taskStatusList"] = JSON.stringify(taskStatusList);
 
     return queryPara;
 }
@@ -229,6 +266,15 @@ function initData() {
             }
             return params;
         },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化计划列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
+        },
         showColumns: true,
         showHeader: true,
         showToggle: true,
@@ -242,10 +288,7 @@ function initData() {
         showExport: true,
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
         exportDataType: 'basic',
-        exportOptions: {},
-        onLoadError:function(res){
-            console.log(res);
-        }
+        exportOptions: {}
     });
 }
 
@@ -294,14 +337,14 @@ var columns = [{
     visible: true
 }, {
     field: 'priority',
-    title: '任务优先级',
+    title: '优先级',
     sortable: true,
     switchable: true,
     visible: true,
     formatter: priorityFormatter
 }, {
-    field: 'executeUser',
-    title: '执行用户',
+    field: 'submitUser',
+    title: '提交用户',
     sortable: true,
     switchable: true,
     visible: true
@@ -330,12 +373,6 @@ var columns = [{
     switchable: true,
     formatter: formatTimeInterval,
     visible: true
-}, {
-    field: 'taskStatus',
-    title: '当前状态',
-    switchable: true,
-    visible: true,
-    formatter: taskStatusFormatter
 }, {
     field: 'createTime',
     title: '创建时间',
@@ -373,14 +410,22 @@ function appFormatter(value, row, index){
 function priorityFormatter(value, row, index) {
     var text = priority[value];
     if (null == text) {
-        $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
-            $(data).each(function (i, c) {
-                if (c.key == value) {
-                    text = c.text;
-                    return false;
-                }
-            });
-        });
+        $.ajax({
+            url:contextPath + "/assets/json/jobPriority.json",
+            async:false,
+            success:function(data){
+                $(data).each(function (i, c) {
+                    if (c.key == value) {
+                        text = c.text;
+                        return false;
+                    }
+                });
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '格式化优先级信息', msg);
+            }
+        })
     }
     return text;
 }

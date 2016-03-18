@@ -76,8 +76,7 @@
                         <td><fmt:formatDate value="${taskVo.scheduleTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <td class=" bg-warning">执行进度</td>
-                        <td><fmt:formatNumber type="number" value="${taskVo.progress*100}"
-                                              maxIntegerDigits="2"></fmt:formatNumber>%
+                        <td><fmt:formatNumber type="percent" value="${taskVo.progress}"></fmt:formatNumber>
                         </td>
                         <td class=" bg-warning">最近30次平均耗时(秒)</td>
                         <td>${taskVo.avgExecuteTime}</td>

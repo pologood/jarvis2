@@ -9,70 +9,100 @@ $(function () {
     createDatetimePickerById("endDate");
 
     //初始化作业类型内容
-    $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
-        $("#jobType").select2({
-            data: data,
-            width: '100%',
-            tags: true
-        });
-    });
+    $.ajax({
+        url:contextPath + "/assets/json/jobType.json",
+        success:function(data){
+            $("#jobType").select2({
+                data: data,
+                width: '100%',
+                tags: true
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务类型', msg);
+        }
+    })
+
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/task/getTaskStatus", function (data) {
-        taskStatusJson = data;
 
-        var newData = new Array();
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
-        $(data).each(function (i, c) {
-            if(c.id!=0){
-                var item = {};
-                item["id"] = c["id"];
-                item["text"] = c["text"];
-                newData.push(item);
-            }
+    $.ajax({
+        url:contextPath + "/api/task/getTaskStatus",
+        async:false,
+        success:function(data){
+            taskStatusJson = data;
 
-        });
+            var newData = new Array();
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
+            $(data).each(function (i, c) {
+                if(c.id!=0){
+                    var item = {};
+                    item["id"] = c["id"];
+                    item["text"] = c["text"];
+                    newData.push(item);
+                }
 
-        $(newData).each(function (index, content) {
-            var value = content.id;
-            var text = content.text;
-            var input = $("<input type='checkbox' name='taskStatus'/>");
-            $(input).attr("value", value);
+            });
 
-            if (value == 'all') {
-                $(input).click(function () {
-                    if (this.checked) {
-                        $($("#taskStatus input")).each(function () {
-                            this.checked = true;
-                        });
-                    }
-                    else {
-                        $($("#taskStatus input")).each(function () {
-                            this.checked = false;
-                        });
-                    }
-                });
-            }
+            $(newData).each(function (index, content) {
+                var value = content.id;
+                var text = content.text;
+                var input = $("<input type='checkbox' name='taskStatus'/>");
+                $(input).attr("value", value);
 
-            $("#taskStatus").append(input);
-            $("#taskStatus").append(text);
-            $("#taskStatus").append('  ');
-        });
+                if (value == 'all') {
+                    $(input).click(function () {
+                        if (this.checked) {
+                            $($("#taskStatus input")).each(function () {
+                                this.checked = true;
+                            });
+                        }
+                        else {
+                            $($("#taskStatus input")).each(function () {
+                                this.checked = false;
+                            });
+                        }
+                    });
+                }
+
+                $("#taskStatus").append(input);
+                $("#taskStatus").append(text);
+                $("#taskStatus").append('  ');
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行状态', msg);
+        }
     });
-
     //初始化颜色
-    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
-        taskStatusColor = data;
+    $.ajax({
+        url:contextPath + "/assets/json/taskStatusColor.json",
+        async:false,
+        success:function(data){
+            taskStatusColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行状态颜色', msg);
+        }
     });
     //初始化操作类型
-    $.getJSON(contextPath + "/assets/json/taskOperation.json", function (data) {
-        taskOperation = data;
-    });
-    $.ajaxSettings.async = true;
+    $.ajax({
+        url:contextPath + "/assets/json/taskOperation.json",
+        async:false,
+        success:function(data){
+            taskOperation = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化操作类型', msg);
+        }
+    })
 
 
     $("#jobId").select2({
@@ -87,9 +117,17 @@ $(function () {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务Id',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -115,9 +153,17 @@ $(function () {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务名',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },
@@ -136,23 +182,30 @@ $(function () {
 });
 
 function initExecuteUser() {
-    $.getJSON(contextPath + "/api/common/getExecuteUsers", function (data) {
-        var newData = [];
-        var all = {};
-        all["id"] = "all";
-        all["text"] = "全部";
-        newData.push(all);
+    $.ajax({
+        url:contextPath + "/api/common/getExecuteUsers",
+        success:function(data){
+            var newData = [];
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
 
-        $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c;
-            item["text"] = c;
-            newData.push(item);
-        });
-        $("#executeUser").select2({
-            data: newData,
-            width: '100%'
-        });
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
+            $("#executeUser").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化执行用户列表', msg);
+        }
     })
 }
 
@@ -256,6 +309,14 @@ function initData() {
                 params[key] = value;
             }
             return params;
+        },responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化执行列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,
@@ -525,6 +586,14 @@ function showTaskHistory(taskId) {
                 params[key] = value;
             }
             return params;
+        },responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化执行历史列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,
