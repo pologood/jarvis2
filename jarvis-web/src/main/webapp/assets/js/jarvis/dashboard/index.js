@@ -30,6 +30,15 @@ var dashBoard = {
                 }
                 return params;
             },
+            responseHandler:function(res){
+                if(res.status){
+                    showMsg("error","初始化计划列表",res.status.msg);
+                    return res;
+                }
+                else{
+                    return res;
+                }
+            },
             showColumns: true,
             showHeader: true,
             showToggle: true,
@@ -77,6 +86,15 @@ function expandTable($detail, jobId) {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化计划列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,

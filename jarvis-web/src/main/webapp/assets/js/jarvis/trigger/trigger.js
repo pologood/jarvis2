@@ -27,9 +27,17 @@ $(function () {
                 };
             },
             processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
+                if(data.status){
+                    showMsg('error','模糊查询任务名',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
             },
             cache: true
         },

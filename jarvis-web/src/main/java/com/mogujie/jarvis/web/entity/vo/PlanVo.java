@@ -13,7 +13,7 @@ public class PlanVo extends Plan {
 
     private String jobName;
     private String jobType;
-    private String executeUser;
+    private String submitUser;
     private Integer priority;
     private Integer appId;
     private String appName;
@@ -47,13 +47,12 @@ public class PlanVo extends Plan {
         return this;
     }
 
-    public String getExecuteUser() {
-        return executeUser;
+    public String getSubmitUser() {
+        return submitUser;
     }
 
-    public PlanVo setExecuteUser(String executeUser) {
-        this.executeUser = executeUser;
-        return this;
+    public void setSubmitUser(String submitUser) {
+        this.submitUser = submitUser;
     }
 
     public Integer getPriority() {

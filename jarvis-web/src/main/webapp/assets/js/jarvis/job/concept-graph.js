@@ -1,14 +1,17 @@
 //初始化对象
-var CollapsibleTree = function (elt, w, h) {
+var CollapsibleTree = function (elt, w, h, initY) {
     //属性
     var m = [20, 120, 20, 120],
-        w = 1140,
-        h = 500,
+        w = w,
+        h = h,
+        initY = initY,
         i = 0,
         root,
-        root2,
         childrenDepth = 0,
-        parentsDepth = 0;
+        parentsDepth = 0,
+        levelSize = 5,
+        parentLevelIndex = 0,
+        childLevelIndex = 0;
     //初始化树
     var tree = d3.layout.tree()
         //.size([h, w]);
@@ -32,7 +35,7 @@ var CollapsibleTree = function (elt, w, h) {
         .append("g")
         // .attr("transform", "translate(" + m[3] + "," + m[0] + ")"); // left-right
         // .attr("transform", "translate(" + m[0] + "," + m[3] + ")"); // top-bottom
-        .attr("transform", "translate(0," + h / 2 + ")"); // bidirectional-tree
+        .attr("transform", "translate(0," + (initY) + ")"); // bidirectional-tree
 
 
     var that = {
@@ -44,10 +47,10 @@ var CollapsibleTree = function (elt, w, h) {
                 // root.x0 = h / 2;
                 // root.y0 = 0;
                 root.x0 = w / 2;
-                root.y0 = h / 2;
+                root.y0 = initY;
 
                 // Initialize the display to show a few nodes.
-                root.children.forEach(that.toggleAll);
+                //root.children.forEach(that.toggleAll);
                 // that.toggle(root.children[1]);
                 // that.toggle(root.children[1].children[2]);
                 // that.toggle(root.children[9]);
@@ -66,10 +69,61 @@ var CollapsibleTree = function (elt, w, h) {
 
             var nodes = tree.nodes(root).reverse();
 
+            //console.log(nodes);
+
             // Normalize for fixed-depth.
             //根据树的深度设置y轴的值，即进行分层，每层固定
             nodes.forEach(function (d) {
-                var y = d.depth * 120;
+                var y = 0;
+                var x = 0;
+                var interval = (w - 140) / (levelSize-1);
+
+                if (d.parentFlag) {
+                    parentLevelIndex++;
+                    if (root.parents && root.parents.length > levelSize) {
+                        var level = parentLevelIndex % levelSize == 0 ? parentLevelIndex / levelSize : parseInt(parentLevelIndex / levelSize) + 1;
+                        y = level * 120;
+                        var levelIndex = 1;
+                        if (parentLevelIndex % levelSize == 0) {
+                            levelIndex = levelSize;
+                        }
+                        else {
+                            levelIndex = parentLevelIndex % levelSize;
+                        }
+                        var x = (levelIndex-1) * interval + 70;
+                        d.x = x;
+                        //console.log(d.jobName+","+levelIndex % (levelSize + 1) + "," + "x:" + x);
+                    }
+                    else {
+                        y = d.depth * 120;
+                    }
+
+                }
+                else if (d.rootFlag) {
+                }
+                else {
+                    childLevelIndex++;
+                    if (root.children && root.children.length > levelSize) {
+
+                        var level = childLevelIndex % levelSize == 0 ? childLevelIndex / levelSize : parseInt(childLevelIndex / levelSize) + 1;
+                        y = level * 120;
+                        var levelIndex = 1;
+                        if (childLevelIndex % levelSize == 0) {
+                            levelIndex = levelSize;
+                        }
+                        else {
+                            levelIndex = childLevelIndex % levelSize;
+                        }
+
+                        var x = (levelIndex-1) * interval + 70;
+                        d.x = x;
+                        //console.log(d.jobName+","+levelIndex % (levelSize + 1) + ",x:" + x);
+                    }
+                    else {
+                        y = d.depth * 120;
+                    }
+
+                }
                 if (d.y == undefined || d.y == null || d.y > y) {
                     d.y = y;
                 }
@@ -88,9 +142,9 @@ var CollapsibleTree = function (elt, w, h) {
                     return "translate(" + source.x0 + "," + source.y0 + ")";
                 });
 
-            nodeEnter.append("svg:rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeEnter.append("svg:circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6)
                 .style("fill", function (d) {
                     return getColor(d)
@@ -104,7 +158,7 @@ var CollapsibleTree = function (elt, w, h) {
 
             nodeEnter.append("svg:text")
                 // .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-                .attr("x", "20")
+                .attr("x", "60")
                 .attr("y", "30")
                 .attr("dy", ".35em")
                 // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
@@ -142,9 +196,9 @@ var CollapsibleTree = function (elt, w, h) {
                     }
                 });
             //设置圆圈设置半径与颜色
-            nodeUpdate.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeUpdate.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 9)
                 .style("fill", function (d) {
                     //return d._children ? "lightsteelblue" : "#4682B4";
@@ -168,9 +222,9 @@ var CollapsibleTree = function (elt, w, h) {
                 })
                 .remove();
 
-            nodeExit.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeExit.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6);
 
             nodeExit.select("text")
@@ -242,11 +296,13 @@ var CollapsibleTree = function (elt, w, h) {
             var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
             // Compute the new tree layout.
-            var nodes = tree.nodes(root).reverse();
+            var nodes = tree.nodes(source).reverse();
+
+            console.log(nodes);
 
             // Normalize for fixed-depth.
             nodes.forEach(function (d) {
-                d.y = d.depth * 180;
+                d.y = d.depth * 120;
             });
 
             // Update the nodes…
@@ -268,9 +324,9 @@ var CollapsibleTree = function (elt, w, h) {
                     that.updateParents(d);
                 });
 
-            nodeEnter.append("svg:rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeEnter.append("svg:circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6)
                 .style("fill", function (d) {
                     return getColor(d)
@@ -297,9 +353,9 @@ var CollapsibleTree = function (elt, w, h) {
                     return "translate(" + d.x + "," + -d.y + ")";
                 });
 
-            nodeUpdate.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeUpdate.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 4.5)
                 .style("fill", function (d) {
                     return getColor(d)
@@ -317,9 +373,9 @@ var CollapsibleTree = function (elt, w, h) {
                 })
                 .remove();
 
-            nodeExit.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeExit.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6);
 
             nodeExit.select("text")
@@ -366,11 +422,11 @@ var CollapsibleTree = function (elt, w, h) {
             var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
             // Compute the new tree layout.
-            var nodes = tree.nodes(root2).reverse();
+            var nodes = tree.nodes(source).reverse();
 
             // Normalize for fixed-depth.
             nodes.forEach(function (d) {
-                d.y = d.depth * 180;
+                d.y = d.depth * 120;
             });
 
             // Update the nodes…
@@ -391,9 +447,9 @@ var CollapsibleTree = function (elt, w, h) {
                     that.updateChildren(d);
                 });
 
-            nodeEnter.append("svg:rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeEnter.append("svg:circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6)
                 .style("fill", function (d) {
                     return getColor(d)
@@ -420,9 +476,9 @@ var CollapsibleTree = function (elt, w, h) {
                     return "translate(" + d.x + "," + d.y + ")";
                 });
 
-            nodeUpdate.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeUpdate.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 4.5)
                 .style("fill", function (d) {
                     return getColor(d)
@@ -440,9 +496,9 @@ var CollapsibleTree = function (elt, w, h) {
                 })
                 .remove();
 
-            nodeExit.select("rect")
-                .attr("width",20)
-                .attr("height",20)
+            nodeExit.select("circle")
+                .attr("width", 20)
+                .attr("height", 20)
                 .attr("r", 1e-6);
 
             nodeExit.select("text")

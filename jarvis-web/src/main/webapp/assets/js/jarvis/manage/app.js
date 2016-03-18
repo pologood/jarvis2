@@ -2,15 +2,30 @@ var appStatus = null;     //app的所有状态
 var appType = null;       //app的所有类型
 
 $(function () {
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/app/getAppStatus", function (data) {
-        appStatus = data;
-    });
+    $.ajax({
+        url:contextPath + "/api/app/getAppStatus",
+        async:false,
+        success:function(data){
+            appStatus = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化应用状态', msg);
+        }
+    })
 
-    $.getJSON(contextPath + "/api/app/getAppType", function (data) {
-        appType = data;
-    });
-    $.ajaxSettings.async = true;
+    $.ajax({
+        url:contextPath + "/api/app/getAppType",
+        async:false,
+        success:function(data){
+            appType = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化应用类型', msg);
+        }
+    })
+
 
     $(".input-group select").select2({width: '100%'});
     initType(appType);       //初始化app类型
@@ -101,6 +116,15 @@ function initData() {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化应用列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,
@@ -295,6 +319,15 @@ function showWorkerGroup(appId) {
                 params[key] = value;
             }
             return params;
+        },
+        responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化workerGroup列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
         },
         showColumns: true,
         showHeader: true,
