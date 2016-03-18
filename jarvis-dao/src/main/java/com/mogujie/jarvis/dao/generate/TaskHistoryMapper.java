@@ -17,9 +17,9 @@ public interface TaskHistoryMapper {
 
     int insertSelective(TaskHistory record);
 
-    List<TaskHistory> selectByExampleWithBLOBs(TaskHistoryExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.TaskHistory> selectByExampleWithBLOBs(TaskHistoryExample example);
 
-    List<TaskHistory> selectByExample(TaskHistoryExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.TaskHistory> selectByExample(TaskHistoryExample example);
 
     TaskHistory selectByPrimaryKey(TaskHistoryKey key);
 

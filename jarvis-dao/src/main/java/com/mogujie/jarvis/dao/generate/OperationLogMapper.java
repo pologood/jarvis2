@@ -16,9 +16,9 @@ public interface OperationLogMapper {
 
     int insertSelective(OperationLog record);
 
-    List<OperationLog> selectByExampleWithBLOBs(OperationLogExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.OperationLog> selectByExampleWithBLOBs(OperationLogExample example);
 
-    List<OperationLog> selectByExample(OperationLogExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.OperationLog> selectByExample(OperationLogExample example);
 
     OperationLog selectByPrimaryKey(Integer id);
 
