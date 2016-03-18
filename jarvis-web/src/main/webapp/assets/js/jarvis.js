@@ -23,12 +23,14 @@ function createDatetimePickerById(tagId) {
 }
 
 //通过后台请求远程rest api,根据请求结果返回flag
-function requestRemoteRestApi(url, title, data, async) {
+function requestRemoteRestApi(url, title, data, async, successShowFlag) {
     var flag = true;
     var result = {};
-
     if (null == async) {
         async = false;
+    }
+    if (typeof(successShowFlag) === 'undefined'){
+        successShowFlag = false;
     }
 
     $.ajax({
@@ -39,21 +41,13 @@ function requestRemoteRestApi(url, title, data, async) {
         success: function (data) {
             if (data.code == 0) {
                 flag = true;
-                /*if (data.msg == null || data.msg == '') {
-                    showMsg('success', title, '操作成功');
+                if (successShowFlag) {
+                    showMsg('success', title, (data.msg == null || data.msg == '') ? '操作成功' : data.msg);
                 }
-                else {
-                    showMsg('success', title, data.msg);
-                }*/
             }
             else {
                 flag = false;
-                if (data.msg == null || data.msg == '') {
-                    showMsg('warning', title, '操作失败');
-                }
-                else {
-                    showMsg('warning', title, data.msg);
-                }
+                showMsg('warning', title, (data.msg == null || data.msg == '') ? '操作失败' : data.msg);
             }
             result["data"] = data;
         },

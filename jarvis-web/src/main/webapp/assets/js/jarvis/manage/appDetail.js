@@ -1,5 +1,5 @@
 var app = null;
-var appWorkerGroup = [];
+var page = {appWorkerGroup: []};
 $(function () {
     getAppDetail();
     initAppStatus();
@@ -121,16 +121,27 @@ function initAppWorkerGroup() {
             width: '100%'
         });
 
-        if (null != appId && '' != appId) {
-            $.getJSON(contextPath + "/api/workerGroup/getByAppId", {appId: appId}, function (data) {
-                $(data.rows).each(function (i, c) {
-                    appWorkerGroup.push(c.id);
-                });
-                $("#workerGroup").val(appWorkerGroup).trigger("change");
-            });
-        }
+        resetWorkGroupData(true);
     });
 }
+
+function resetWorkGroupData(isSetControl) {
+    if (isSetControl == null) {
+        isSetControl = false;
+    }
+    if (null != appId && '' != appId) {
+        $.getJSON(contextPath + "/api/workerGroup/getByAppId", {appId: appId}, function (data) {
+            $(data.rows).each(function (i, c) {
+                page.appWorkerGroup.push(c.id);
+            });
+            if (isSetControl) {
+                $("#workerGroup").val(page.appWorkerGroup).trigger("change");
+            }
+        });
+    }
+}
+
+
 function ArrToStr(arr) {
     var result = "";
     $(arr).each(function (i, c) {
@@ -167,35 +178,32 @@ function getData() {
 
 //获取app与workerGroup组的操作数据
 function getAppWorkerGroupData() {
-    var currentWorkerGroup = $("workerGroup").val();
     var allWorkerGroup = {};    //暂存所有workerGroup
-    var appWorkerGroupJson = {};
+    var oldWorkerGroupJson = {};
     var currentWorkerGroupJson = {};
 
-    $(appWorkerGroup).each(function (i, c) {
-        if (null == allWorkerGroup[c]) {
-            allWorkerGroup[c] = c;
-            appWorkerGroupJson[c] = c;
-        }
+    $(page.appWorkerGroup).each(function (i, c) {
+        allWorkerGroup[c] = c;
+        oldWorkerGroupJson[c] = c;
     });
+
+    var currentWorkerGroup = $("#workerGroup").val();
     $(currentWorkerGroup).each(function (i, c) {
-        if (null == allWorkerGroup[c]) {
-            allWorkerGroup[c] = c;
-            currentWorkerGroupJson[c] = c;
-        }
+        allWorkerGroup[c] = c;
+        currentWorkerGroupJson[c] = c;
     });
 
     var result = {};
-    var add = new Array();
-    var subtract = new Array();
-    for (key in allWorkerGroup) {
-        if (appWorkerGroupJson[key] != null && currentWorkerGroupJson[key] == null) {
+    var add = [];
+    var remove = [];
+    for (var key in allWorkerGroup) {
+        if (oldWorkerGroupJson[key] != null && currentWorkerGroupJson[key] == null) {
             var item = {};
             item["appId"] = appId;
             item["workerGroupId"] = key;
-            subtract.push(item);
+            remove.push(item);
         }
-        else if (appWorkerGroupJson[key] == null && currentWorkerGroupJson[key] != null) {
+        else if (oldWorkerGroupJson[key] == null && currentWorkerGroupJson[key] != null) {
             var item = {};
             item["appId"] = appId;
             item["workerGroupId"] = key;
@@ -203,46 +211,60 @@ function getAppWorkerGroupData() {
         }
     }
     result["add"] = add;
-    result["subtract"] = subtract;
+    result["remove"] = remove;
     return result;
 }
 
 //保存app
 function saveApp() {
-    var flag = checkAppName();
-    if (false == flag) {
+    if (!checkAppName()) {
         return;
     }
     var data = getData();   //获取应用数据
-    //新增
-    if (null == appId || '' == appId) {
-        var response = requestRemoteRestApi("/api/app/add", "新增应用", data);
-        console.log(response);
-        if (true == response.flag) {
-            //appId=;
-            //modifyAppWorkerGroup();
+    var response, title;
+    var flag1 = false, flag2 = false;
+    if (null == appId || '' == appId) { //新增
+        title = "新增app";
+        response = requestRemoteRestApi("/api/app/add", title, data);
+        flag1 = response.flag;
+        if (true == flag1) {
+            appId = response.data.data.appId;
+            flag2 = modifyAppWorkerGroup();
         }
+    } else {  //编辑
+        title = "修改app";
+        response = requestRemoteRestApi("/api/app/edit", title, data);
+        flag1 = response.flag;
+        if (true == flag1) {    //修改成功
+            flag2 = modifyAppWorkerGroup();
+        }
+    }
+    if (flag1 && flag2) {
+        showMsg('success', title, "操作成功");
+    }
 
+    //重新刷一次 workGroup的数据.
+    if (flag1) {
+        resetWorkGroupData(false);
     }
-    //编辑
-    else {
-        var response = requestRemoteRestApi("/api/app/edit", "修改应用", data);
-        //修改成功
-        if (true == response.flag) {
-            modifyAppWorkerGroup();
-        }
-    }
+
 }
 //绑定workerGroup(新增或删除)
 function modifyAppWorkerGroup() {
     var workerGroupData = getAppWorkerGroupData();
+    var response;
+    var flag = true;
     if (workerGroupData["add"].length > 0) {
-        requestRemoteRestApi("/api/app/workerGroup/add", "新增WorkerGroup", workerGroupData["add"]);
+        response = requestRemoteRestApi("/api/app/workerGroup/add", "app加入WorkerGroup", workerGroupData["add"]);
+        flag = response.flag;
     }
-    if (workerGroupData["subtract"].length > 0) {
-        requestRemoteRestApi("/api/app/workerGroup/delete", "删除WorkerGroup", workerGroupData["subtract"]);
+    if (workerGroupData["remove"].length > 0) {
+        response = requestRemoteRestApi("/api/app/workerGroup/delete", "app移除WorkerGroup", workerGroupData["remove"]);
+        flag = response.flag;
     }
+    return flag;
 }
+
 //检查app名是否重复
 function checkAppName() {
     var appName = $("#appName").val();

@@ -180,13 +180,13 @@ public class ValidService {
 
         Integer id = app.getAppId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE) || id != null , "appId不能为空");
-        Preconditions.checkArgument(id == null || id == 0 , "appId不能为零");
+        Preconditions.checkArgument(id == null || id > 0 , "appId不能为零");
 
         String appName = app.getAppName();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || appName != null, "appName不能为空");
         if (appName != null) {
             Preconditions.checkArgument(!appName.trim().equals(""), "appName不能为空。");
-            appService.checkDuplicateName(appName, app.getAppType());
+            appService.checkDuplicateName(appName, app.getAppId());
         }
 
         String owner = app.getOwner();

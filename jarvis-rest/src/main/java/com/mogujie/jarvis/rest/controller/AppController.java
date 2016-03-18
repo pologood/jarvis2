@@ -144,6 +144,7 @@ public class AppController extends AbstractController {
     /**
      * app/workerGroup追加
      */
+    @POST
     @Path("/workerGroup/delete")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult wgDelete(@FormParam("user") String user,
