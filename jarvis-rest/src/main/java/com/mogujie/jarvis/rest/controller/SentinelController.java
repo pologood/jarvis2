@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -29,8 +30,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
 import com.google.common.base.Preconditions;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -70,7 +72,10 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 public class SentinelController extends AbstractController {
 
     private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 100);
-    private static Map<String, Long> logOffsetMap = Maps.newConcurrentMap();
+    private static Cache<String, Long> logOffsetCache = CacheBuilder.newBuilder()
+            .maximumSize(10000)
+            .expireAfterAccess(5, TimeUnit.MINUTES) //过期时间为5分钟
+            .build();
 
     /**
      * @param appToken
@@ -319,7 +324,10 @@ public class SentinelController extends AbstractController {
                     long taskId = taskEntryList.get(0).getTaskId();
                     int attemptId = taskEntryList.get(0).getAttemptId();
                     String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
-                    long offset = logOffsetMap.containsKey(fullId) ? logOffsetMap.get(fullId) : 0;
+                    Long offset = logOffsetCache.getIfPresent(fullId);
+                    if (offset == null) {
+                        offset = 0L;
+                    }
                     int size = DEFAULT_SIZE;
 
                     RestReadLogRequest request = RestReadLogRequest.newBuilder()
@@ -334,16 +342,16 @@ public class SentinelController extends AbstractController {
                     if (response.getSuccess()) {
                         LogQueryRet ret = new LogQueryRet(ResponseCodeEnum.SUCCESS, "success");
                         String log = response.getLog();
-                        if (!logOffsetMap.containsKey(fullId)) {
-                            log += "jobId is " + jobId + "\n";
+                        if (logOffsetCache.getIfPresent(fullId) == null) {
+                            log = "jobId is " + jobId + "\n" + log;
                         }
 
                         ret.setLog(log);
                         if (response.getIsEnd()) {
                             ret.setIsEnd(true);
-                            logOffsetMap.remove(fullId);
+                            logOffsetCache.invalidate(fullId);
                         } else {
-                            logOffsetMap.put(fullId, response.getOffset());
+                            logOffsetCache.put(fullId, response.getOffset());
                         }
                         return ret;
                     } else {
