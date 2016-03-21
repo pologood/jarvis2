@@ -17,6 +17,7 @@
         <local.repo.host>http://maven.mogujie.org</local.repo.host>
         <admin.version>1.0-SNAPSHOT</admin.version>
         <hadoop.version>2.7.1</hadoop.version>
+        <jarvis2.version>${project.parent.version}</jarvis2.version>
     </properties>
 
 
@@ -81,13 +82,13 @@
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-dao</artifactId>
-            <version>2.0</version>
+            <version>${jarvis2.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-core</artifactId>
-            <version>2.0</version>
+            <version>${jarvis2.version}</version>
         </dependency>
 
         <dependency>
