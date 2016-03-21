@@ -71,7 +71,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("server")
 public class SentinelController extends AbstractController {
 
-    private final static int DEFAULT_LOG_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 100);
+    private final static int DEFAULT_LOG_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 1000);
     private final static int DEFAULT_RESULT_SIZE = ConfigUtils.getRestConfig().getInt("read.result.size", 10000);
     private static Cache<String, Long> logOffsetCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
