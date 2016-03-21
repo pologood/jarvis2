@@ -22,4 +22,12 @@ public interface OperationMapper {
 
   List<String> getSimilarOperationTitle(String title);
 
+  List<String> getAllOperators();
+
+  List<String> getAllOperationType();
+
+  List<String> getSimilarOperator(String operator);
+
+  List<String> getSimilarOperationType(String operationType);
+
 }

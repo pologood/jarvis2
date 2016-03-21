@@ -30,7 +30,11 @@ public class OperationController{
   @Passport(JarvisAuthType.operation)
   public String index(ModelMap modelMap) {
     List<String> titles = this.operationService.getAllOperationTitles();
+    List<String> operators = this.operationService.getAllOperators();
+    List<String> operationTypes = this.operationService.getAllOperationTypes();
     modelMap.put("titles", titles);
+    modelMap.put("operators", operators);
+    modelMap.put("operationTypes", operationTypes);
     return "operation/index";
   }
 }

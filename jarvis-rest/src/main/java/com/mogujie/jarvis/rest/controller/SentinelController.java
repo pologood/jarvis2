@@ -71,7 +71,8 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("server")
 public class SentinelController extends AbstractController {
 
-    private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 100);
+    private final static int DEFAULT_LOG_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 1000);
+    private final static int DEFAULT_RESULT_SIZE = ConfigUtils.getRestConfig().getInt("read.result.size", 10000);
     private static Cache<String, Long> logOffsetCache = CacheBuilder.newBuilder()
             .maximumSize(10000)
             .expireAfterAccess(5, TimeUnit.MINUTES) //过期时间为5分钟
@@ -249,7 +250,7 @@ public class SentinelController extends AbstractController {
                     int attemptId = taskEntryList.get(0).getAttemptId();
                     String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
                     long offset = 0;
-                    int size = DEFAULT_SIZE;
+                    int size = DEFAULT_RESULT_SIZE;
 
                     RestReadLogRequest request = RestReadLogRequest.newBuilder()
                             .setAppAuth(appAuth)
@@ -328,7 +329,7 @@ public class SentinelController extends AbstractController {
                     if (offset == null) {
                         offset = 0L;
                     }
-                    int size = DEFAULT_SIZE;
+                    int size = DEFAULT_LOG_SIZE;
 
                     RestReadLogRequest request = RestReadLogRequest.newBuilder()
                             .setAppAuth(appAuth)

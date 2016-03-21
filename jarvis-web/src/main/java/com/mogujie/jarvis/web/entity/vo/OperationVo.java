@@ -12,8 +12,10 @@ public class OperationVo {
 
   private String title;
   private String operator;
-  private String detail;
   private String opeDate;
+  private String operationType;
+  private String preOperationContent;
+  private String afterOperationContent;
 
   public String getTitle() {
     return title;
@@ -31,19 +33,35 @@ public class OperationVo {
     this.operator = operator;
   }
 
-  public String getDetail() {
-    return detail;
-  }
-
-  public void setDetail(String detail) {
-    this.detail = detail;
-  }
-
   public String getOpeDate() {
     return opeDate;
   }
 
   public void setOpeDate(String opeDate) {
     this.opeDate = opeDate;
+  }
+
+  public String getOperationType() {
+    return operationType;
+  }
+
+  public void setOperationType(String operationType) {
+    this.operationType = operationType;
+  }
+
+  public String getPreOperationContent() {
+    return preOperationContent;
+  }
+
+  public void setPreOperationContent(String preOperationContent) {
+    this.preOperationContent = preOperationContent;
+  }
+
+  public String getAfterOperationContent() {
+    return afterOperationContent;
+  }
+
+  public void setAfterOperationContent(String afterOperationContent) {
+    this.afterOperationContent = afterOperationContent;
   }
 }
