@@ -38,4 +38,18 @@ public class OperationAPIController {
     return map;
   }
 
+  @RequestMapping("/getSimilarOperator")
+  @ResponseBody
+  public Object getSimilarOperator(String q) {
+    Map<String, Object> map = this.operationService.getSimilarOperator(q);
+    return map;
+  }
+
+  @RequestMapping("/getSimilarOperationType")
+  @ResponseBody
+  public Object getSimilarOperationType(String q) {
+    Map<String, Object> map = this.operationService.getSimilarOperationType(q);
+    return map;
+  }
+
 }

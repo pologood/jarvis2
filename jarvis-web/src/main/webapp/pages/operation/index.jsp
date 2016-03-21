@@ -49,6 +49,28 @@
           </div>
         </div>
 
+        <div class="col-md-3">
+          <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:45%">操作人</span>
+            <select id="operator" multiple>
+              <c:forEach items="operators" var="operator" varStatus="status">
+                <option value="${operator}">${operator}</option>
+              </c:forEach>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:45%">操作类型</span>
+            <select id="operationType" multiple>
+              <c:forEach items="operationTypes" var="operationType" varStatus="status">
+                <option value="${operationType}">${operationType}</option>
+              </c:forEach>
+            </select>
+          </div>
+        </div>
+
       </div>
 
       <div class="row top-buffer">

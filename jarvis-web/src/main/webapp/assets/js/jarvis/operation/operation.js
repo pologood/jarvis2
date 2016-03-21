@@ -118,6 +118,80 @@ $(function () {
         width: '100%'
     });
 
+
+    $("#operator").select2({
+        ajax: {
+            url: contextPath + "/api/operation/getSimilarOperator",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                if(data.status){
+                    showMsg('error','模糊查询操作信息',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width: '100%'
+    });
+
+
+    $("#operationType").select2({
+        ajax: {
+            url: contextPath + "/api/operation/getSimilarOperationType",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                if(data.status){
+                    showMsg('error','模糊查询操作信息',data.status.msg);
+                    return {
+                        results: []
+                    };
+                }
+                else{
+                    return {
+                        results: data.items
+                    };
+                }
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width: '100%'
+    });
+
     initData();
 });
 
@@ -129,12 +203,16 @@ function getQueryPara() {
     var startOperDate = $("#startOperDate").val();
     var endOperDate = $("#endOperDate").val();
     var titleList = $("#title").val();
+    var operatorList = $("#operator").val();
+    var operationTypeList = $("#operationType").val();
 
     titleList = titleList == "all" ? undefined : titleList;
     titleList = titleList == null ? undefined : titleList;
     queryPara["titleList"] = JSON.stringify(titleList);
     queryPara["startOperDate"] = startOperDate;
     queryPara["endOperDate"] = endOperDate;
+    queryPara["operatorList"] = JSON.stringify(operatorList)
+    queryPara["operationTypeList"] = JSON.stringify(operationTypeList)
 
     return queryPara;
 }
@@ -152,11 +230,23 @@ var columns = [{
     switchable: true,
     visible: true
 }, {
-    field: 'detail',
-    title: '详情',
+    field: 'operationType',
+    title: '操作类型',
     switchable: true,
     visible: true
-}, {
+},{
+    field: 'preOperationContent',
+    title: '操作前内容',
+    switchable:true,
+    visible:true
+
+},{
+    field: 'afterOperationContent',
+    title: '操作后内容',
+    switchable:true,
+    visible:true
+},
+{
     field: 'opeDate',
     title: '时间',
     switchable: true,

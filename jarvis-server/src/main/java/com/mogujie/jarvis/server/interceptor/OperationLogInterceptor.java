@@ -1,17 +1,25 @@
 package com.mogujie.jarvis.server.interceptor;
 
 import com.google.inject.Inject;
+import com.mogujie.jarvis.core.domain.JobContentType;
+import com.mogujie.jarvis.core.domain.JobPriority;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationInfo;
+import com.mogujie.jarvis.dao.generate.JobDependMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
+import com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper;
 import com.mogujie.jarvis.dao.generate.OperationLogMapper;
-import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.*;
-import com.mogujie.jarvis.dto.generate.OperationLog;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
 import com.mogujie.jarvis.protocol.JobProtos;
-import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 import com.mogujie.jarvis.server.service.LogService;
-import com.mogujie.jarvis.server.service.TaskService;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
@@ -34,7 +42,9 @@ public class OperationLogInterceptor implements MethodInterceptor {
   @Inject
   private JobMapper jobMapper;
   @Inject
-  private TaskMapper taskMapper;
+  private JobDependMapper jobDependMapper;
+  @Inject
+  private JobScheduleExpressionMapper jobScheduleExpressionMapper;
   private Logger LOGGER = Logger.getLogger(this.getClass());
 
   @Override
@@ -42,18 +52,14 @@ public class OperationLogInterceptor implements MethodInterceptor {
       throws Throwable {
     long start = System.nanoTime();
     try {
-      Object result = invocation.proceed();
 
-      if(invocation.getStaticPart().toString().indexOf(JobService.class.getCanonicalName()) != -1) {
-        // add job operation log
-        handleJobOpeLog(invocation);
-      } else if(invocation.getStaticPart().toString().indexOf(TaskService.class.getCanonicalName()) != -1) {
-        // add task operation log
-        handleTaskOpeLog(invocation);
-      } else if(invocation.getStaticPart().toString().indexOf(LogService.class.getCanonicalName()) != -1) {
+      // add job actor interceptor
+      if(invocation.getStaticPart().toString().indexOf(LogService.class.getCanonicalName()) != -1) {
         // add job actor log
         this.handleJobActorLog(invocation);
       }
+
+      Object result = invocation.proceed();
 
       return result;
 
@@ -70,40 +76,67 @@ public class OperationLogInterceptor implements MethodInterceptor {
    * @param invocation
    */
   private void handleJobActorLog(MethodInvocation invocation) {
-    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
+    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
 
     Object obj = invocation.getArguments()[0];
 
     if (obj instanceof JobProtos.RestSubmitJobRequest) {
       JobProtos.RestSubmitJobRequest msg= (JobProtos.RestSubmitJobRequest) obj;
-      String operation = OperationInfo.valueOf("submitJob".toUpperCase()).getDescription();
-      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, msg.getContent()));
+      operationLog.setOperationType(OperationInfo.valueOf("submitJob".toUpperCase()).getDescription());
+      if(msg.getContentType() == JobContentType.TEXT.getValue()) {
+        operationLog.setAfterOperationContent(msg.getContent());
+      } else if(msg.getContentType() == JobContentType.SCRIPT.getValue()) {
+        operationLog.setAfterOperationContent(String.format("add script Job. scriptId=%s", msg.getContent()));
+      }
       operationLog.setOperator(msg.getUser());
       operationLog.setTitle(msg.getJobName());
-      operationLog.setRefer(msg.getJobType());
     } else if (obj instanceof JobProtos.RestModifyJobRequest) {
       JobProtos.RestModifyJobRequest msg = (JobProtos.RestModifyJobRequest) obj;
-      String operation = OperationInfo.valueOf("modifyJob".toUpperCase()).getDescription();
-      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, msg.getContent()));
+      Job preJob = this.jobMapper.selectByPrimaryKey(((JobProtos.RestModifyJobRequest) obj).getJobId());
+      operationLog.setOperationType(OperationInfo.valueOf("modifyJob".toUpperCase()).getDescription());
+      operationLog.setPreOperationContent(this.compare(preJob, msg).get("preJob"));
+      operationLog.setAfterOperationContent(this.compare(preJob, msg).get("afterJob"));
       operationLog.setOperator(msg.getUser());
       operationLog.setTitle(msg.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
     } else if (obj instanceof JobProtos.RestModifyJobDependRequest) {
       JobProtos.RestModifyJobDependRequest msg = (JobProtos.RestModifyJobDependRequest) obj;
-      String operation = OperationInfo.valueOf("modifyJobDependency".toUpperCase()).getDescription();
-      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
-      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+      Job preJob = this.jobMapper.selectByPrimaryKey(msg.getJobId());
+
+      StringBuilder afterDependency = new StringBuilder();
+      for(JobDependencyEntryProtos.DependencyEntry entry : msg.getDependencyEntryList()) {
+        afterDependency.append(entry.getJobId()).append(",");
+      }
+
+      StringBuilder preJobDependency = new StringBuilder();
+      List<JobDepend> JobDependList = this.selectPreDependency(preJob.getJobId());
+      for(JobDepend jobDepend : JobDependList) {
+        preJobDependency.append(jobDepend.getJobId()).append(",");
+      }
+
+      operationLog.setPreOperationContent(preJobDependency.toString());
+      operationLog.setAfterOperationContent(afterDependency.toString());
+      operationLog.setOperationType(OperationInfo.valueOf("modifyJobDependency".toUpperCase()).getDescription());
       operationLog.setOperator(msg.getUser());
-      operationLog.setTitle(job.getJobName());
+      operationLog.setTitle(preJob.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
+
     } else if (obj instanceof JobProtos.RestModifyJobScheduleExpRequest) {
       JobProtos.RestModifyJobScheduleExpRequest msg = (JobProtos.RestModifyJobScheduleExpRequest) obj;
-      String operation = OperationInfo.valueOf("modifyJobScheduleExp".toUpperCase()).getDescription();
-      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
-      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+      Job preJob = this.jobMapper.selectByPrimaryKey(msg.getJobId());
+
+      StringBuilder afterJobExpress = new StringBuilder();
+      for(JobScheduleExpressionEntryProtos.ScheduleExpressionEntry expressEntry : msg.getExpressionEntryList()) {
+        afterJobExpress.append(expressEntry.getScheduleExpression()).append("\t");
+      }
+
+      operationLog.setOperationType(OperationInfo.valueOf("modifyJobScheduleExp".toUpperCase()).getDescription());
+      operationLog.setPreOperationContent(this.selectJobScheduleExpress(preJob.getJobId()));
+      operationLog.setAfterOperationContent(afterJobExpress.toString());
       operationLog.setOperator(msg.getUser());
-      operationLog.setTitle(job.getJobName());
+      operationLog.setTitle(preJob.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
+
     } else if (obj instanceof JobProtos.RestModifyJobStatusRequest) {
       JobProtos.RestModifyJobStatusRequest msg = (JobProtos.RestModifyJobStatusRequest) obj;
       for(long jobId : msg.getJobIdList()) {
@@ -120,87 +153,6 @@ public class OperationLogInterceptor implements MethodInterceptor {
     this.operationLogMapper.insert(operationLog);
   }
 
-  /**
-   * job操作记录
-   *
-   * @param invocation
-   */
-  private void handleJobOpeLog(MethodInvocation invocation) {
-    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
-
-    String operation;
-    try {
-      operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
-    } catch (IllegalArgumentException exception) {
-      operation = invocation.getMethod().getName();
-      LOGGER.error(String.format("method=%s is not register", invocation.getMethod().getName()));
-    }
-    if (operation == null) {
-      operation = invocation.getMethod().getName();
-    }
-
-    Job job = null;
-    if (invocation.getArguments().length == 1 && invocation.getArguments()[0] instanceof Job) {
-      job = (Job) invocation.getArguments()[0];
-    } else if (invocation.getMethod().getName().indexOf("delete") != -1 && invocation.getArguments().length > 0) {
-      long jobId = (long) invocation.getArguments()[0];
-      job = this.jobMapper.selectByPrimaryKey(jobId);
-    }
-
-    if(job == null) {
-      return;
-    }
-
-    operationLog.setRefer(String.valueOf(job.getJobId()));
-    operationLog.setOperator(job.getUpdateUser());
-    operationLog.setTitle(job.getJobName());
-    operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-    operationLog.setType("job");
-    DateTime now = DateTime.now();
-    operationLog.setOpeDate(now.toDate());
-
-    this.operationLogMapper.insert(operationLog);
-
-  }
-
-  /**
-   * task 操作记录
-   *
-   * @param invocation
-   */
-  private void handleTaskOpeLog(MethodInvocation invocation) {
-    OperationLog operationLog = new OperationLog();
-
-    String operation;
-    try {
-      operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
-    } catch (IllegalArgumentException exception) {
-      operation = invocation.getMethod().getName();
-      LOGGER.error(String.format("method=%s is not register", invocation.getMethod().getName()));
-    }
-
-    Task task = null;
-    if (invocation.getArguments().length == 1 && invocation.getArguments()[0] instanceof Task) {
-      task = (Task) invocation.getArguments()[0];
-    } else if (invocation.getMethod().getName().indexOf("delete") != -1 && invocation.getArguments().length > 0) {
-      long taskId = (long) invocation.getArguments()[0];
-      task = this.taskMapper.selectByPrimaryKey(taskId);
-    }
-
-    if(task == null) {
-      return;
-    }
-
-    operationLog.setRefer(String.valueOf(task.getTaskId()));
-    operationLog.setOperator(task.getExecuteUser());
-    operationLog.setTitle(String.valueOf(task.getJobId()));
-    operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, task.getContent()));
-    DateTime now = DateTime.now();
-    operationLog.setOpeDate(now.toDate());
-    operationLog.setType("task");
-
-    this.operationLogMapper.insert(operationLog);
-  }
 
   /**
    * batch update job status
@@ -210,11 +162,12 @@ public class OperationLogInterceptor implements MethodInterceptor {
    */
   private void batchModifyJob(Job job, JobProtos.RestModifyJobStatusRequest msg) {
     // TODO add batch operation
-    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
+    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
 
-    String operation = OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription();
     operationLog.setOperator(msg.getUser());
-    operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+    operationLog.setOperationType(OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription());
+    operationLog.setPreOperationContent(JobStatus.parseValue(job.getStatus()).getDescription());
+    operationLog.setAfterOperationContent(JobStatus.parseValue(msg.getStatus()).getDescription());
     operationLog.setTitle(job.getJobName());
     operationLog.setRefer(String.valueOf(job.getJobId()));
     operationLog.setType("job");
@@ -223,5 +176,119 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
     this.operationLogMapper.insert(operationLog);
   }
+
+
+  private String selectJobScheduleExpress(Long jobId) {
+    JobScheduleExpressionExample jobScheduleExpressionExample = new JobScheduleExpressionExample();
+    jobScheduleExpressionExample.createCriteria().andJobIdEqualTo(jobId);
+    List<JobScheduleExpression> jobScheduleExpressions = this.jobScheduleExpressionMapper.selectByExample(jobScheduleExpressionExample);
+
+    StringBuilder builder = new StringBuilder();
+    if(jobScheduleExpressions.size() == 0) {
+      return null;
+    } else {
+      for(JobScheduleExpression expression : jobScheduleExpressions) {
+        builder.append(expression).append("\t");
+      }
+    }
+
+    return builder.toString();
+  }
+  private List<JobDepend> selectPreDependency(Long jobId) {
+    JobDependExample jobDependExample = new JobDependExample();
+    jobDependExample.createCriteria().andJobIdEqualTo(jobId);
+    List<JobDepend> jobDependList = jobDependMapper.selectByExample(jobDependExample);
+
+    return jobDependList;
+  }
+
+  /**
+   * compare JOB info before modified and after modified
+   *
+   * @param preJob
+   * @param afterJob
+   * @return
+   */
+  private Map<String, String> compare(Job preJob, JobProtos.RestModifyJobRequest afterJob) {
+    Map<String, String> comparemap = new HashMap<>();
+    StringBuilder preJobBuilder = new StringBuilder();
+    StringBuilder afterJobBuilder = new StringBuilder();
+
+    if(!preJob.getJobName().equals(afterJob.getJobName())) {
+      preJobBuilder.append("任务名称:").append(preJob.getJobName()).append("\t");
+      afterJobBuilder.append("任务名称:").append(afterJob.getJobId()).append("\t");
+    }
+    if(!preJob.getJobType().equals(afterJob.getJobType())) {
+      preJobBuilder.append("任务类型:").append(preJob.getJobType()).append("\t");
+      afterJobBuilder.append("任务类型:").append(afterJob.getJobType()).append("\t");
+    }
+    if(preJob.getContentType() != afterJob.getContentType()) {
+      preJobBuilder.append("执行内容类型:").append(JobContentType.parseValue(preJob.getContentType()).getDescription()).append("\t");
+      afterJobBuilder.append("执行内容类型:").append(JobContentType.parseValue(afterJob.getContentType()).getDescription()).append("\t");
+    }
+    if(!preJob.getContent().equals(afterJob.getContent())) {
+      preJobBuilder.append("执行内容:").append(preJob.getContent()).append("\t");
+      afterJobBuilder.append("执行内容:").append(afterJob.getContent()).append("\t");
+    }
+    if(!preJob.getParams().equals(afterJob.getParameters())) {
+      preJobBuilder.append("任务参数:").append(preJob.getParams()).append("\t");
+      afterJobBuilder.append("任务参数:").append(afterJob.getParameters()).append("\t");
+    }
+    if(!preJob.getSubmitUser().equals(afterJob.getUser())) {
+      preJobBuilder.append("提交用户:").append(preJob.getSubmitUser()).append("\t");
+      afterJobBuilder.append("提交用户:").append(afterJob.getUser()).append("\t");
+    }
+    if(preJob.getPriority() != afterJob.getPriority()) {
+      preJobBuilder.append("优先级:").append(JobPriority.parseValue(preJob.getPriority()).getValue()).append("\t");
+      afterJobBuilder.append("优限级:").append(afterJob.getPriority()).append("\t");
+    }
+    if(preJob.getIsSerial() != afterJob.getIsSerial()) {
+      preJobBuilder.append("是否串行:").append(preJob.getIsSerial() ? "串行" : "并行").append("\t");
+      afterJobBuilder.append("是否串行:").append(afterJob.getIsSerial() ? "串行" : "并行").append("\t");
+    }
+    if(preJob.getIsTemp() != afterJob.getIsTemp()) {
+      preJobBuilder.append("是否为临时任务:").append(preJob.getIsTemp() ? "是" : "否").append("\t");
+      afterJobBuilder.append("是否为临时任务:").append(afterJob.getIsTemp() ?  "是" : "否").append("\t");
+    }
+    if(preJob.getWorkerGroupId() != afterJob.getWorkerGroupId()) {
+      preJobBuilder.append("worker组ID:").append(preJob.getWorkerGroupId()).append("\t");
+      afterJobBuilder.append("worker组ID:").append(afterJob.getWorkerGroupId()).append("\t");
+    }
+    if(!preJob.getDepartment().equals(afterJob.getDepartment())) {
+      preJobBuilder.append("部门名称:").append(preJob.getDepartment()).append("\t");
+      afterJobBuilder.append("部门名称:").append(afterJob.getDepartment()).append("\t");
+    }
+    if(!preJob.getBizGroups().equals(afterJob.getBizGroups())) {
+      preJobBuilder.append("业务组名称:").append(preJob.getBizGroups());
+      afterJobBuilder.append("业务组名称:").append(afterJob.getBizGroups()).append("\t");
+    }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+    if(!sdf.format(preJob.getActiveStartDate()).equals(sdf.format(new Date(afterJob.getActiveStartDate())))) {
+      preJobBuilder.append("有效开始时间:").append(sdf.format(preJob.getActiveStartDate())).append("\t");
+      afterJobBuilder.append("有效开始时间:").append(sdf.format(afterJob.getActiveStartDate())).append("\t");
+    }
+    if(!sdf.format(preJob.getActiveEndDate()).equals(sdf.format(new Date(afterJob.getActiveEndDate())))) {
+      preJobBuilder.append("有效结束时间:").append(sdf.format(preJob.getActiveEndDate())).append("\t");
+      afterJobBuilder.append("有效结束时间:").append(sdf.format(afterJob.getActiveEndDate())).append("\t");
+    }
+    if(preJob.getExpiredTime() != afterJob.getExpiredTime()) {
+      preJobBuilder.append("失效时间(s)").append(preJob.getExpiredTime()).append("\t");
+      afterJobBuilder.append("失效时间(s)").append(afterJob.getExpiredTime()).append("\t");
+    }
+    if(preJob.getFailedAttempts() != afterJob.getFailedAttempts()) {
+      preJobBuilder.append("任务运行失败时的重试次数:").append(preJob.getFailedAttempts()).append("\t");
+      afterJobBuilder.append("任务运行失败时的重试次数:").append(afterJob.getFailedAttempts()).append("\t");
+    }
+    if(preJob.getFailedInterval() != afterJob.getFailedInterval()) {
+      preJobBuilder.append("任务运行失败时重试的间隔(秒):").append(preJob.getFailedInterval()).append("\t");
+      afterJobBuilder.append("任务运行失败时重试的间隔(秒):").append(afterJob.getFailedInterval()).append("\t");
+    }
+
+    comparemap.put("preJob", preJobBuilder.toString());
+    comparemap.put("afterJob", afterJobBuilder.toString());
+
+    return comparemap;
+  }
+
 
 }

@@ -23,6 +23,18 @@
           #{title}
         </foreach>
       </if>
+      <if test="operatorList!=null">
+        operator IN 
+        <foreach collection="operatorList" item="operator" open="(" close=")" separator=",">
+          #{operator}
+        </foreach>
+      </if>
+      <if test="operatorTypeList!=null">
+        operationType IN 
+        <foreach collection="operationTypeList" item="operationType" open="(" close=")" separator=",">
+          #{operationType}
+        </foreach>
+      </if>
     </where>
   </sql>
   <sql id="pager">
@@ -59,6 +71,42 @@
     <where>
       <if test="_parameter!=null and _parameter!=''">
         title LIKE '%${_parameter}%'
+      </if>
+    </where>
+  </select>
+  
+  <select id="getAllOperators" parameterType="String" resultType="String">
+    SELECT DISTINCT operator FROM operation_log
+    <where>
+      <if test="operator != null">
+        operator LIKE '%{operator}%'
+      </if>
+    </where>
+  </select>
+
+  <select id="getAllOperationType" parameterType="String" resultType="String">
+    SELECT DISTINCT operationType FROM operation_log
+    <where>
+      <if test="operationType != null">
+        operationType LIKE '%{operationType}%'
+      </if>
+    </where>
+  </select>
+  
+  <select id="getSimilarOperator" parameterType="String" resultType="String">
+    SELECT DISTINCT operator FROM operation_log
+    <where>
+      <if test="_parameter!=null and _parameter!=''">
+        operator LIKE '%${_parameter}%'
+      </if>
+    </where>
+  </select>
+
+  <select id="getSimilarOperationType" parameterType="String" resultType="String">
+    SELECT DISTINCT operationType FROM operation_log
+    <where>
+      <if test="_parameter!=null and _parameter!=null">
+        operationType LIKE '${_parameter}'
       </if>
     </where>
   </select>
