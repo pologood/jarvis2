@@ -1,5 +1,4 @@
-var jobTypeJson = null;
-var jobStatus = null;
+
 var jobPriority = {};
 var bizGroup = {};
 
@@ -8,38 +7,10 @@ $(function () {
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
 
-    $.ajax({
-        url:contextPath + "/assets/json/jobType.json",
-        async:false,
-        success:function(data){
-            jobTypeJson = data;
-            $("#jobType").select2({
-                data: data,
-                width: '100%',
-                tags: true
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务类型', msg);
-        }
-    });
+    glFuncs.initJobType("jobType",false);
 
-    $.ajax({
-        url:contextPath + "/api/job/getJobStatus",
-        async:false,
-        success:function(data){
-            jobStatus = data;
-            $("#jobStatus").select2({
-                data: data,
-                width: '100%'
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务状态信息', msg);
-        }
-    })
+    glFuncs.initJobStatus("jobStatus",false);
+
 
     $.ajax({
         url:contextPath + "/assets/json/jobPriority.json",
@@ -67,79 +38,8 @@ $(function () {
     initSubmitUser();
     initApp();
     initWorkerGroup();
-
-    $("#jobId").select2({
-        ajax: {
-            url: contextPath + "/api/job/getSimilarJobIds",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询任务Id',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-
-        width: '100%'
-    });
-
-    $("#jobName").select2({
-        ajax: {
-            url: contextPath + "/api/job/getSimilarJobNames",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询任务名',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-        width: '100%',
-        tags:true
-    });
-
+    glFuncs.initJobId("jobId");
+    glFuncs.initJobName("jobName");
 
     initData();
 });

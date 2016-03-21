@@ -33,38 +33,10 @@ $(function () {
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
 
-    $.ajax({
-        url: contextPath + "/assets/json/jobType.json",
-        async: false,
-        success: function (data) {
-            jobTypeJson = data;
-            $("#jobType").select2({
-                data: data,
-                width: '100%',
-                tags: true
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务类型', msg);
-        }
-    })
+    glFuncs.initJobType("jobType",false);
 
-    $.ajax({
-        url: contextPath + "/api/job/getJobStatus",
-        async: false,
-        success: function (data) {
-            jobStatus = data;
-            $("#jobStatus").select2({
-                data: data,
-                width: '100%'
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务状态', msg);
-        }
-    })
+    glFuncs.initJobStatus("jobStatus",false);
+
 
     $.ajax({
         url: contextPath + "/assets/json/jobPriority.json",
