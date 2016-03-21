@@ -8,10 +8,11 @@
 
 package com.mogujie.jarvis.tasks;
 
+import java.io.InputStream;
+import java.util.concurrent.CountDownLatch;
+
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.tasks.shell.ShellTask;
-
-import java.io.InputStream;
 
 /**
  * @author wuya
@@ -22,11 +23,13 @@ public class ShellStreamProcessor extends Thread {
     private ShellTask shellJob;
     private InputStream inputStream;
     private StreamType type;
+    private CountDownLatch countDownLatch;
 
-    public ShellStreamProcessor(ShellTask job, InputStream inputStream, StreamType type) {
+    public ShellStreamProcessor(ShellTask job, InputStream inputStream, StreamType type, CountDownLatch countDownLatch) {
         this.shellJob = job;
         this.inputStream = inputStream;
         this.type = type;
+        this.countDownLatch = countDownLatch;
     }
 
     @Override
@@ -36,5 +39,7 @@ public class ShellStreamProcessor extends Thread {
         } else if (type == StreamType.STD_ERR) {
             shellJob.processStdErrorStream(inputStream);
         }
+
+        countDownLatch.countDown();
     }
 }

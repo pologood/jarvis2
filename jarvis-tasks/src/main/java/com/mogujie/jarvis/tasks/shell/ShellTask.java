@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -111,18 +112,22 @@ public class ShellTask extends AbstractTask {
             }
             shellProcess = processBuilder.start();
 
+            CountDownLatch countDownLatch = null;
             if (redirectStream()) {
-                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_ERR);
+                countDownLatch = new CountDownLatch(1);
+                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_ERR, countDownLatch);
                 stderrStreamProcessor.start();
             } else {
-                Thread stdoutStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_OUT);
+                countDownLatch = new CountDownLatch(2);
+                Thread stdoutStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_OUT, countDownLatch);
                 stdoutStreamProcessor.start();
 
-                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getErrorStream(), StreamType.STD_ERR);
+                Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getErrorStream(), StreamType.STD_ERR, countDownLatch);
                 stderrStreamProcessor.start();
             }
 
             boolean result = (shellProcess.waitFor() == 0);
+            countDownLatch.await();
             return result;
         } catch (Exception e) {
             getTaskContext().getLogCollector().collectStderr(e.getMessage());
