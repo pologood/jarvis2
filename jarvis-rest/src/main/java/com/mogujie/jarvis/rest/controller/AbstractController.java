@@ -2,22 +2,22 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.concurrent.TimeUnit;
 
-import com.mogujie.jarvis.rest.vo.AbstractVo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorSelection;
+import akka.pattern.Patterns;
+import akka.util.Timeout;
 
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestAkka;
 import com.mogujie.jarvis.rest.RestResult;
-
-import akka.actor.ActorSelection;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
+import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 /**
  * 控制器父类
@@ -43,7 +43,7 @@ public abstract class AbstractController {
      * @return
      * @throws java.lang.Exception
      */
-    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request, Timeout timeout) throws java.lang.Exception {
+    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request, Timeout timeout) throws Exception {
 
         ActorSelection actor;
 
@@ -75,10 +75,8 @@ public abstract class AbstractController {
 
     }
 
-    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request) throws java.lang.Exception {
-
+    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request) throws Exception {
         return callActor(akkaType, request, TIMEOUT);
-
     }
 
     /**

@@ -353,7 +353,22 @@ public class TaskScheduler extends Scheduler {
 
     private void submitTask(DAGTask dagTask) {
         // update status to ready
-        taskService.updateStatus(dagTask.getTaskId(), TaskStatus.READY);
+        // update content if contentType is script
+        Task task = new Task();
+        task.setTaskId(dagTask.getTaskId());
+        task.setStatus(TaskStatus.READY.getValue());
+        task.setUpdateTime(DateTime.now().toDate());
+        Job job = jobService.get(dagTask.getJobId()).getJob();
+        if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+            int scriptId = Integer.valueOf(job.getContent());
+            if (scriptService.getContentById(scriptId) != null ) {
+                String content = scriptService.getContentById(scriptId);
+                task.setContent(content);
+            } else {
+                LOGGER.error("cant't find content from scriptId={}", scriptId);
+            }
+        }
+        taskService.updateSelective(task);
         LOGGER.info("update {} with READY status", dagTask.getTaskId());
 
         // submit to TaskQueue
