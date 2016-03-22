@@ -11,9 +11,10 @@ package com.mogujie.jarvis.server;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -261,10 +262,11 @@ public class JarvisServer {
     private static void initTimerTask() throws Exception {
         Configuration config = ConfigUtils.getServerConfig();
         List<AbstractTimerTask> timerTasks = ReflectionUtils.getInstancesByConf(config, ServerConigKeys.SERVER_TIMER_TASKS);
-        Timer timer = new Timer();
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(timerTasks.size());
         DateTime now = DateTime.now();
         for (AbstractTimerTask timerTask : timerTasks) {
-            timer.scheduleAtFixedRate(timerTask, timerTask.getFirstTime(now).toDate(), timerTask.getPeriod());
+            long initialDelay = (timerTask.getFirstTime(now).getMillis() - now.getMillis()) / 1000; //单位：秒
+            ses.scheduleAtFixedRate(timerTask, initialDelay, timerTask.getPeriod(), TimeUnit.SECONDS);
         }
     }
 
