@@ -136,7 +136,7 @@ public class TaskMetricsActor extends UntypedActor {
             WorkerReportTaskUpdateRequest msg = (WorkerReportTaskUpdateRequest) obj;
             String fullId = msg.getFullId();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-            LOGGER.info("receive WorkerReportTaskRequest [taskId={}]", taskId);
+            LOGGER.info("receive WorkerReportTaskUpdateRequest [taskId={}]", taskId);
             Task task = new Task();
             task.setTaskId(taskId);
             task.setContent(msg.getContent());
