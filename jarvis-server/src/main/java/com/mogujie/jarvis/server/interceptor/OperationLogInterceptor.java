@@ -113,8 +113,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
     if (obj instanceof JobProtos.RestSubmitJobRequest) {
       JobProtos.RestSubmitJobRequest msg= (JobProtos.RestSubmitJobRequest) obj;
-//      operationLog.setOperationType(OperationInfo.SUBMITJOB.getName());
-      operationLog.setOperationType("submitJob");
+      operationLog.setOperationType(OperationInfo.SUBMITJOB.getName());
       if(msg.getContentType() == JobContentType.TEXT.getValue()) {
         operationLog.setAfterOperationContent(msg.getContent());
       } else if(msg.getContentType() == JobContentType.SCRIPT.getValue()) {
