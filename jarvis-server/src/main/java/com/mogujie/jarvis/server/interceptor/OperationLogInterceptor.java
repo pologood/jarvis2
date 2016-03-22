@@ -82,7 +82,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
     if (obj instanceof JobProtos.RestSubmitJobRequest) {
       JobProtos.RestSubmitJobRequest msg= (JobProtos.RestSubmitJobRequest) obj;
-      operationLog.setOperationType(OperationInfo.valueOf("submitJob".toUpperCase()).getDescription());
+      operationLog.setOperationType(OperationInfo.SUBMITJOB.getName());
       if(msg.getContentType() == JobContentType.TEXT.getValue()) {
         operationLog.setAfterOperationContent(msg.getContent());
       } else if(msg.getContentType() == JobContentType.SCRIPT.getValue()) {
@@ -93,7 +93,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
     } else if (obj instanceof JobProtos.RestModifyJobRequest) {
       JobProtos.RestModifyJobRequest msg = (JobProtos.RestModifyJobRequest) obj;
       Job preJob = this.jobMapper.selectByPrimaryKey(((JobProtos.RestModifyJobRequest) obj).getJobId());
-      operationLog.setOperationType(OperationInfo.valueOf("modifyJob".toUpperCase()).getDescription());
+      operationLog.setOperationType(OperationInfo.MODIFYJOB.getName());
       operationLog.setPreOperationContent(this.compare(preJob, msg).get("preJob"));
       operationLog.setAfterOperationContent(this.compare(preJob, msg).get("afterJob"));
       operationLog.setOperator(msg.getUser());
@@ -116,7 +116,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
       operationLog.setPreOperationContent(preJobDependency.toString());
       operationLog.setAfterOperationContent(afterDependency.toString());
-      operationLog.setOperationType(OperationInfo.valueOf("modifyJobDependency".toUpperCase()).getDescription());
+      operationLog.setOperationType(OperationInfo.MODIFYJOBDEPENDENCY.getName());
       operationLog.setOperator(msg.getUser());
       operationLog.setTitle(preJob.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
@@ -130,7 +130,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
         afterJobExpress.append(expressEntry.getScheduleExpression()).append("\t");
       }
 
-      operationLog.setOperationType(OperationInfo.valueOf("modifyJobScheduleExp".toUpperCase()).getDescription());
+      operationLog.setOperationType(OperationInfo.modifyJobScheduleExp.getName());
       operationLog.setPreOperationContent(this.selectJobScheduleExpress(preJob.getJobId()));
       operationLog.setAfterOperationContent(afterJobExpress.toString());
       operationLog.setOperator(msg.getUser());

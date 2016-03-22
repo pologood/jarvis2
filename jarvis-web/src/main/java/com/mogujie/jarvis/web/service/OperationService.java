@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
+import com.mogujie.jarvis.core.domain.OperationInfo;
 import com.mogujie.jarvis.web.entity.qo.OperationQo;
 import com.mogujie.jarvis.web.entity.vo.OperationVo;
 import com.mogujie.jarvis.web.mapper.OperationMapper;
@@ -33,6 +34,10 @@ public class OperationService {
     count = count == null ? 0 : count;
 
     List<OperationVo> operationVoList = this.operationMapper.getOperationsByCondition(operationQo);
+
+    for(OperationVo operationVo : operationVoList) {
+      operationVo.setOperationType(OperationInfo.valueOf(operationVo.getOperationType().toUpperCase()).getDescription());
+    }
 
     result.put("total", count);
     result.put("rows", operationVoList);
@@ -77,6 +82,7 @@ public class OperationService {
       Map<String, Object> item = new HashMap<>();
       item.put("id", operators.get(i));
       item.put("text", operators.get(i));
+      list.add(item);
     }
 
     result.put("total", operators.size());
@@ -85,19 +91,5 @@ public class OperationService {
     return result;
   }
 
-  public Map<String, Object> getSimilarOperationType(String operationType) {
-    Map<String, Object> result = new HashMap<>();
-    List<String> operationTypes = this.operationMapper.getSimilarOperationType(operationType);
-    List<Map> list = new ArrayList<>();
-    for(int i=0; i<operationTypes.size(); i++) {
-      Map<String, Object> item = new HashMap<>();
-      item.put("id", operationTypes.get(i));
-      item.put("text", operationTypes.get(i));
-    }
-    result.put("total", operationTypes.size());
-    result.put("items", list);
-
-    return result;
-  }
 
 }

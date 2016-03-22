@@ -53,19 +53,8 @@
           <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:45%">操作人</span>
             <select id="operator" multiple>
-              <c:forEach items="operators" var="operator" varStatus="status">
+              <c:forEach items="${operators}" var="operator" varStatus="status">
                 <option value="${operator}">${operator}</option>
-              </c:forEach>
-            </select>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="input-group" style="width:100%">
-            <span class="input-group-addon" style="width:45%">操作类型</span>
-            <select id="operationType" multiple>
-              <c:forEach items="operationTypes" var="operationType" varStatus="status">
-                <option value="${operationType}">${operationType}</option>
               </c:forEach>
             </select>
           </div>
@@ -74,6 +63,22 @@
       </div>
 
       <div class="row top-buffer">
+        <div class="col-md-3">
+          <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:45%">操作类型</span>
+            <select id="operationType">
+              <option value=""></option>
+              <option value="submitJob">提交任务</option>
+              <option value="modifyJob">修改任务</option>
+              <option value="modifyJobDependency">修改任务依赖</option>
+              <option value="modifyJobScheduleExp">修改任务计划表达式</option>
+              <option value="modifyJobStatus">修改任务计划表达式</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-md-6 col-md-offset-6">
           <div class="row">
             <div class="col-md-6 col-md-offset-6">

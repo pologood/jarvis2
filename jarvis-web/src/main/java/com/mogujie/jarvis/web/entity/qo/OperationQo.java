@@ -20,6 +20,9 @@ public class OperationQo {
   private List<String> titleList;
   private String title;
   private String opeDate;
+  private String operator;
+  private String operationType;
+  private List<String> operatorList;
 
   private Integer offset;
   private Integer limit;
@@ -50,6 +53,19 @@ public class OperationQo {
       List<String> list = JsonHelper.fromJson(titleList, List.class);
       if (list.size() > 0) {
         this.titleList = list;
+      }
+    }
+  }
+
+  public List<String> getOperatorList() {
+    return operatorList;
+  }
+
+  public void setOperatorList(String operatorList) {
+    if(StringUtils.isNotBlank(operatorList)) {
+      List<String> list = JsonHelper.fromJson(operatorList, List.class);
+      if(list.size() > 0) {
+        this.operatorList = list;
       }
     }
   }
@@ -93,4 +109,29 @@ public class OperationQo {
   public void setTitle(String title) {
     this.title = title;
   }
+
+  public void setTitleList(List<String> titleList) {
+    this.titleList = titleList;
+  }
+
+  public String getOperator() {
+    return operator;
+  }
+
+  public void setOperator(String operator) {
+    this.operator = operator;
+  }
+
+  public String getOperationType() {
+    return operationType;
+  }
+
+  public void setOperationType(String operationType) {
+    this.operationType = operationType;
+  }
+
+  public void setOperatorList(List<String> operatorList) {
+    this.operatorList = operatorList;
+  }
+
 }

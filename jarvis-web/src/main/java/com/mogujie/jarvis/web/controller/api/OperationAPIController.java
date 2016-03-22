@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.controller.api;
 import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.entity.qo.OperationQo;
 import com.mogujie.jarvis.web.service.OperationService;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,11 +32,11 @@ public class OperationAPIController {
     return map;
   }
 
-  @RequestMapping("/getSimilarOperationTitles")
+  @RequestMapping("/getAllOperators")
   @ResponseBody
-  public Object getSimilarTitle(String q) {
-    Map<String, Object> map = this.operationService.getSimilarOperationTitle(q);
-    return map;
+  public List<String> getAllOperators() {
+    List<String> operators = this.operationService.getAllOperators();
+    return operators;
   }
 
   @RequestMapping("/getSimilarOperator")
@@ -45,11 +46,5 @@ public class OperationAPIController {
     return map;
   }
 
-  @RequestMapping("/getSimilarOperationType")
-  @ResponseBody
-  public Object getSimilarOperationType(String q) {
-    Map<String, Object> map = this.operationService.getSimilarOperationType(q);
-    return map;
-  }
 
 }

@@ -118,82 +118,39 @@ $(function () {
         width: '100%'
     });
 
-
-    $("#operator").select2({
-        ajax: {
-            url: contextPath + "/api/operation/getSimilarOperator",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询操作信息',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-
-        width: '100%'
-    });
-
-
-    $("#operationType").select2({
-        ajax: {
-            url: contextPath + "/api/operation/getSimilarOperationType",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询操作信息',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-
-        width: '100%'
-    });
+    initOperator();
 
     initData();
 });
+
+
+function initOperator() {
+    $.ajax({
+        url:contextPath + "/api/operation/getAllOperators",
+        success:function(data){
+            var newData = [];
+            var all = {};
+            all["id"] = "all";
+            all["text"] = "全部";
+            newData.push(all);
+
+            $(data).each(function (i, c) {
+                var item = {};
+                item["id"] = c;
+                item["text"] = c;
+                newData.push(item);
+            });
+            $("#operator").select2({
+                data: newData,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化操作用户列表', msg);
+        }
+    })
+}
 
 
 //获取查询参数
@@ -204,15 +161,17 @@ function getQueryPara() {
     var endOperDate = $("#endOperDate").val();
     var titleList = $("#title").val();
     var operatorList = $("#operator").val();
-    var operationTypeList = $("#operationType").val();
+    var operationType = $("#operationType").val();
 
     titleList = titleList == "all" ? undefined : titleList;
     titleList = titleList == null ? undefined : titleList;
+    operatorList = operatorList == "all" ? undefined : operatorList;
+    operatorList = operatorList == null ? undefined : operatorList;
     queryPara["titleList"] = JSON.stringify(titleList);
     queryPara["startOperDate"] = startOperDate;
     queryPara["endOperDate"] = endOperDate;
-    queryPara["operatorList"] = JSON.stringify(operatorList)
-    queryPara["operationTypeList"] = JSON.stringify(operationTypeList)
+    queryPara["operatorList"] = JSON.stringify(operatorList);
+    queryPara["operationType"] = operationType;
 
     return queryPara;
 }
