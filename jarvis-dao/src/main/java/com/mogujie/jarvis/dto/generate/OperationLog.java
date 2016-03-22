@@ -15,6 +15,12 @@ public class OperationLog {
 
     private String type;
 
+    private String operationType;
+
+    private String preOperationContent;
+
+    private String afterOperationContent;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +67,29 @@ public class OperationLog {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
+    }
+
+    public String getPreOperationContent() {
+        return preOperationContent;
+    }
+
+    public void setPreOperationContent(String preOperationContent) {
+        this.preOperationContent = preOperationContent;
+    }
+
+    public String getAfterOperationContent() {
+        return afterOperationContent;
+    }
+
+    public void setAfterOperationContent(String afterOperationContent) {
+        this.afterOperationContent = afterOperationContent;
     }
 }

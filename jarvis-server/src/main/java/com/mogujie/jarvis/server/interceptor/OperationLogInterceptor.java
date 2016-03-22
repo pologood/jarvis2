@@ -14,7 +14,6 @@ import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
 import com.mogujie.jarvis.protocol.JobProtos;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos;
-import com.mogujie.jarvis.server.actor.TaskActor;
 import com.mogujie.jarvis.server.service.JobActorLogService;
 import com.mogujie.jarvis.server.service.TaskActorLogService;
 import java.text.SimpleDateFormat;
@@ -81,7 +80,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
    * @param invocation
    */
   private void handleTaskActorLog(MethodInvocation invocation) {
-    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new com.mogujie.jarvis.dto.generate.OperationLog();
 
     Object obj = invocation.getArguments()[0];
 
@@ -108,7 +107,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
    * @param invocation
    */
   private void handleJobActorLog(MethodInvocation invocation) {
-    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new com.mogujie.jarvis.dto.generate.OperationLog();
 
     Object obj = invocation.getArguments()[0];
 
@@ -194,7 +193,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
    */
   private void batchModifyJob(Job job, JobProtos.RestModifyJobStatusRequest msg) {
     // TODO add batch operation
-    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new com.mogujie.jarvis.dto.generate.OperationLog();
 
     operationLog.setOperator(msg.getUser());
     operationLog.setOperationType(OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription());

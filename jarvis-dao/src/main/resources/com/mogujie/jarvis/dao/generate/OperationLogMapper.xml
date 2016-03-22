@@ -9,7 +9,7 @@
     <result column="opeDate" jdbcType="TIMESTAMP" property="opeDate" />
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.OperationLog">
     <result column="operationType" jdbcType="LONGVARCHAR" property="operationType" />
     <result column="preOperationContent" jdbcType="LONGVARCHAR" property="preOperationContent" />
     <result column="afterOperationContent" jdbcType="LONGVARCHAR" property="afterOperationContent" />
@@ -126,7 +126,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -139,7 +139,7 @@
       #{preOperationContent,jdbcType=LONGVARCHAR}, #{afterOperationContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -265,7 +265,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     update operation_log
     <set>
       <if test="title != null">
@@ -295,7 +295,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     update operation_log
     set title = #{title,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
