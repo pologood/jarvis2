@@ -61,7 +61,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
         // add job actor log
         this.handleJobActorLog(invocation);
       } else if(invocation.getStaticPart().toString().indexOf(TaskActorLogService.class.getCanonicalName()) != -1) {
-        this.handleJobActorLog(invocation);
+        this.handleTaskActorLog(invocation);
       }
 
       Object result = invocation.proceed();
