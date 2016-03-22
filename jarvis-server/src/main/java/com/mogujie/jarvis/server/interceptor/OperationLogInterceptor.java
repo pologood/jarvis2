@@ -14,7 +14,9 @@ import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
 import com.mogujie.jarvis.protocol.JobProtos;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos;
-import com.mogujie.jarvis.server.service.LogService;
+import com.mogujie.jarvis.server.actor.TaskActor;
+import com.mogujie.jarvis.server.service.JobActorLogService;
+import com.mogujie.jarvis.server.service.TaskActorLogService;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -55,8 +57,10 @@ public class OperationLogInterceptor implements MethodInterceptor {
     try {
 
       // add job actor interceptor
-      if(invocation.getStaticPart().toString().indexOf(LogService.class.getCanonicalName()) != -1) {
+      if(invocation.getStaticPart().toString().indexOf(JobActorLogService.class.getCanonicalName()) != -1) {
         // add job actor log
+        this.handleJobActorLog(invocation);
+      } else if(invocation.getStaticPart().toString().indexOf(TaskActorLogService.class.getCanonicalName()) != -1) {
         this.handleJobActorLog(invocation);
       }
 

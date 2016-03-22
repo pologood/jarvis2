@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
  * time: 下午3:56
  */
 @Singleton
-public class LogService {
+public class JobActorLogService {
   private static final Logger LOGGER = LogManager.getLogger();
 
   @OperationLog

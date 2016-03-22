@@ -99,7 +99,7 @@ import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.BizGroupService;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.service.LogService;
+import com.mogujie.jarvis.server.service.JobActorLogService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -124,7 +124,7 @@ public class JobActor extends UntypedActor {
     private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
     private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
-    private LogService logService = Injectors.getInjector().getInstance(LogService.class);
+    private JobActorLogService _jobActorLogService = Injectors.getInjector().getInstance(JobActorLogService.class);
 
     public static Props props() {
         return Props.create(JobActor.class);
@@ -160,7 +160,7 @@ public class JobActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         LOGGER.info("receive {}", obj.getClass().getSimpleName());
-        logService.handleLog(obj);
+        _jobActorLogService.handleLog(obj);
         try {
             if (obj instanceof RestSubmitJobRequest) {
                 submitJob((RestSubmitJobRequest) obj);

@@ -9,8 +9,10 @@
     <result column="opeDate" jdbcType="TIMESTAMP" property="opeDate" />
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.OperationLog">
-    <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
+    <result column="operationType" jdbcType="LONGVARCHAR" property="operationType" />
+    <result column="preOperationContent" jdbcType="LONGVARCHAR" property="preOperationContent" />
+    <result column="afterOperationContent" jdbcType="LONGVARCHAR" property="afterOperationContent" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +76,7 @@
     id, title, operator, refer, opeDate, type
   </sql>
   <sql id="Blob_Column_List">
-    detail
+    operationType, preOperationContent, afterOperationContent
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLogExample" resultMap="ResultMapWithBLOBs">
     select
@@ -124,18 +126,20 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into operation_log (title, operator, refer, 
-      opeDate, type, detail
+      opeDate, type, operationType, 
+      preOperationContent, afterOperationContent
       )
     values (#{title,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{refer,jdbcType=VARCHAR}, 
-      #{opeDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, #{detail,jdbcType=LONGVARCHAR}
+      #{opeDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, #{operationType,jdbcType=LONGVARCHAR}, 
+      #{preOperationContent,jdbcType=LONGVARCHAR}, #{afterOperationContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -156,8 +160,14 @@
       <if test="type != null">
         type,
       </if>
-      <if test="detail != null">
-        detail,
+      <if test="operationType != null">
+        operationType,
+      </if>
+      <if test="preOperationContent != null">
+        preOperationContent,
+      </if>
+      <if test="afterOperationContent != null">
+        afterOperationContent,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -176,8 +186,14 @@
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
-        #{detail,jdbcType=LONGVARCHAR},
+      <if test="operationType != null">
+        #{operationType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="preOperationContent != null">
+        #{preOperationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterOperationContent != null">
+        #{afterOperationContent,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -208,8 +224,14 @@
       <if test="record.type != null">
         type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.detail != null">
-        detail = #{record.detail,jdbcType=LONGVARCHAR},
+      <if test="record.operationType != null">
+        operationType = #{record.operationType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.preOperationContent != null">
+        preOperationContent = #{record.preOperationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.afterOperationContent != null">
+        afterOperationContent = #{record.afterOperationContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -224,7 +246,9 @@
       refer = #{record.refer,jdbcType=VARCHAR},
       opeDate = #{record.opeDate,jdbcType=TIMESTAMP},
       type = #{record.type,jdbcType=VARCHAR},
-      detail = #{record.detail,jdbcType=LONGVARCHAR}
+      operationType = #{record.operationType,jdbcType=LONGVARCHAR},
+      preOperationContent = #{record.preOperationContent,jdbcType=LONGVARCHAR},
+      afterOperationContent = #{record.afterOperationContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,7 +265,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
     update operation_log
     <set>
       <if test="title != null">
@@ -259,20 +283,28 @@
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
-        detail = #{detail,jdbcType=LONGVARCHAR},
+      <if test="operationType != null">
+        operationType = #{operationType,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="preOperationContent != null">
+        preOperationContent = #{preOperationContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="afterOperationContent != null">
+        afterOperationContent = #{afterOperationContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs">
     update operation_log
     set title = #{title,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
       refer = #{refer,jdbcType=VARCHAR},
       opeDate = #{opeDate,jdbcType=TIMESTAMP},
       type = #{type,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=LONGVARCHAR}
+      operationType = #{operationType,jdbcType=LONGVARCHAR},
+      preOperationContent = #{preOperationContent,jdbcType=LONGVARCHAR},
+      afterOperationContent = #{afterOperationContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">

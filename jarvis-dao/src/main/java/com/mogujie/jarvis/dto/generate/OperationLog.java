@@ -15,8 +15,6 @@ public class OperationLog {
 
     private String type;
 
-    private String detail;
-
     public Integer getId() {
         return id;
     }
@@ -63,13 +61,5 @@ public class OperationLog {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 }
