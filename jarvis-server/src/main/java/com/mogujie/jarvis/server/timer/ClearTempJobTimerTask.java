@@ -37,7 +37,7 @@ public class ClearTempJobTimerTask extends AbstractTimerTask {
 
     @Override
     public long getPeriod() {
-        final long oneWeek = 7 * 24 * 60 * 60 * 1000;
+        final long oneWeek = 7 * 24 * 60 * 60;
         return oneWeek;
     }
 }

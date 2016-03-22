@@ -41,7 +41,7 @@ public class PlanTimerTask extends AbstractTimerTask {
 
     @Override
     public long getPeriod() {
-        final long time24h = 24 * 60 * 60 * 1000;
+        final long time24h = 24 * 60 * 60; //单位：秒
         return time24h;
     }
 }
