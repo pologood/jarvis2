@@ -196,7 +196,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
     com.mogujie.jarvis.dto.generate.OperationLog operationLog = new com.mogujie.jarvis.dto.generate.OperationLog();
 
     operationLog.setOperator(msg.getUser());
-    operationLog.setOperationType(OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription());
+    operationLog.setOperationType(OperationInfo.MODIFYJOBSTATUS.getName());
     operationLog.setPreOperationContent(JobStatus.parseValue(job.getStatus()).getDescription());
     operationLog.setAfterOperationContent(JobStatus.parseValue(msg.getStatus()).getDescription());
     operationLog.setTitle(job.getJobName());

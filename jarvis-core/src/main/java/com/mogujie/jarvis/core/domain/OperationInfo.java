@@ -15,7 +15,7 @@ public enum OperationInfo {
   MODIFYJOB("modifyJob", "修改任务"),
   MODIFYJOBDEPENDENCY("modifyJobDependency", "修改任务依赖"),
   MODIFYJOBSCHEDULEEXP("modifyJobScheduleExp", "修改任务计划表达式"),
-  MODIFYJOBSTATUS("modifyJobStatus", "修改任务计划表达式"),
+  MODIFYJOBSTATUS("modifyJobStatus", "修改任务状态"),
 
   // task actor
   MANUALRERUNTASK("manualRerunTask", "手动重跑");
