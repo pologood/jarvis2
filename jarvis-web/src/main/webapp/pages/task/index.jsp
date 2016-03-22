@@ -62,6 +62,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:50%">任务ID</span>
+
                         <select id="jobId" multiple>
 
                         </select>

@@ -29,7 +29,7 @@ function requestRemoteRestApi(url, title, data, async, successShowFlag) {
     if (null == async) {
         async = false;
     }
-    if (typeof(successShowFlag) === 'undefined'){
+    if (typeof(successShowFlag) === 'undefined') {
         successShowFlag = false;
     }
 
@@ -169,4 +169,125 @@ function stringToArr(source) {
     }
     var arr = source.trim().split(",");
     return arr;
+}
+
+var glFuncs = {
+
+    jobStatus:null,
+
+    initJobStatus: function (id, async) {
+        $.ajax({
+            url: contextPath + "/api/job/getJobStatus",
+            async: async != null ? async : true,
+            success: function (data) {
+                glFuncs.jobStatus = data;
+                $("#"+id).select2({
+                    data: data,
+                    width: '100%'
+                });
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '初始化任务状态信息', msg);
+            }
+        })
+    },
+
+    jobTypeJson:null,
+
+    initJobType: function (id, async) {
+
+        $.ajax({
+            url: contextPath + "/assets/json/jobType.json",
+            async: async != null ? async : true,
+            success: function (data) {
+                glFuncs.jobTypeJson = data;
+                $("#"+id).select2({
+                    data: data,
+                    width: '100%',
+                    tags: true
+                });
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '初始化任务类型', msg);
+            }
+        });
+    },
+    initExecuteUser: function (id) {
+        $.ajax({
+            url: contextPath + "/api/common/getExecuteUsers",
+            success: function (data) {
+                var newData = [];
+                var all = {};
+                all["id"] = "all";
+                all["text"] = "全部";
+                newData.push(all);
+
+                $(data).each(function (i, c) {
+                    var item = {};
+                    item["id"] = c;
+                    item["text"] = c;
+                    newData.push(item);
+                });
+                $("#" + id).select2({
+                    data: newData,
+                    width: '100%'
+                });
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '初始化执行用户列表', msg);
+            }
+        })
+    },
+
+
+    initJobId: function (id) {
+
+        $("#" + id).select2({
+            width: '100%',
+            tags: true,
+        });
+    },
+
+    initJobName: function (id) {
+
+        $("#" + id).select2({
+            ajax: {
+                url: contextPath + "/api/job/getSimilarJobNames",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, page) {
+                    if (data.status) {
+                        showMsg('error', '模糊查询任务名', data.status.msg);
+                        return {
+                            results: []
+                        };
+                    }
+                    else {
+                        return {
+                            results: data.items
+                        };
+                    }
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            minimumInputLength: 3,
+            templateResult: formatResult,
+            templateSelection: formatResultSelection,
+            width: '100%',
+            tags: true
+        });
+    }
+
 }

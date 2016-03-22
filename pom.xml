@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mogujie.jarvis</groupId>
 	<artifactId>jarvis-parent</artifactId>
-	<version>2.0</version>
+	<version>2.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>jarvis</name>
@@ -16,9 +15,60 @@
 		<akka.version>2.4.2</akka.version>
 		<guice.version>4.0</guice.version>
 		<metrics.version>3.1.2</metrics.version>
+        <skipTests>true</skipTests>
 	</properties>
 
-	<dependencies>
+
+    <scm>
+        <connection>scm:git:http://gitlab.mogujie.org/bigdata/jarvis2.git</connection>
+        <developerConnection>scm:git:http://gitlab.mogujie.org/bigdata/jarvis2.git</developerConnection>
+        <url>http://gitlab.mogujie.org/bigdata/jarvis2.git</url>
+        <tag>head</tag>
+    </scm>
+
+
+    <repositories>
+        <repository>
+            <id>client-public</id>
+            <name>public</name>
+            <url>http://maven.mogujie.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>client-plugin</id>
+            <url>http://maven.mogujie.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://maven.mogujie.org/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://maven.mogujie.org/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <dependencies>
 		<!-- Log4j2 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -221,6 +271,34 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                </configuration>
+            </plugin>
+
 		</plugins>
 	</build>
 

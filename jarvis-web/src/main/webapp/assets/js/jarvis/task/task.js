@@ -9,21 +9,8 @@ $(function () {
     createDatetimePickerById("startDate");
     createDatetimePickerById("endDate");
 
-    //初始化作业类型内容
-    $.ajax({
-        url:contextPath + "/assets/json/jobType.json",
-        success:function(data){
-            $("#jobType").select2({
-                data: data,
-                width: '100%',
-                tags: true
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务类型', msg);
-        }
-    })
+    glFuncs.initJobType("jobType");
+
 
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
@@ -106,110 +93,15 @@ $(function () {
     })
 
 
-    $("#jobId").select2({
-        ajax: {
-            url: contextPath + "/api/job/getSimilarJobIds",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询任务Id',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
+    glFuncs.initJobId("jobId");
 
-        width: '100%'
-    });
-    initExecuteUser();
-    $("#jobName").select2({
-        ajax: {
-            url: contextPath + "/api/job/getSimilarJobNames",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                if(data.status){
-                    showMsg('error','模糊查询任务名',data.status.msg);
-                    return {
-                        results: []
-                    };
-                }
-                else{
-                    return {
-                        results: data.items
-                    };
-                }
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-        width: '100%',
-        tags:true
-    });
+    glFuncs.initExecuteUser("executeUser");
+
+    glFuncs.initJobName("jobName");
 
     initSearchCondition();
     initData();
 });
-
-function initExecuteUser() {
-    $.ajax({
-        url:contextPath + "/api/common/getExecuteUsers",
-        success:function(data){
-            var newData = [];
-            var all = {};
-            all["id"] = "all";
-            all["text"] = "全部";
-            newData.push(all);
-
-            $(data).each(function (i, c) {
-                var item = {};
-                item["id"] = c;
-                item["text"] = c;
-                newData.push(item);
-            });
-            $("#executeUser").select2({
-                data: newData,
-                width: '100%'
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化执行用户列表', msg);
-        }
-    })
-}
-
 
 //查找
 function search() {
