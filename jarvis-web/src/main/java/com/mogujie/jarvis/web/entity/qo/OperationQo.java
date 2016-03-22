@@ -110,10 +110,6 @@ public class OperationQo {
     this.title = title;
   }
 
-  public void setTitleList(List<String> titleList) {
-    this.titleList = titleList;
-  }
-
   public String getOperator() {
     return operator;
   }
@@ -130,8 +126,5 @@ public class OperationQo {
     this.operationType = operationType;
   }
 
-  public void setOperatorList(List<String> operatorList) {
-    this.operatorList = operatorList;
-  }
 
 }

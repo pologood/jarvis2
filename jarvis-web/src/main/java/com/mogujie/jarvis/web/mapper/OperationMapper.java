@@ -24,10 +24,6 @@ public interface OperationMapper {
 
   List<String> getAllOperators();
 
-  List<String> getAllOperationType();
 
-  List<String> getSimilarOperator(String operator);
-
-  List<String> getSimilarOperationType(String operationType);
 
 }

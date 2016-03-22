@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,27 +70,5 @@ public class OperationService {
   public List<String> getAllOperators() {
     return this.operationMapper.getAllOperators();
   }
-
-  public List<String> getAllOperationTypes() {
-    return this.operationMapper.getAllOperationType();
-  }
-
-  public Map<String, Object> getSimilarOperator(String operator) {
-    Map<String, Object> result = new HashMap();
-    List<String> operators = this.operationMapper.getSimilarOperator(operator);
-    List<Map> list = new ArrayList();
-    for(int i=0; i<operators.size(); i++) {
-      Map<String, Object> item = new HashMap<>();
-      item.put("id", operators.get(i));
-      item.put("text", operators.get(i));
-      list.add(item);
-    }
-
-    result.put("total", operators.size());
-    result.put("items", list);
-
-    return result;
-  }
-
 
 }

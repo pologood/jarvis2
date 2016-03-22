@@ -17,7 +17,7 @@
         AND opeDate<#{endOperDate}
         ]]>
       </if>
-      <if test="titleList!=null">
+      <if test="titleList!=null and titleList.size()>0">
         title IN
         <foreach collection="titleList" item="title" open="(" close=")" separator=",">
           #{title}
@@ -86,24 +86,6 @@
     <where>
       <if test="operationType != null">
         operationType LIKE '%{operationType}%'
-      </if>
-    </where>
-  </select>
-
-  <select id="getSimilarOperator" parameterType="String" resultType="String">
-    SELECT DISTINCT operator FROM operation_log
-    <where>
-      <if test="_parameter!=null and _parameter!=''">
-        operator LIKE '%${_parameter}%'
-      </if>
-    </where>
-  </select>
-
-  <select id="getSimilarOperationType" parameterType="String" resultType="String">
-    SELECT DISTINCT operationType FROM operation_log
-    <where>
-      <if test="_parameter!=null and _parameter!=null">
-        operationType LIKE '%${_parameter}%'
       </if>
     </where>
   </select>

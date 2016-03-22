@@ -13,6 +13,7 @@ import com.mogujie.jarvis.dto.generate.*;
 import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
 import com.mogujie.jarvis.protocol.JobProtos;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
+import com.mogujie.jarvis.protocol.ManualRerunTaskProtos;
 import com.mogujie.jarvis.server.service.LogService;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -68,6 +69,33 @@ public class OperationLogInterceptor implements MethodInterceptor {
           .format("Invocation of method %s () with parameters %s took %s ms.", invocation.getMethod().getName(),
               Arrays.toString(invocation.getArguments()), (System.nanoTime() - start) / 1000000.0));
     }
+  }
+
+  /**
+   * taskActor 操作记录
+   *
+   * @param invocation
+   */
+  private void handleTaskActorLog(MethodInvocation invocation) {
+    com.mogujie.jarvis.dto.generate.OperationLogWithBLOBs operationLog = new OperationLogWithBLOBs();
+
+    Object obj = invocation.getArguments()[0];
+
+    if(obj instanceof ManualRerunTaskProtos.RestServerManualRerunTaskRequest) {
+      ManualRerunTaskProtos.RestServerManualRerunTaskRequest msg = (ManualRerunTaskProtos.RestServerManualRerunTaskRequest) obj;
+      operationLog.setOperator(msg.getUser());
+      operationLog.setOperationType(OperationInfo.MANUALRERUNTASK.getName());
+      operationLog.setType("task");
+      DateTime now = DateTime.now();
+      operationLog.setOpeDate(now.toDate());
+     for(long jobId : msg.getJobIdList()) {
+       Job preJob = this.jobMapper.selectByPrimaryKey(jobId);
+       operationLog.setTitle(preJob.getJobName());
+       operationLog.setRefer(String.valueOf(jobId));
+       operationLog.setAfterOperationContent(String.format("% 重跑任务 %s, 重跑起始时间为%s,重跑截止时间为%s", msg.getUser(), preJob.getJobName(), msg.getStartTime(), msg.getEndTime()));
+     }
+    }
+
   }
 
   /**

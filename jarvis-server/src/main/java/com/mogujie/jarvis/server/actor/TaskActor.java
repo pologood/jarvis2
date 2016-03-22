@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.server.service.LogService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,7 @@ public class TaskActor extends UntypedActor {
     private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private LogService logService = Injectors.getInjector().getInstance(LogService.class);
 
     public static Props props() {
         return Props.create(TaskActor.class);
@@ -116,6 +118,7 @@ public class TaskActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
+        logService.handleLog(obj);
         if (obj instanceof RestServerKillTaskRequest) {
             RestServerKillTaskRequest msg = (RestServerKillTaskRequest) obj;
             killTask(msg);

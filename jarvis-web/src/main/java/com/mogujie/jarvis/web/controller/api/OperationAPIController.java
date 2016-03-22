@@ -39,10 +39,10 @@ public class OperationAPIController {
     return operators;
   }
 
-  @RequestMapping("/getSimilarOperator")
+  @RequestMapping("/getSimilarOperationTitles")
   @ResponseBody
-  public Object getSimilarOperator(String q) {
-    Map<String, Object> map = this.operationService.getSimilarOperator(q);
+  public Object getSimilarOperationTitles(String q) {
+    Map<String, Object> map = this.operationService.getSimilarOperationTitle(q);
     return map;
   }
 
