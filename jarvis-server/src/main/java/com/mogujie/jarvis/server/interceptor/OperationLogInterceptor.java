@@ -161,7 +161,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
         afterJobExpress.append(expressEntry.getScheduleExpression()).append("\t");
       }
 
-      operationLog.setOperationType(OperationInfo.modifyJobScheduleExp.getName());
+      operationLog.setOperationType(OperationInfo.MODIFYJOBSCHEDULEEXP.getName());
       operationLog.setPreOperationContent(this.selectJobScheduleExpress(preJob.getJobId()));
       operationLog.setAfterOperationContent(afterJobExpress.toString());
       operationLog.setOperator(msg.getUser());
@@ -219,7 +219,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
       return null;
     } else {
       for(JobScheduleExpression expression : jobScheduleExpressions) {
-        builder.append(expression).append("\t");
+        builder.append(expression.getExpression()).append("\t");
       }
     }
 

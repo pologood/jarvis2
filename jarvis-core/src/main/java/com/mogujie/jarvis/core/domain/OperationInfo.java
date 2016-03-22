@@ -14,7 +14,7 @@ public enum OperationInfo {
   SUBMITJOB("submitJob", "提交任务"),
   MODIFYJOB("modifyJob", "修改任务"),
   MODIFYJOBDEPENDENCY("modifyJobDependency", "修改任务依赖"),
-  modifyJobScheduleExp("modifyJobScheduleExp", "修改任务计划表达式"),
+  MODIFYJOBSCHEDULEEXP("modifyJobScheduleExp", "修改任务计划表达式"),
   MODIFYJOBSTATUS("modifyJobStatus", "修改任务计划表达式"),
 
   // task actor
