@@ -11,10 +11,11 @@
 
 
 <style>
-    a:link{
+    a:link {
         color: #31708f;
     }
-    a:visited{
+
+    a:visited {
         color: #31708f;
     }
 </style>
@@ -34,9 +35,10 @@
         </div>
         <div class="col-md-6 top-buffer">
             <span class="h3 pull-right">
-                <span >
+                <span>
                     <strong>
-                        <a class="text-info" target="_blank" href="${contextPath}/job/detail?jobId=${jobVo.jobId}">${jobVo.jobName}</a>
+                        <a class="text-info" target="_blank"
+                           href="${contextPath}/job/detail?jobId=${jobVo.jobId}">${jobVo.jobName}</a>
                     </strong>
                 </span> 的执行情况
             </span>
@@ -115,10 +117,9 @@
 </jsp:include>
 
 <script type="text/javascript">
-    var taskId =${taskId};
-    var stautsColor = {};
+    var jobId = '${jobId}';
 </script>
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/concept-graph.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detailDependency.js" charset="UTF-8"></script>
 
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/dependency.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detailDependency.js"></script>
 

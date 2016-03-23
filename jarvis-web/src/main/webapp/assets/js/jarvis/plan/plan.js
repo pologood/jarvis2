@@ -340,8 +340,7 @@ function taskStatusFormatter(value, row, index) {
 
 function operateFormatter(value, row, index) {
     var jobId = row["jobId"];
-    var dependUrl = contextPath + '/job/dependency?jobId=' + jobId;
-    var taskUrl = contextPath + '/task?jobIdList=' + JSON.stringify([jobId]) + '&scheduleDate=' + planQo.scheduleDate;
+    var dependUrl = contextPath + '/plan/detail?jobId=' + jobId;
     var result = [
         '<a style="white-space:nowrap;" class="edit" href="' + dependUrl + '" title="查看任务依赖" target="_blank">',
         '<i class="glyphicon glyphicon-object-align-vertical"></i>任务依赖',

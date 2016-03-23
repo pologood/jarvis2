@@ -39,6 +39,7 @@ public class JobDependVo {
 
     //绘图node——信息
     private String text;
+    private Map li_attr;
     private Long value;
     private boolean openedFlag;
 
@@ -247,5 +248,13 @@ public class JobDependVo {
     public JobDependVo setOpenedFlag(boolean openedFlag) {
         this.openedFlag = openedFlag;
         return this;
+    }
+
+    public Map getLi_attr() {
+        return li_attr;
+    }
+
+    public void setLi_attr(Map li_attr) {
+        this.li_attr = li_attr;
     }
 }

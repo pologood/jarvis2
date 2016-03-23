@@ -151,7 +151,7 @@
     </select>
 
     <select id="getJobBySimilarNames" parameterType="String" resultType="JobVo">
-        SELECT DISTINCT * FROM job
+        SELECT DISTINCT jobId,jobName,status FROM job
         <where>
             <if test="_parameter!=null and _parameter!=''">
                 jobName LIKE '%${_parameter}%'

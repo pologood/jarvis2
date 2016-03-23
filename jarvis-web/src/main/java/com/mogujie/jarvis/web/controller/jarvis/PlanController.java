@@ -39,4 +39,11 @@ public class PlanController {
         modelMap.put("planQo", JsonHelper.toJson(planQo));
         return "plan/index";
     }
+
+    @RequestMapping("detail")
+    @Passport(JarvisAuthType.plan)
+    public String detail(ModelMap modelMap,Long jobId) {
+        modelMap.put("jobId",jobId);
+        return "plan/detail";
+    }
 }
