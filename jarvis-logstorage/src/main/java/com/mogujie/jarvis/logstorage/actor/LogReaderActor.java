@@ -76,9 +76,6 @@ public class LogReaderActor extends UntypedActor {
             LOGGER.error("", e);
             throw e;
         }
-
-        LOGGER.info("=====" + response);
-
     }
 
 }
