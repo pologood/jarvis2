@@ -15,7 +15,7 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.PlanService;
 
 /**
- * 执行计划定时器，每天23:00生成下一天需要跑的job，放入plan表
+ * 执行计划定时器，每天23:30生成下一天需要跑的job，放入plan表
  *
  * @author guangming
  *

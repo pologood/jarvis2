@@ -31,10 +31,12 @@ import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.protocol.ApplicationProtos;
 import com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestDeleteApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerDeleteApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
@@ -64,6 +66,7 @@ public class AppActor extends UntypedActor {
         list.add(new ActorEntry(RestModifyApplicationRequest.class, ServerModifyApplicationResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestSetApplicationWorkerGroupRequest.class, ServerSetApplicationWorkerGroupResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestSearchAppCounterRequest.class, ServerSearchAppCounterResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestDeleteApplicationRequest.class, ServerDeleteApplicationResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -73,6 +76,8 @@ public class AppActor extends UntypedActor {
             createApplication((RestCreateApplicationRequest) obj);
         } else if (obj instanceof RestModifyApplicationRequest) {
             modifyApplication((RestModifyApplicationRequest) obj);
+        } else if (obj instanceof RestDeleteApplicationRequest) {
+            deleteApplication((RestDeleteApplicationRequest) obj);
         } else if (obj instanceof RestSetApplicationWorkerGroupRequest) {
             setApplicationWorkerGroup((RestSetApplicationWorkerGroupRequest) obj);
         } else if (obj instanceof RestSearchAppCounterRequest) {
@@ -114,6 +119,22 @@ public class AppActor extends UntypedActor {
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
             response = ServerModifyApplicationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            logger.error("", ex);
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void deleteApplication(RestDeleteApplicationRequest request) {
+        ServerDeleteApplicationResponse response = null;
+        try {
+            int appId = request.getAppId();
+            appService.delete(appId);
+            response = ServerDeleteApplicationResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerDeleteApplicationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
