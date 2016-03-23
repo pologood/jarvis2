@@ -73,9 +73,7 @@ public class SentinelController extends AbstractController {
 
     private final static int DEFAULT_LOG_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 1000);
     private final static int DEFAULT_RESULT_SIZE = ConfigUtils.getRestConfig().getInt("read.result.size", 10000);
-    private static Cache<String, Long> logOffsetCache = CacheBuilder.newBuilder()
-            .maximumSize(10000)
-            .expireAfterAccess(5, TimeUnit.MINUTES) //过期时间为5分钟
+    private static Cache<String, Long> logOffsetCache = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(5, TimeUnit.MINUTES) //过期时间为5分钟
             .build();
 
     /**
@@ -148,8 +146,8 @@ public class SentinelController extends AbstractController {
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
-                    .setAppAuth(appAuth).setJobId(jobId).build();
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId)
+                    .build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
@@ -187,8 +185,8 @@ public class SentinelController extends AbstractController {
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
-                    .setAppAuth(appAuth).setJobId(jobId).build();
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId)
+                    .build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
@@ -197,8 +195,8 @@ public class SentinelController extends AbstractController {
                     return new BaseRet(ResponseCodeEnum.FAILED, err);
                 } else {
                     long taskId = taskEntryList.get(0).getTaskId();
-                    RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder()
-                            .setAppAuth(appAuth).setTaskId(taskId).build();
+                    RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId)
+                            .build();
 
                     ServerQueryTaskStatusResponse response = (ServerQueryTaskStatusResponse) callActor(AkkaType.SERVER, request);
                     if (response.getSuccess()) {
@@ -228,8 +226,8 @@ public class SentinelController extends AbstractController {
     @POST
     @Path("result")
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseParams queryResult(@FormParam("token") String appToken, @FormParam("name") String appName,
-            @FormParam("time") long time, @FormParam("jobId") Integer jobId) {
+    public ResponseParams queryResult(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
+            @FormParam("jobId") Integer jobId) {
         LOGGER.debug("query result");
         try {
             Preconditions.checkNotNull(appToken, "token不能为null");
@@ -237,8 +235,8 @@ public class SentinelController extends AbstractController {
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
-                    .setAppAuth(appAuth).setJobId(jobId).build();
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId)
+                    .build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
@@ -252,26 +250,16 @@ public class SentinelController extends AbstractController {
                     long offset = 0;
                     int size = DEFAULT_RESULT_SIZE;
 
-                    RestReadLogRequest request = RestReadLogRequest.newBuilder()
-                            .setAppAuth(appAuth)
-                            .setFullId(fullId)
-                            .setType(StreamType.STD_OUT.getValue())
-                            .setOffset(offset)
-                            .setSize(size)
-                            .build();
+                    RestReadLogRequest request = RestReadLogRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId)
+                            .setType(StreamType.STD_OUT.getValue()).setOffset(offset).setSize(size).build();
 
                     LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                     if (response.getSuccess()) {
                         String result = response.getLog();
                         while (!response.getIsEnd()) {
                             offset = response.getOffset();
-                            request = RestReadLogRequest.newBuilder()
-                                    .setAppAuth(appAuth)
-                                    .setFullId(fullId)
-                                    .setType(StreamType.STD_OUT.getValue())
-                                    .setOffset(offset)
-                                    .setSize(size)
-                                    .build();
+                            request = RestReadLogRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).setType(StreamType.STD_OUT.getValue())
+                                    .setOffset(offset).setSize(size).build();
                             response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                             if (!response.getSuccess()) {
                                 return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
@@ -279,15 +267,14 @@ public class SentinelController extends AbstractController {
                                 result += response.getLog();
                             }
                         }
-                        result.replace("\t", "\u0001");
                         String[] rows = result.split("\n", -1);
                         rows = Arrays.copyOf(rows, rows.length - 1);
                         ArrayList<String> rowList = Lists.newArrayList(rows);
-                        Map<String,Object> map = new HashMap<String,Object>();
+                        Map<String, Object> map = new HashMap<String, Object>();
                         map.put("data", rowList);
                         map.put("isEnd", true);
                         map.put("rowCnt", rows.length);
-                        map.put("volume","");
+                        map.put("volume", "");
                         return new BaseRet(ResponseCodeEnum.SUCCESS, "成功", map);
                     } else {
                         return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
@@ -314,8 +301,8 @@ public class SentinelController extends AbstractController {
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
-                    .setAppAuth(appAuth).setJobId(jobId).build();
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId)
+                    .build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
@@ -332,13 +319,8 @@ public class SentinelController extends AbstractController {
                     }
                     int size = DEFAULT_LOG_SIZE;
 
-                    RestReadLogRequest request = RestReadLogRequest.newBuilder()
-                            .setAppAuth(appAuth)
-                            .setFullId(fullId)
-                            .setType(StreamType.STD_ERR.getValue())
-                            .setOffset(offset)
-                            .setSize(size)
-                            .build();
+                    RestReadLogRequest request = RestReadLogRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId)
+                            .setType(StreamType.STD_ERR.getValue()).setOffset(offset).setSize(size).build();
 
                     LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                     if (response.getSuccess()) {
@@ -381,14 +363,14 @@ public class SentinelController extends AbstractController {
             @Override
             public void write(OutputStream output) throws IOException, WebApplicationException {
                 try {
-                    RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
-                            .setAppAuth(appAuth).setJobId(jobId).build();
+                    RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+                            .setJobId(jobId).build();
                     ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
                     if (queryTaskReponse.getSuccess()) {
                         List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
                         if (taskEntryList == null || taskEntryList.size() != 1) {
                             LOGGER.error("jobId={} 尚未调度起来", jobId);
-                            return ;
+                            return;
                         } else {
                             long taskId = taskEntryList.get(0).getTaskId();
                             int attemptId = taskEntryList.get(0).getAttemptId();
@@ -398,13 +380,8 @@ public class SentinelController extends AbstractController {
                             boolean isEnd = false;
 
                             while (!isEnd) {
-                                RestReadLogRequest request = RestReadLogRequest.newBuilder()
-                                        .setAppAuth(appAuth)
-                                        .setFullId(fullId)
-                                        .setType(StreamType.STD_ERR.getValue())
-                                        .setOffset(offset)
-                                        .setSize(size)
-                                        .build();
+                                RestReadLogRequest request = RestReadLogRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId)
+                                        .setType(StreamType.STD_ERR.getValue()).setOffset(offset).setSize(size).build();
                                 LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                                 if (response.getSuccess()) {
                                     output.write(response.getLogBytes().toByteArray());
@@ -412,7 +389,7 @@ public class SentinelController extends AbstractController {
                                     isEnd = response.getIsEnd();
                                 } else {
                                     LOGGER.error("获取日志失败:" + response.getMessage());
-                                    return ;
+                                    return;
                                 }
                             }
                         }
@@ -436,24 +413,13 @@ public class SentinelController extends AbstractController {
      */
     private RestSubmitJobRequest vo2RequestByAdd(JobVo vo, AppAuth appAuth, String user) {
         // 构造请求
-        RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user)
-                .setJobName(vo.getJobName())
-                .setJobType(vo.getJobType())
-                .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
-                .setContentType(vo.getContentType())
-                .setContent(vo.getContent())
-                .setParameters(vo.getParams("{}"))
-                .setAppName(vo.getAppName(appAuth.getName()))
-                .setWorkerGroupId(vo.getWorkerGroupId())
-                .setDepartment(vo.getDepartment(""))
-                .setBizGroups(vo.getBizGroups(""))
-                .setPriority(vo.getPriority(1))
-                .setIsTemp(vo.isTemp())
-                .setActiveStartDate(vo.getActiveStartDate(0L))
-                .setActiveEndDate(vo.getActiveEndDate(0L))
-                .setExpiredTime(vo.getExpiredTime(60*10)) //临时任务默认十分钟
-                .setFailedAttempts(vo.getFailedAttempts(0))
-                .setFailedInterval(vo.getFailedInterval(3));
+        RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(vo.getJobName())
+                .setJobType(vo.getJobType()).setStatus(vo.getStatus(JobStatus.ENABLE.getValue())).setContentType(vo.getContentType())
+                .setContent(vo.getContent()).setParameters(vo.getParams("{}")).setAppName(vo.getAppName(appAuth.getName()))
+                .setWorkerGroupId(vo.getWorkerGroupId()).setDepartment(vo.getDepartment("")).setBizGroups(vo.getBizGroups(""))
+                .setPriority(vo.getPriority(1)).setIsTemp(vo.isTemp()).setActiveStartDate(vo.getActiveStartDate(0L))
+                .setActiveEndDate(vo.getActiveEndDate(0L)).setExpiredTime(vo.getExpiredTime(60 * 10)) //临时任务默认十分钟
+                .setFailedAttempts(vo.getFailedAttempts(0)).setFailedInterval(vo.getFailedInterval(3));
 
         return builder.build();
     }
