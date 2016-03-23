@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.web.entity.qo;
 
+import java.util.List;
+
 /**
  * @author  muming
  */
@@ -8,6 +10,8 @@ public class JobDependQo {
     private long jobId;
     private int showTaskStartTime;
     private int showTaskEndTime;
+    private List<Integer> statusList;
+    private List<Long> jobIdList;
 
     public long getJobId() {
         return jobId;
@@ -34,5 +38,21 @@ public class JobDependQo {
     public JobDependQo setShowTaskEndTime(int showTaskEndTime) {
         this.showTaskEndTime = showTaskEndTime;
         return this;
+    }
+
+    public List<Integer> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<Integer> statusList) {
+        this.statusList = statusList;
+    }
+
+    public List<Long> getJobIdList() {
+        return jobIdList;
+    }
+
+    public void setJobIdList(List<Long> jobIdList) {
+        this.jobIdList = jobIdList;
     }
 }

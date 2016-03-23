@@ -1,23 +1,22 @@
 var dependencyAPIUrl = contextPath + "/api/plan/getDependDetail?taskId=";
 var dependencyUrl = contextPath + "/plan/dependency?taskId=";
-var url = dependencyAPIUrl + taskId;
 
 
 $(function () {
-    $.ajax({
-        url:contextPath + "/assets/json/taskStatusColor.json",
-        async:false,
-        success:function(data){
-            stautsColor = data;
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化执行状态颜色', msg);
-        }
-    });
-
-    var tree = CollapsibleTree("#dependTree");
-    tree.init(url);
+    //$.ajax({
+    //    url:contextPath + "/assets/json/taskStatusColor.json",
+    //    async:false,
+    //    success:function(data){
+    //        stautsColor = data;
+    //    },
+    //    error: function (jqXHR, exception) {
+    //        var msg = getMsg4ajaxError(jqXHR, exception);
+    //        showMsg('warning', '初始化执行状态颜色', msg);
+    //    }
+    //});
+    //
+    //var tree = CollapsibleTree("#dependTree");
+    //tree.init(url);
 });
 
 //计算填充颜色

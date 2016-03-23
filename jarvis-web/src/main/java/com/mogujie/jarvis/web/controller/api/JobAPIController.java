@@ -1,6 +1,8 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.google.gson.JsonObject;
 import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.web.entity.vo.JSTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +50,7 @@ public class JobAPIController {
         }
         try {
             JobVo jobVo = jobService.getJobById(jobQo.getJobId());
-            if(jobVo == null){
+            if (jobVo == null) {
                 throw new NotFoundException("job不存在. jobId:" + jobQo.getJobId());
             }
             map.put("code", MessageStatus.SUCCESS.getValue());
@@ -131,6 +133,60 @@ public class JobAPIController {
         return jobDependService.getSubTree(jobQo);
     }
 
+    /**
+     * 获取root节点
+     */
+    @RequestMapping("/getRoot")
+    @ResponseBody
+    public Object getRoot(JobDependQo jobQo) {
+        JobDependVo jobDependVo = jobDependService.getRoot(jobQo);
+
+        JSTreeNode jsTreeNode = new JSTreeNode();
+        jsTreeNode.setText(jobDependVo.getJobName());
+        Map li_attr = new HashMap();
+        li_attr.put("jobId", jobDependVo.getJobId());
+        jsTreeNode.setLi_attr(li_attr);
+
+        List<Long> jobIdList = new ArrayList<>();
+        jobIdList.add(jobDependVo.getJobId());
+        Map<Long, Boolean> hasChildren = jobDependService.hasChildren(jobIdList);
+
+        jsTreeNode.setChildren(hasChildren.get(jobDependVo.getJobId()));
+        return jsTreeNode;
+    }
+
+    /**
+     * 获取直接子节点节点
+     */
+    @RequestMapping("/getDirectChildren")
+    @ResponseBody
+    public Object getDirectChildren(JobDependQo jobQo) {
+        List<JobDependVo> jobDependVoList = jobDependService.getDirectChildren(jobQo);
+
+        List<Long> jobIdList = new ArrayList<>();
+
+        List<JSTreeNode> jsTreeNodeList = new ArrayList<>();
+        for (JobDependVo item : jobDependVoList) {
+            jobIdList.add(item.getJobId());
+        }
+        Map<Long, Boolean> hasChildren = jobDependService.hasChildren(jobIdList);
+
+        for (JobDependVo item : jobDependVoList) {
+            JSTreeNode jsTreeNode = new JSTreeNode();
+
+            jsTreeNode.setText(item.getJobName());
+            Map li_attr = new HashMap();
+            li_attr.put("jobId", item.getJobId());
+            jsTreeNode.setLi_attr(li_attr);
+
+            jsTreeNode.setChildren(hasChildren.get(item.getJobId()));
+
+            jsTreeNodeList.add(jsTreeNode);
+        }
+
+
+        return jsTreeNodeList;
+    }
 
     /**
      * 相似jobId

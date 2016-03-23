@@ -19,7 +19,7 @@
         WHERE jobId=#{jobId}
     </select>
 
-    <select id="getChildrenById" parameterType="Long" resultType="JobDependVo">
+    <select id="getChildrenById" parameterType="JobDependQo" resultType="JobDependVo">
         SELECT job_depend.jobId
               ,job.jobName
               ,job.status
@@ -35,9 +35,43 @@
         LEFT JOIN job ON job_depend.jobId=job.jobId
         LEFT JOIN app ON job.appId=app.appId
         WHERE job_depend.preJobId=#{jobId}
+        <choose>
+            <when test="statusList!=null and statusList.size()>0">
+                AND job.status IN
+              <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+                #{status}
+              </foreach>
+            </when>
+        </choose>
     </select>
 
-    <select id="getParentById" parameterType="Long" resultType="JobDependVo">
+
+    <select id="getChildrenCount" parameterType="JobDependQo" resultType="Map">
+        SELECT count(1) as cnt,job_depend.preJobId as jobId,status
+        FROM job_depend
+        LEFT JOIN job ON job_depend.jobId=job.jobId
+        WHERE
+        <choose>
+            <when test="jobIdList!=null and jobIdList.size()>0">
+                job_depend.preJobId IN
+                <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+                  #{jobId}
+                </foreach>
+            </when>
+        </choose>
+
+        <choose>
+            <when test="statusList!=null and statusList.size()>0">
+                AND job.status IN
+                <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+                    #{status}
+                </foreach>
+            </when>
+        </choose>
+        group by jobId
+    </select>
+
+    <select id="getParentById" parameterType="JobDependQo" resultType="JobDependVo">
         SELECT job_depend.preJobId as jobId
               ,job.jobName
               ,job.status
@@ -54,7 +88,15 @@
         FROM job_depend
         LEFT JOIN job ON job_depend.preJobId=job.jobId
         LEFT JOIN app ON job.appId=app.appId
-        WHERE job_depend.jobId=#{_parameter}
+        WHERE job_depend.jobId=#{jobId}
+        <choose>
+            <when test="statusList!=null and statusList.size()>0">
+              AND job.status IN
+                <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+                  #{status}
+                </foreach>
+            </when>
+        </choose>
     </select>
 
 </mapper>

@@ -257,7 +257,7 @@ var glFuncs = {
             ajax: {
                 url: contextPath + "/api/job/getSimilarJobNames",
                 dataType: 'json',
-                delay: 250,
+                delay: 1000,
                 data: function (params) {
                     return {
                         q: params.term, // search term

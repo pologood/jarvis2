@@ -166,9 +166,9 @@ function taskStatusFormatter(value, row, index) {
 
     return result;
 }
-function taskDetailFormatter(value,row,index){
+function taskDetailFormatter(value, row, index) {
 
-    var result="<a href='"+taskDetailUrl+value+"'>"+value+"</a>";
+    var result = "<a href='" + taskDetailUrl + value + "'>" + value + "</a>";
 
     return result;
 }
@@ -197,13 +197,29 @@ function initGraph() {
         url: url,
         async: false,
         success: function (data) {
-            var children = data.children;
-            var parents = data.parents;
+            if(data.status.code){
+                showMsg('warning', '获取依赖', data.result);
+            }
+            else{
+                var children = data.children;
+                var parents = data.parents;
 
-            parentLevel = parents.length % size == 0 ? parents.length / size : parseInt(parents.length / size) + 1;
-            childLevel = children.length % size == 0 ? children.length / size : parseInt(children.length / size) + 1;
+                if (null == parents) {
+                    parentLevel = 0;
+                }
+                else {
+                    parentLevel = parents.length % size == 0 ? parents.length / size : parseInt(parents.length / size) + 1;
+                }
 
-            level = level + parentLevel + childLevel;
+                if (null == children) {
+                    childLevel = 0;
+                }
+                else {
+                    childLevel = children.length % size == 0 ? children.length / size : parseInt(children.length / size) + 1;
+                }
+
+                level = level + parentLevel + childLevel;
+            }
         },
         error: function (jqXHR, exception) {
             var msg = getMsg4ajaxError(jqXHR, exception);

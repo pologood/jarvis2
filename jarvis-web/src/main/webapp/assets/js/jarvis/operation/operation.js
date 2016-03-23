@@ -58,7 +58,7 @@ $(function () {
         ajax: {
             url: contextPath + "/api/operation/getSimilarOperationTitles",
             dataType: 'json',
-            delay: 250,
+            delay: 1000,
             data: function (params) {
                 return {
                     q: params.term, // search term
