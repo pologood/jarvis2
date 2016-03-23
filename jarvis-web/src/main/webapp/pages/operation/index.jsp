@@ -72,7 +72,7 @@
               <option value="modifyJob">修改任务</option>
               <option value="modifyJobDependency">修改任务依赖</option>
               <option value="modifyJobScheduleExp">修改任务计划表达式</option>
-              <option value="modifyJobStatus">修改任务计划表达式</option>
+              <option value="modifyJobStatus">修改任务状态</option>
               <option value="manualRerunTask">手动重跑</option>
             </select>
           </div>
