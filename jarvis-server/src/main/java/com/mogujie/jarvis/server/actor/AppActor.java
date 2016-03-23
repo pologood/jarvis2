@@ -66,6 +66,7 @@ public class AppActor extends UntypedActor {
         list.add(new ActorEntry(RestModifyApplicationRequest.class, ServerModifyApplicationResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestSetApplicationWorkerGroupRequest.class, ServerSetApplicationWorkerGroupResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestSearchAppCounterRequest.class, ServerSearchAppCounterResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestDeleteApplicationRequest.class, ServerDeleteApplicationResponse.class, MessageType.SYSTEM));
         return list;
     }
 
