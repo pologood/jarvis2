@@ -279,7 +279,7 @@ public class SentinelController extends AbstractController {
                                 result += response.getLog();
                             }
                         }
-                        result.replaceAll("\t", "\u0001");
+                        result.replace("\t", "\u0001");
                         String[] rows = result.split("\n", -1);
                         rows = Arrays.copyOf(rows, rows.length - 1);
                         ArrayList<String> rowList = Lists.newArrayList(rows);
