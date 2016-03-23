@@ -20,10 +20,12 @@ import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ApplicationProtos;
 import com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestDeleteApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerDeleteApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
@@ -114,6 +116,33 @@ public class AppController extends AbstractController {
             RestModifyApplicationRequest request = builder.build();
 
             ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
+    }
+
+    /**
+     * 删除app
+     */
+    @POST
+    @Path("delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult delete(@FormParam("user") String user,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters paras = new JsonParameters(parameters);
+            int appId = paras.getIntegerNotNull("appId");
+
+            RestDeleteApplicationRequest request = RestDeleteApplicationRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(user).setAppId(appId).build();
+
+            ServerDeleteApplicationResponse response = (ServerDeleteApplicationResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);

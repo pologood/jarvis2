@@ -14,18 +14,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dao.generate.AppMapper;
-import com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppExample;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
-import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 
 /**
  * @author guangming,muming
@@ -37,7 +35,7 @@ public class AppService {
     private AppMapper appMapper;
 
     @Inject
-    private AppWorkerGroupMapper appWorkerGroupMapper;
+    private AppWorkerGroupService appWorkerGroupService;
 
     private Map<Integer, App> appMetastore = Maps.newConcurrentMap();
 
@@ -114,6 +112,11 @@ public class AppService {
         }
     }
 
+    public void delete(int appId) {
+        appMapper.deleteByPrimaryKey(appId);
+        appWorkerGroupService.deleteByAppId(appId);
+    }
+
     /**
      * 检查——名字重复
      *
@@ -140,18 +143,12 @@ public class AppService {
      * @return ：
      */
     public boolean canAccessWorkerGroup(int appId, int workerGroupId) {
-
-        AppWorkerGroupExample example = new AppWorkerGroupExample();
-        example.createCriteria().andAppIdEqualTo(appId);
-
-        List<AppWorkerGroup> list = appWorkerGroupMapper.selectByExample(example);
-        for (AppWorkerGroup appWorkerGroup : list) {
-            if (workerGroupId == appWorkerGroup.getWorkerGroupId()) {
-                return true;
-            }
+        AppWorkerGroup appWorkerGroup = appWorkerGroupService.query(appId, workerGroupId);
+        if (appWorkerGroup == null) {
+            return false;
+        } else {
+            return true;
         }
-
-        return false;
     }
 
 }
