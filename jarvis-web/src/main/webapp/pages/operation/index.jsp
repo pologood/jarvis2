@@ -67,7 +67,7 @@
           <div class="input-group" style="width:100%">
             <span class="input-group-addon" style="width:45%">操作类型</span>
             <select id="operationType">
-              <option value=""></option>
+              <option value="">全部</option>
               <option value="submitJob">提交任务</option>
               <option value="modifyJob">修改任务</option>
               <option value="modifyJobDependency">修改任务依赖</option>
