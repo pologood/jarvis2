@@ -5,7 +5,7 @@
     "3":{"color":"#0074D9","text":"运行"},
     "4":{"color":"#2ECC40","text":"成功"},
     "5":{"color":"#FF4136","text":"失败"},
-    "6":{"color":"#111111","text":"终止"},
+    "6":{"color":"#111111","text":"Killed"},
     "90":{"color":"#AAAAAA","text":""},
     "91":{"color":"#B10DC9","text":""},
     "92":{"color":"#FFFFFF","text":""},

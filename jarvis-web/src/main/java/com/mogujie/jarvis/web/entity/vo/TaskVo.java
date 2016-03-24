@@ -15,6 +15,8 @@ public class TaskVo extends Task {
     private Integer priority;
     private String appName;
     private String workerGroupId;
+    private String workerGroupName;
+    private String ip;
 
     private Long executeTime;
     private Long avgExecuteTime;
@@ -84,4 +86,19 @@ public class TaskVo extends Task {
         this.workerGroupId = workerGroupId;
     }
 
+    public String getWorkerGroupName() {
+        return workerGroupName;
+    }
+
+    public void setWorkerGroupName(String workerGroupName) {
+        this.workerGroupName = workerGroupName;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 }

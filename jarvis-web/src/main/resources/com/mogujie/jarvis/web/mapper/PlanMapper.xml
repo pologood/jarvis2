@@ -11,7 +11,7 @@
     <sql id="planCondition">
         <where>
             <if test="jobIdList!=null">
-                jobId IN
+                job.jobId IN
                 <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
                     #{jobId}
                 </foreach>

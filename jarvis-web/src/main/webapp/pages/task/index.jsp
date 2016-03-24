@@ -7,13 +7,6 @@
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
 
-<style>
-    .modal-dialog {
-        width: 900px;
-    }
-</style>
-
-
 <div class="container">
 
     <div class="row">
@@ -131,8 +124,8 @@
                 <span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>运行</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>
+                <span><i class="fa fa-circle fa-2x" style="color: #111111"></i> Killed</span>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>--%>
             </div>
             <table id="content" data-toolbar="#toolBar">
 
@@ -141,29 +134,6 @@
         </div>
 
     </div>
-
-    <!-- 显示 task history的模态框 -->
-    <div id="taskHistoryModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">执行流水重试记录</h4>
-                </div>
-                <div class="modal-body">
-                    <table id="taskHistory">
-
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </div>
 
