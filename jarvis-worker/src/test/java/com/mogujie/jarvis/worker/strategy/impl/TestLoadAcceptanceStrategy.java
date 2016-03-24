@@ -24,7 +24,7 @@ public class TestLoadAcceptanceStrategy {
         int cpuNum = Runtime.getRuntime().availableProcessors();
         double threshold = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD, cpuNum * 1.5);
         AcceptanceStrategy acceptanceStrategy = new LoadAcceptanceStrategy();
-        Assert.assertEquals(acceptanceStrategy.accept().isAccepted(),
+        Assert.assertEquals(acceptanceStrategy.accept(null).isAccepted(),
                 ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage() <= threshold);
     }
 }

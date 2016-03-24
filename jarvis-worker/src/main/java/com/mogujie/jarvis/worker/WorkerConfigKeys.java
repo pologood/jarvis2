@@ -24,6 +24,7 @@ public interface WorkerConfigKeys {
     public static final String WORKER_EXECUTOR_POOL_KEEP_ALIVE_SECONDS = "worker.executor.pool.keep.alive.seconds";
 
     public static final String YARN_MEMORY_USAGE_THRESHOLD = "yarn.memory.usage.threshold";
+    public static final String YARN_VCORES_USAGE_THRESHOLD = "yarn.vcores.usage.threshold";
     public static final String YARN_RESOUCEMANAGER_REST_API_URIS = "yarn.resoucemanager.rest.api.uris";
     public static final String WORKER_CPU_USAGE_THRESHOLD = "worker.cpu.usage.threshold";
     public static final String WORKER_CPU_LOAD_AVG_THRESHOLD = "worker.cpu.load.avg.threshold";

@@ -29,6 +29,6 @@ public class TestTaskNumAcceptanceStrategy {
             taskPool.add(i + "+" + i, new DummyTask(null));
         }
 
-        Assert.assertEquals(acceptanceStrategy.accept().isAccepted(), taskPool.size() <= threshold);
+        Assert.assertEquals(acceptanceStrategy.accept(null).isAccepted(), taskPool.size() <= threshold);
     }
 }

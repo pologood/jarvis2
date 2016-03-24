@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 
 import com.google.common.io.Files;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
@@ -31,7 +32,7 @@ public class CpuAcceptanceStrategy implements AcceptanceStrategy {
     public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);
 
     @Override
-    public AcceptanceResult accept() throws Exception {
+    public AcceptanceResult accept(TaskDetail taskDetail) throws Exception {
         try {
             Pair<Long, Long> pair1 = getCpuStat();
             ThreadUtils.sleep(1000);

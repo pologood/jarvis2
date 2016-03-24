@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.worker.strategy;
 
+import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**
  * @author wuya
@@ -15,5 +16,5 @@ package com.mogujie.jarvis.worker.strategy;
  */
 public interface AcceptanceStrategy {
 
-  AcceptanceResult accept() throws Exception;
+    AcceptanceResult accept(TaskDetail taskDetail) throws Exception;
 }

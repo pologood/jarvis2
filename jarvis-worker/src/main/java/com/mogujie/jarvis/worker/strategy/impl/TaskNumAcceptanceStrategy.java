@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.worker.strategy.impl;
 
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
@@ -20,18 +21,16 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class TaskNumAcceptanceStrategy implements AcceptanceStrategy {
 
-  public static final int JOB_MAX_THRESHOLD = ConfigUtils.getWorkerConfig()
-      .getInt(WorkerConfigKeys.WORKER_JOB_NUM_THRESHOLD, 100);
+    public static final int JOB_MAX_THRESHOLD = ConfigUtils.getWorkerConfig().getInt(WorkerConfigKeys.WORKER_JOB_NUM_THRESHOLD, 100);
 
-  @Override
-  public AcceptanceResult accept() throws Exception {
-    int currentJobNum = TaskPool.INSTANCE.size();
-    if (currentJobNum > JOB_MAX_THRESHOLD) {
-      return new AcceptanceResult(false,
-          "client当前运行任务数" + currentJobNum + ", 超过阈值" + JOB_MAX_THRESHOLD);
+    @Override
+    public AcceptanceResult accept(TaskDetail taskDetail) throws Exception {
+        int currentJobNum = TaskPool.INSTANCE.size();
+        if (currentJobNum > JOB_MAX_THRESHOLD) {
+            return new AcceptanceResult(false, "client当前运行任务数" + currentJobNum + ", 超过阈值" + JOB_MAX_THRESHOLD);
+        }
+
+        return new AcceptanceResult(true, "");
     }
-
-    return new AcceptanceResult(true, "");
-  }
 
 }

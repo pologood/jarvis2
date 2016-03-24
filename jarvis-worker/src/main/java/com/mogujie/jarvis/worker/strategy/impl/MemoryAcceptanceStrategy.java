@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.io.Files;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
@@ -31,7 +32,7 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
     private static final double MAX_MEMORY_USAGE = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_MEMORY_USAGE_THRESHOLD, 0.9);
 
     @Override
-    public AcceptanceResult accept() throws Exception {
+    public AcceptanceResult accept(TaskDetail taskDetail) throws Exception {
         try {
             List<String> lines = Files.readLines(new File("/proc/meminfo"), StandardCharsets.UTF_8);
             long memTotal = Long.parseLong(CharMatcher.DIGIT.retainFrom(lines.get(0)));
