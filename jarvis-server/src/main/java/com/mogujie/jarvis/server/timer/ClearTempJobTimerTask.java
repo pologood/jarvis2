@@ -35,7 +35,7 @@ public class ClearTempJobTimerTask extends AbstractTimerTask {
     @Override
     public DateTime getFirstTime(DateTime currentDateTime) {
         final String startTime = "03:00:00";
-        String fristDate = currentDateTime.withDayOfWeek(1).toString("yyyy-MM-dd");
+        String fristDate = currentDateTime.withDayOfWeek(1).plusWeeks(1).toString("yyyy-MM-dd");
         return new DateTime(fristDate + "T" + startTime);
     }
 

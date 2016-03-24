@@ -321,7 +321,8 @@ public class JobService {
         List<Job> jobs = jobMapper.selectByExample(example);
         if (jobs != null) {
             for (Job job : jobs) {
-                deleteJobAndRelation(job.getJobId());
+                job.setStatus(JobStatus.DELETED.getValue());
+                updateJob(job);
             }
         }
     }
