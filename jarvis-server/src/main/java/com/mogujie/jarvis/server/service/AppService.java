@@ -50,7 +50,7 @@ public class AppService {
 
     public App getAppById(Integer appId) throws  NotFoundException {
         App app =  appMetastore.get(appId);
-        if(app ==null){
+        if(app == null){
             throw new NotFoundException("App not found. appId:" + appId);
         }
         return app;
@@ -82,13 +82,15 @@ public class AppService {
 
     public void insert(App app) {
         appMapper.insertSelective(app);
+        app = appMapper.selectByPrimaryKey(app.getAppId());
         appMetastore.put(app.getAppId(), app);
     }
 
     public void update(App app) {
-        appMapper.updateByPrimaryKeySelective(app);
-
         int appId = app.getAppId();
+        appMapper.updateByPrimaryKeySelective(app);
+        app = appMapper.selectByPrimaryKey(appId);
+
         App srcApp = appMetastore.get(appId);
         if (srcApp == null) {
             appMetastore.put(appId, app);
