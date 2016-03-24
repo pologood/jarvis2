@@ -385,6 +385,17 @@ public class CronExpression extends ScheduleExpression {
         }
     }
 
+    public String evaluate() {
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0);
+        try {
+            getTimeAfter(dateTime);
+        } catch (Exception e) {
+            return e.getMessage().replace("java.text.ParseException: ", "");
+        }
+
+        return null;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(expression);
