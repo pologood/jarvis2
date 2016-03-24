@@ -18,7 +18,7 @@ public enum TaskStatus {
     RUNNING(3, "运行"), //执行中
     SUCCESS(4, "成功"), //成功
     FAILED(5, "失败"),  //失败
-    KILLED(6, "终止"),  //killed
+    KILLED(6, "killed"),  //killed
     REMOVED(99, "删除"); //removed
 
     private int value;

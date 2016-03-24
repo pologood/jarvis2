@@ -37,14 +37,20 @@
             <span class="h3 pull-right">
                 <span>
                     <strong>
-                        <a class="text-info" target="_blank"
-                           href="${contextPath}/job/detail?jobId=${jobVo.jobId}">${jobVo.jobName}</a>
+                        <a id="jobDetail" class="text-info" target="_blank"></a>
                     </strong>
-                </span> 的执行情况
+                </span> 的计划详情
             </span>
         </div>
     </div>
 
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="text-info"><strong>未执行原因:</strong></span>
+            <span id="reason" class="text-danger h4"></span>
+        </div>
+    </div>
     <hr>
     <div>
         <span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>等待</span>
@@ -52,10 +58,10 @@
         <span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>运行</span>
         <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>
         <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #111111"></i> Killed</span>
         <span><i class="fa fa-circle fa-2x" style="color: #AAAAAA"></i>混合状态</span>
         <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>失效过期取消等</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>此任务未依赖此次执行</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>未执行</span>
 
 
         <div id="pattern" style="display: none">
@@ -118,8 +124,9 @@
 
 <script type="text/javascript">
     var jobId = '${jobId}';
+    var scheduleTime='${scheduleTime}';
 </script>
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detailDependency.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detailConcept-graph.js" charset="UTF-8"></script>
 
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detailDependency.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/detail.js"></script>
 

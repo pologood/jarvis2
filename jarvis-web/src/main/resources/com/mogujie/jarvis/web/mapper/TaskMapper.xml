@@ -113,9 +113,11 @@
         SELECT
           task.*,
           job.jobType,
+          worker.ip,
           time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task
           LEFT JOIN job ON task.jobId=job.jobId
+          LEFT JOIN worker ON task.workerId=worker.id
         WHERE taskId=#{taskId} limit 1
     </select>
 

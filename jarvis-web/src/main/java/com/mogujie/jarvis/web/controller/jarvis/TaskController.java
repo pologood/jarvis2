@@ -99,20 +99,4 @@ public class TaskController {
 
         return "task/detail";
     }
-
-
-    /**
-     * task依赖
-     */
-    @RequestMapping(value = "dependency")
-    @Passport(JarvisAuthType.job)
-    public String dependency(ModelMap modelMap, TaskDependQo taskDependQo) {
-
-        modelMap.put("taskDependQo", JsonHelper.toJson(taskDependQo));
-        modelMap.put("taskId", taskDependQo.getTaskId());
-
-        return "task/dependency";
-    }
-
-
 }

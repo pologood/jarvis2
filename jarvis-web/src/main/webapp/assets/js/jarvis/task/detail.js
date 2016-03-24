@@ -1,7 +1,11 @@
 $(function () {
-    initLog();
     initLogMore();
     initChart(echarts);
+    $('#tabNav a[href="#log"]').click(function(e){
+        e.preventDefault();
+        $(this).tab('show');
+        initLog();
+    });
 });
 
 
@@ -133,4 +137,69 @@ function initLogMore() {
     }
 }
 
+//获取taskHistory并用模态框显示
+function showTaskHistory(taskId) {
+    $("#taskHistory").bootstrapTable("destroy");
 
+    var queryParams = {};
+    queryParams["taskId"] = taskId;
+    $.ajaxSettings.async = false;
+    $("#taskHistory").bootstrapTable({
+        columns: taskHistoryColumn,
+        pagination: false,
+        sidePagination: 'server',
+        search: false,
+        url: contextPath + '/api/taskHistory/getByTaskId',
+        queryParams: function (params) {
+            for (var key in queryParams) {
+                var value = queryParams[key];
+                params[key] = value;
+            }
+            return params;
+        },responseHandler:function(res){
+            if(res.status){
+                showMsg("error","初始化执行历史列表",res.status.msg);
+                return res;
+            }
+            else{
+                return res;
+            }
+        },
+        showColumns: true,
+        showHeader: true,
+        showToggle: true,
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500, 1000],
+        paginationFirstText: '首页',
+        paginationPreText: '上一页',
+        paginationNextText: '下一页',
+        paginationLastText: '末页'
+    });
+    $.ajaxSettings.async = true;
+    $("#taskHistoryModal").modal("show");
+}
+
+var taskHistoryColumn = [{
+    field: 'executeStartTime',
+    title: '开始执行时间',
+    switchable: true,
+    formatter: formatDateTime
+}, {
+    field: 'executeEndTime',
+    title: '执行结束时间',
+    switchable: true,
+    formatter: formatDateTime
+}, {
+    field: 'dataTime',
+    title: '数据时间',
+    switchable: true,
+    formatter: formatDateTime
+}, {
+    field: 'executeUser',
+    title: '执行者',
+    switchable: true
+}, {
+    field: 'finishReason',
+    title: '结束原因',
+    switchable: true
+}];

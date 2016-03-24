@@ -42,8 +42,9 @@ public class PlanController {
 
     @RequestMapping("detail")
     @Passport(JarvisAuthType.plan)
-    public String detail(ModelMap modelMap,Long jobId) {
+    public String detail(ModelMap modelMap,Long jobId,Long scheduleTime) {
         modelMap.put("jobId",jobId);
+        modelMap.put("scheduleTime",scheduleTime);
         return "plan/detail";
     }
 }

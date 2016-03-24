@@ -1,7 +1,7 @@
 var taskStatusJson = null;
 var taskStatusColor = null;
 var taskOperation = null;
-var taskDetailUrl=contextPath+"/task/detail?taskId=";
+var taskDetailUrl = contextPath + "/task/detail?taskId=";
 
 $(function () {
     createDatetimePickerById("executeDate");
@@ -16,9 +16,9 @@ $(function () {
     $(".input-group select").select2({width: '100%'});
 
     $.ajax({
-        url:contextPath + "/api/task/getTaskStatus",
-        async:false,
-        success:function(data){
+        url: contextPath + "/api/task/getTaskStatus",
+        async: false,
+        success: function (data) {
             taskStatusJson = data;
 
             var newData = new Array();
@@ -27,7 +27,7 @@ $(function () {
             all["text"] = "全部";
             newData.push(all);
             $(data).each(function (i, c) {
-                if(c.id!=0){
+                if (0 != c.id && 99 != c.id) {
                     var item = {};
                     item["id"] = c["id"];
                     item["text"] = c["text"];
@@ -69,9 +69,9 @@ $(function () {
     });
     //初始化颜色
     $.ajax({
-        url:contextPath + "/assets/json/taskStatusColor.json",
-        async:false,
-        success:function(data){
+        url: contextPath + "/assets/json/taskStatusColor.json",
+        async: false,
+        success: function (data) {
             taskStatusColor = data;
         },
         error: function (jqXHR, exception) {
@@ -81,9 +81,9 @@ $(function () {
     });
     //初始化操作类型
     $.ajax({
-        url:contextPath + "/assets/json/taskOperation.json",
-        async:false,
-        success:function(data){
+        url: contextPath + "/assets/json/taskOperation.json",
+        async: false,
+        success: function (data) {
             taskOperation = data;
         },
         error: function (jqXHR, exception) {
@@ -157,7 +157,7 @@ function getQueryPara() {
 
     var taskStatus = new Array();
     var inputs = $("#taskStatus").find("input:checked[value!=all]");
-    if(inputs.length==0){
+    if (inputs.length == 0) {
         inputs = $("#taskStatus").find("input[value!=all]");
     }
     $(inputs).each(function (i, c) {
@@ -202,19 +202,19 @@ function initData() {
                 params[key] = value;
             }
             return params;
-        },responseHandler:function(res){
-            if(res.status){
-                showMsg("error","初始化执行列表",res.status.msg);
+        }, responseHandler: function (res) {
+            if (res.status) {
+                showMsg("error", "初始化执行列表", res.status.msg);
                 return res;
             }
-            else{
+            else {
                 return res;
             }
         },
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        sortable:true,
+        sortable: true,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
@@ -231,30 +231,30 @@ var columns = [{
     field: 'taskId',
     title: '执行ID',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: true,
-    formatter:taskDetailFormatter
+    formatter: taskDetailFormatter
 }, {
     field: 'attemptId',
     title: '最后尝试ID',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false
 }, {
     field: 'jobId',
     title: '任务ID',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'jobName',
     title: '任务名',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: jobNameFormatter
 }, {
     field: 'jobType',
     title: '任务类型',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'content',
@@ -269,57 +269,57 @@ var columns = [{
 }, {
     field: 'executeUser',
     title: '执行人',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'scheduleTime',
     title: '调度时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'dataTime',
     title: '数据时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'progress',
     title: '进度',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false,
     formatter: progressFormatter
 }, {
     field: 'workerGroupId',
     title: 'workerGroupId',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false
 }, {
     field: 'workerId',
     title: 'workerId',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'executeStartTime',
     title: '开始执行时间',
-    sortable:true,
+    sortable: true,
     switchable: true,
-    visible:false,
+    visible: false,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeEndTime',
     title: '执行结束时间',
-    sortable:true,
+    sortable: true,
     switchable: true,
-    visible:false,
+    visible: false,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeTime',
     title: '执行时长',
-    sortable:true,
+    sortable: true,
     switchable: false,
     visible: true,
     formatter: formatTimeInterval
@@ -327,53 +327,53 @@ var columns = [{
     field: 'status',
     title: '状态',
     switchable: true,
-    sortable:true,
-    width:'7%',
+    sortable: true,
+    width: '7%',
     formatter: taskStatusFormatter
 }, {
     field: 'createTime',
     title: '执行创建时间',
     switchable: false,
-    sortable:true,
+    sortable: true,
     visible: false,
     formatter: formatDateTime
 }, {
     field: 'updateTime',
     title: '执行更新时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false,
     formatter: formatDateTime
 }, {
     field: 'submitUser',
     title: '任务创建者',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'appName',
-    sortable:true,
+    sortable: true,
     title: '应用名',
     switchable: true,
     visible: true,
-    formatter:appNameFormatter
+    formatter: appNameFormatter
 }, {
     field: 'priority',
     title: '任务优先级',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'operation',
     title: '操作',
     switchable: true,
-    width:'12%',
+    width: '12%',
     formatter: operateFormatter
 }];
 
 
-function taskDetailFormatter(value,row,index){
-    var result="<a href='"+taskDetailUrl+value+"'>"+value+"</a>";
+function taskDetailFormatter(value, row, index) {
+    var result = "<a href='" + taskDetailUrl + value + "'>" + value + "</a>";
 
     return result;
 }
@@ -400,7 +400,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             data["jobId"] = jobId;
             data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
-            requestRemoteRestApi(url, text, data,true);
+            requestRemoteRestApi(url, text, data, true);
         }).on('pnotify.cancel', function () {
         });
 }
@@ -417,94 +417,18 @@ function operateFormatter(value, row, index) {
     });
 
     var result = [
-        '<div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">查看 <span class="caret"></span> </button>',
-        '<ul class="dropdown-menu">',
-        '<li><a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看当前执行依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-horizontal text-success"></i>执行依赖',
-        '</a></li>',
-        '<li><a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试记录">',
-        '<i class="glyphicon glyphicon-list text-success"></i>重试记录',
-        '</a></li>',
-        '</ul>',
-        '</div>',
-        ' <div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+        '<div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
         '<ul class="dropdown-menu">',
         operationStr,
         '</ul>',
         '</div>'
     ].join('');
 
-    result="<div style='white-space: nowrap'>"+result+"</div";
+    result = "<div style='white-space: nowrap'>" + result + "</div";
 
     return result;
 }
 
-var taskHistoryColumn = [{
-    field: 'executeStartTime',
-    title: '开始执行时间',
-    switchable: true,
-    formatter: formatDateTime
-}, {
-    field: 'executeEndTime',
-    title: '执行结束时间',
-    switchable: true,
-    formatter: formatDateTime
-}, {
-    field: 'dataTime',
-    title: '数据时间',
-    switchable: true,
-    formatter: formatDateTime
-}, {
-    field: 'executeUser',
-    title: '执行者',
-    switchable: true
-}, {
-    field: 'finishReason',
-    title: '结束原因',
-    switchable: true
-}];
-
-//获取taskHistory并用模态框显示
-function showTaskHistory(taskId) {
-    $("#taskHistory").bootstrapTable("destroy");
-
-    var queryParams = {};
-    queryParams["taskId"] = taskId;
-    $.ajaxSettings.async = false;
-    $("#taskHistory").bootstrapTable({
-        columns: taskHistoryColumn,
-        pagination: false,
-        sidePagination: 'server',
-        search: false,
-        url: contextPath + '/api/taskHistory/getByTaskId',
-        queryParams: function (params) {
-            for (var key in queryParams) {
-                var value = queryParams[key];
-                params[key] = value;
-            }
-            return params;
-        },responseHandler:function(res){
-            if(res.status){
-                showMsg("error","初始化执行历史列表",res.status.msg);
-                return res;
-            }
-            else{
-                return res;
-            }
-        },
-        showColumns: true,
-        showHeader: true,
-        showToggle: true,
-        pageSize: 20,
-        pageList: [10, 20, 50, 100, 200, 500, 1000],
-        paginationFirstText: '首页',
-        paginationPreText: '上一页',
-        paginationNextText: '下一页',
-        paginationLastText: '末页'
-    });
-    $.ajaxSettings.async = true;
-    $("#taskHistoryModal").modal("show");
-}
 
 function jobNameFormatter(value, row, index) {
     var result = '<a href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
@@ -517,7 +441,7 @@ function taskStatusFormatter(value, row, index) {
     var text = taskStatusColor[value].text;
     var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
 
-    result="<div style='white-space:nowrap;'>"+result+"</div?";
+    result = "<div style='white-space:nowrap;'>" + result + "</div?";
 
     return result;
 }
@@ -535,9 +459,9 @@ function formatResult(result) {
 function formatResultSelection(result) {
     return result.id;
 }
-function appNameFormatter(value,row,index){
+function appNameFormatter(value, row, index) {
 
-    var result="<div style='white-space: nowrap'>"+value+"</div>";
+    var result = "<div style='white-space: nowrap'>" + value + "</div>";
 
     return result;
 }

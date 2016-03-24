@@ -398,7 +398,7 @@ function showNoteInfo(thisTag, d) {
 
     options["title"] = d.jobName;
     options["content"] = content;
-    options["template"] = '<div class="popover" role="tooltip" style="width:100%"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+    options["template"] = '<div class="popover" role="tooltip" style="max-width: 600px"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
     options["animation"] = true;
     options["placement"] = "bottom";
     options["container"] = $("#popoverContainer");

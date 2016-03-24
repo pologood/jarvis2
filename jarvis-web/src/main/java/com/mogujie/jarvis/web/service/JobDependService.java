@@ -140,7 +140,6 @@ public class JobDependService {
         generateTaskList4Depend(jobDependVo, query);
 
         return jobDependVo;
-
     }
 
     /**

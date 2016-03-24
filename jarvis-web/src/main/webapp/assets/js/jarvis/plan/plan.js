@@ -340,10 +340,11 @@ function taskStatusFormatter(value, row, index) {
 
 function operateFormatter(value, row, index) {
     var jobId = row["jobId"];
-    var dependUrl = contextPath + '/plan/detail?jobId=' + jobId;
+    var scheduleTime=row["scheduleTime"];
+    var dependUrl = contextPath + '/plan/detail?jobId=' + jobId+"&scheduleTime="+scheduleTime;
     var result = [
-        '<a style="white-space:nowrap;" class="edit" href="' + dependUrl + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-vertical"></i>任务依赖',
+        '<a style="white-space:nowrap;" class="edit" href="' + dependUrl + '" title="查看任务依赖" >',
+        '<i class="glyphicon glyphicon-object-align-vertical"></i>计划详情',
         '</a>'
     ].join('');
     return result;
