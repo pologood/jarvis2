@@ -81,7 +81,7 @@ public class HiveShellTask extends ShellTask {
         }
 
         sb.append(" -e \"set hive.cli.print.header=true;");
-        sb.append("set mapred.job.name=" + task.getTaskName() + ";");
+        sb.append("set mapred.job.name=" + YarnUtils.getYarnJob(task) + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
         sb.append(MoguAnnotationUtils

@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.ShellException;
 
 /**
@@ -110,5 +111,17 @@ public class YarnUtils {
         return applicationIdSet;
 
     }
+
+    /**
+     * 获取YarnJob名称
+     * @param
+     * @return
+     */
+    public static String getYarnJob(TaskDetail taskDetail){
+
+        return taskDetail.getAppName() + "_" + taskDetail.getFullId() + "_" + taskDetail.getTaskName();
+
+    }
+
 
 }
