@@ -18,6 +18,7 @@ import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
@@ -51,8 +52,9 @@ public class TaskExecutor extends Thread {
 
     @Override
     public void run() {
-        String fullId = taskContext.getTaskDetail().getFullId();
-        String jobType = taskContext.getTaskDetail().getJobType();
+        TaskDetail taskDetail = taskContext.getTaskDetail();
+        String fullId = taskDetail.getFullId();
+        String jobType = taskDetail.getJobType();
         // 首先从task.xml里反射出具体的task信息
         TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(jobType);
         if (taskEntry == null) {
@@ -66,7 +68,7 @@ public class TaskExecutor extends Thread {
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
-                AcceptanceResult result = strategy.accept();
+                AcceptanceResult result = strategy.accept(taskDetail);
                 if (!result.isAccepted()) {
                     senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true).setMessage(result.getMessage()).build(),
                             selfActor);

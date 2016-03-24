@@ -57,8 +57,8 @@ public class TestYarnMemoryAcceptanceStrategy {
         PowerMockito.mockStatic(ConfigUtils.class);
         Mockito.when(ConfigUtils.getWorkerConfig()).thenReturn(config);
 
-        AcceptanceStrategy acceptanceStrategy = new YarnMemoryAcceptanceStrategy();
+        AcceptanceStrategy acceptanceStrategy = new YarnResourceAcceptanceStrategy();
         double threshold = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
-        Assert.assertEquals(acceptanceStrategy.accept().isAccepted(), 45678.0 / 1234567 < threshold);
+        Assert.assertEquals(acceptanceStrategy.accept(null).isAccepted(), 45678.0 / 1234567 < threshold);
     }
 }
