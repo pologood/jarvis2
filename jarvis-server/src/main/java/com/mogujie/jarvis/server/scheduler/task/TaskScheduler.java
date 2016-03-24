@@ -27,10 +27,13 @@ import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.core.util.BizUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.RetryType;
@@ -62,6 +65,7 @@ import com.mogujie.jarvis.server.service.TaskService;
  */
 public class TaskScheduler extends Scheduler {
     private static TaskScheduler instance = new TaskScheduler();
+    private final static int BIZ_KPI_ID = ConfigUtils.getServerConfig().getInt(ServerConigKeys.BIZ_KPI_ID);
 
     private TaskScheduler() {
     }
@@ -195,7 +199,7 @@ public class TaskScheduler extends Scheduler {
 
             TaskDetail taskDetail = null;
             try {
-                taskDetail = getTaskInfo(dagTask);
+                taskDetail = getTaskDetail(dagTask, true);
             } catch (NotFoundException ex) {
                 reason = ex.getMessage();
             }
@@ -384,7 +388,7 @@ public class TaskScheduler extends Scheduler {
 
         // submit to TaskQueue
         try {
-            TaskDetail taskDetail = getTaskInfo(dagTask);
+            TaskDetail taskDetail = getTaskDetail(dagTask, false);
             taskQueue.put(taskDetail);
         } catch (NotFoundException ex) {
             LOGGER.error(ex);
@@ -415,28 +419,53 @@ public class TaskScheduler extends Scheduler {
         }
     }
 
-    private TaskDetail getTaskInfo(DAGTask dagTask) throws NotFoundException {
+    private TaskDetail getTaskDetail(DAGTask dagTask, boolean getContentFromJob) throws NotFoundException {
         String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
-                .setAppName(appService.getAppNameByAppId(job.getAppId())).setUser(job.getSubmitUser()).setPriority(job.getPriority())
-                .setJobType(job.getJobType()).setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
-                .setScheduleTime(new DateTime(dagTask.getScheduleTime())).setDataTime(new DateTime(dagTask.getDataTime()))
-                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
+        Task task = taskService.get(dagTask.getTaskId());
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
+                .setAppName(appService.getAppNameByAppId(job.getAppId()))
+                .setUser(job.getSubmitUser())
+                .setPriority(job.getPriority())
+                .setJobType(job.getJobType())
+                .setScheduleTime(new DateTime(dagTask.getScheduleTime()))
+                .setDataTime(new DateTime(dagTask.getDataTime()))
+                .setGroupId(job.getWorkerGroupId())
+                .setFailedRetries(job.getFailedAttempts())
+                .setFailedInterval(job.getFailedInterval())
                 .setExpiredTime(job.getExpiredTime());
         String content = "";
-        if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
-            int scriptId = Integer.parseInt(job.getContent());
-            if (scriptService.getContentById(scriptId) != null) {
-                content = scriptService.getContentById(scriptId);
+        // 是否重新从job获取content
+        if (getContentFromJob) {
+            if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+                int scriptId = Integer.parseInt(job.getContent());
+                if (scriptService.getContentById(scriptId) != null) {
+                    content = scriptService.getContentById(scriptId);
+                } else {
+                    LOGGER.error("couldn't get content by scriptId={}", scriptId);
+                }
             } else {
-                LOGGER.error("couldn't get content by scriptId={}", scriptId);
+                content = job.getContent();
             }
         } else {
-            content = job.getContent();
+            content = task.getContent();
         }
         builder.setContent(content);
+
+        // 根据业务类型加入不同队列
+        Map<String, Object> parameterMap = JsonHelper.fromJson2JobParams(job.getParams());
+        String bizGroupStr = job.getBizGroups();
+        List<Integer> bizIds = BizUtils.getBizIds(bizGroupStr);
+        if (bizIds.contains(BIZ_KPI_ID)) {
+            parameterMap.put("queueName", "kpi");
+        } else if (task.getType() == TaskType.RERUN.getValue()) {
+            parameterMap.put("queueName", "rerun");
+        }
+        builder.setParameters(parameterMap);
+
         return builder.build();
     }
 
