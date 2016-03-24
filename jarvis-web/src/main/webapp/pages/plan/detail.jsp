@@ -60,7 +60,7 @@
         <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
         <span><i class="fa fa-circle fa-2x" style="color: #111111"></i> Killed</span>
         <span><i class="fa fa-circle fa-2x" style="color: #AAAAAA"></i>混合状态</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>失效过期取消等</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>无效任务</span>
         <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>未执行</span>
 
 

@@ -148,21 +148,22 @@ var CollapsibleTree = function (elt, w, h, initY) {
                     return getColor(d)
                 })
                 .on("click", function (d) {
-                    if (d.taskId != null) {
-                        window.location.href = contextPath + "/plan/detail?taskId=" + d.taskId;
-                    }
-                    else {
-                        if(d.taskList.length == 0){
-                            window.location.href = contextPath + "/job/detail?jobId=" + d.jobId;
-                        }
-                        else if (d.taskList.length == 1) {
-                            window.location.href = contextPath + "/plan/detail?taskId=" + d.taskList[0].taskId;
-                        }
-                        else {
-                            chooseTask(d);
-                        }
-                    }
-                    //that.toggle(d); that.updateBoth(d);
+                    window.location.href = contextPath + "/job/detail?jobId=" + d.jobId;
+                    //if (d.taskId != null) {
+                    //    window.location.href = contextPath + "/plan/detail?taskId=" + d.taskId;
+                    //}
+                    //else {
+                    //    if(d.taskList.length == 0){
+                    //        window.location.href = contextPath + "/job/detail?jobId=" + d.jobId;
+                    //    }
+                    //    else if (d.taskList.length == 1) {
+                    //        window.location.href = contextPath + "/task/detail?taskId=" + d.taskList[0].taskId;
+                    //    }
+                    //    else {
+                    //        chooseTask(d);
+                    //    }
+                    //}
+
                 }).on("mouseover", function (d) {
                     showTasks(this, d);
                 }).on("mouseout", function () {

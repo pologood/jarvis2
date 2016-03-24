@@ -193,11 +193,7 @@ function getContent(d) {
     var taskList = d.taskList;
     var content = $("<div></div>");
 
-    if (d.rootFlag == true) {
-        taskList = new Array();
-        taskList.push(d);
-    }
-    //console.log(taskList);
+    taskList=taskList==null?[]:taskList;
 
     for (var i = 0, len = taskList.length; i < len; i++) {
         var task = taskList[i];
@@ -210,7 +206,7 @@ function getContent(d) {
         var executeTime = formatTimeInterval(task.executeTime);
         var status = task.status;
 
-        var color = taskStatusColor[task.status];
+        var color = taskStatusColor[task.status].color;
         var single = $("#pattern").children().clone();
         var newUrl = dependencyUrl + taskId;
 
