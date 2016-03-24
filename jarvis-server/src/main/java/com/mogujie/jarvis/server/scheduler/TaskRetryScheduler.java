@@ -19,8 +19,6 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
-import akka.japi.tuple.Tuple3;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -40,6 +38,8 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.service.AppService;
 
+import akka.japi.tuple.Tuple3;
+
 /**
  * Task Retry Scheduler
  *
@@ -53,7 +53,8 @@ public enum TaskRetryScheduler {
     private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
     private AtomicLongMap<String> taskFailedRetryCounter = AtomicLongMap.create();
-    private int rejectInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_REJECT_INTERVAL, 10);
+    private int rejectRetryInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_REJECT_INTERVAL, 10);
+    private int autoRetryInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_AUTO_INTERVAL, 5);
     private BlockingQueue<Tuple3<String, RetryType, DateTime>> tasks = Queues.newLinkedBlockingQueue(100);
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
     private static final Logger LOGGER = LogManager.getLogger();
@@ -75,8 +76,11 @@ public enum TaskRetryScheduler {
         if (retryType == RetryType.FAILED_RETRY) {
             expiredDateTime = DateTime.now().plusSeconds(taskDetail.getFailedInterval());
             taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
+        } else if (retryType == RetryType.REJECT_RETRY) {
+            expiredDateTime = DateTime.now().plusSeconds(rejectRetryInterval);
+            taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
         } else {
-            expiredDateTime = DateTime.now().plusSeconds(rejectInterval);
+            expiredDateTime = DateTime.now().plusSeconds(autoRetryInterval);
             taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
         }
 
@@ -140,7 +144,7 @@ public enum TaskRetryScheduler {
                                     taskQueue.put(taskDetail);
                                     taskFailedRetryCounter.getAndIncrement(jobIdWithTaskId);
                                 }
-                            } else {
+                            } else if (taskKey.t2() == RetryType.REJECT_RETRY) {
                                 int expiredTime = taskDetail.getExpiredTime();
                                 if (expiredTime > 0) {
                                     if (Seconds.secondsBetween(taskDetail.getScheduleTime(), DateTime.now()).getSeconds() > expiredTime) {
@@ -157,6 +161,9 @@ public enum TaskRetryScheduler {
                                     taskManager.appCounterDecrement(appId);
                                     taskQueue.put(taskDetail);
                                 }
+                            } else {
+                                taskManager.appCounterDecrement(appId);
+                                taskQueue.put(taskDetail);
                             }
                             it.remove();
                         } else {

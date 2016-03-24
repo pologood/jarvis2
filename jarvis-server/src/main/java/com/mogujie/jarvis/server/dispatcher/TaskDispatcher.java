@@ -13,9 +13,6 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.mogujie.jarvis.core.domain.SystemStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -28,6 +25,9 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 /**
  * Take task from task queue then dispatch it to selected worker
@@ -117,7 +117,9 @@ public class TaskDispatcher extends Thread {
                                     LOGGER.error("Task[{}] Send ServerSubmitTaskRequest error: {}", fullId, response.getMessage());
                                 }
                             } catch (Exception e) {
-                                LOGGER.error("Task[{}] Send ServerSubmitTaskRequest error", fullId, e);
+                                taskRetryScheduler.addTask(task, RetryType.AUTO_RETRY);
+                                LOGGER.info("Auto retry to dispatch task[{}], cause: {}", fullId, e.getMessage());
+                                continue;
                             }
                         } else {
                             taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
