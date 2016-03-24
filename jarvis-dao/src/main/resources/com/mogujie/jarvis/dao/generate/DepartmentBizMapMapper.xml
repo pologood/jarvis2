@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mogujie.jarvis.dao.generate.DeparmentBizMapMapper">
-  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.DeparmentBizMap">
+<mapper namespace="com.mogujie.jarvis.dao.generate.DepartmentBizMapMapper">
+  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.DepartmentBizMap">
     <id column="departmentId" jdbcType="INTEGER" property="departmentId" />
     <id column="bizId" jdbcType="INTEGER" property="bizId" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
@@ -69,13 +69,13 @@
   <sql id="Base_Column_List">
     departmentId, bizId, createTime, updateTime, updateUser
   </sql>
-  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMapExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMapExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from deparment_biz_map
+    from department_biz_map
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -83,32 +83,32 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMapKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMapKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from deparment_biz_map
+    from department_biz_map
     where departmentId = #{departmentId,jdbcType=INTEGER}
       and bizId = #{bizId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMapKey">
-    delete from deparment_biz_map
+  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMapKey">
+    delete from department_biz_map
     where departmentId = #{departmentId,jdbcType=INTEGER}
       and bizId = #{bizId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMapExample">
-    delete from deparment_biz_map
+  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMapExample">
+    delete from department_biz_map
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMap">
-    insert into deparment_biz_map (departmentId, bizId, createTime, 
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMap">
+    insert into department_biz_map (departmentId, bizId, createTime, 
       updateTime, updateUser)
     values (#{departmentId,jdbcType=INTEGER}, #{bizId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMap">
-    insert into deparment_biz_map
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMap">
+    insert into department_biz_map
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="departmentId != null">
         departmentId,
@@ -144,14 +144,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMapExample" resultType="java.lang.Integer">
-    select count(*) from deparment_biz_map
+  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMapExample" resultType="java.lang.Integer">
+    select count(*) from department_biz_map
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update deparment_biz_map
+    update department_biz_map
     <set>
       <if test="record.departmentId != null">
         departmentId = #{record.departmentId,jdbcType=INTEGER},
@@ -174,7 +174,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update deparment_biz_map
+    update department_biz_map
     set departmentId = #{record.departmentId,jdbcType=INTEGER},
       bizId = #{record.bizId,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -184,8 +184,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMap">
-    update deparment_biz_map
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMap">
+    update department_biz_map
     <set>
       <if test="createTime != null">
         createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -200,8 +200,8 @@
     where departmentId = #{departmentId,jdbcType=INTEGER}
       and bizId = #{bizId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DeparmentBizMap">
-    update deparment_biz_map
+  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.DepartmentBizMap">
+    update department_biz_map
     set createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}

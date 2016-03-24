@@ -87,7 +87,7 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
 
-		<table schema="jarvis2" tableName="deparment_biz_map">
+		<table schema="jarvis2" tableName="department_biz_map">
 			<property name="useActualColumnNames" value="true"></property>
 		</table>
 

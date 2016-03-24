@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DeparmentBizMapExample {
+public class DepartmentBizMapExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected java.util.List<Criteria> oredCriteria;
 
-    public DeparmentBizMapExample() {
+    public DepartmentBizMapExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

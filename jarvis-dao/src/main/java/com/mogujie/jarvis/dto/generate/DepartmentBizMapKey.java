@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.dto.generate;
 
-public class DeparmentBizMapKey {
+public class DepartmentBizMapKey {
     private Integer departmentId;
 
     private Integer bizId;

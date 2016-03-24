@@ -2,7 +2,7 @@ package com.mogujie.jarvis.dto.generate;
 
 import java.util.Date;
 
-public class DeparmentBizMap extends DeparmentBizMapKey {
+public class DepartmentBizMap extends DepartmentBizMapKey {
     private Date createTime;
 
     private Date updateTime;
