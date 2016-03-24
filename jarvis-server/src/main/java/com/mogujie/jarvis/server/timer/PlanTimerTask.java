@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.timer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
@@ -21,6 +23,7 @@ import com.mogujie.jarvis.server.service.PlanService;
  *
  */
 public class PlanTimerTask extends AbstractTimerTask {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void run() {
@@ -30,6 +33,7 @@ public class PlanTimerTask extends AbstractTimerTask {
         Range<DateTime> range = Range.closedOpen(startDateTime, endDateTime);
         PlanService planSerivce = Injectors.getInjector().getInstance(PlanService.class);
         planSerivce.refreshAllPlan(range);
+        LOGGER.info("refresh all plan with range:", range);
     }
 
     @Override
