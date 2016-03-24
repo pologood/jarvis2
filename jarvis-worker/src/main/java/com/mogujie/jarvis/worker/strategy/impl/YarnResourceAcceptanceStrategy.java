@@ -44,11 +44,8 @@ public class YarnResourceAcceptanceStrategy implements AcceptanceStrategy {
     public AcceptanceResult accept(TaskDetail taskDetail) throws AcceptanceException {
         Map<String, Object> parameters = taskDetail.getParameters();
         Object queueNameValue = parameters.get("queueName");
-        if (queueNameValue == null) {
-            return new AcceptanceResult(true, "queueName is null");
-        }
+        String queueName = queueNameValue == null ? "root.default" : "root." + queueNameValue.toString();
 
-        String queueName = "root." + queueNameValue.toString();
         if (YARN_REST_API_URIS == null || YARN_REST_API_URIS.size() < 1) {
             throw new AcceptanceException("The value of " + WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS + " is invalid");
         }
