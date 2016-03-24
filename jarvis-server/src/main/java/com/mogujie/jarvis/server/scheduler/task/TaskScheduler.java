@@ -52,6 +52,7 @@ import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.ScriptService;
+import com.mogujie.jarvis.server.service.TaskHistoryService;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -73,6 +74,7 @@ public class TaskScheduler extends Scheduler {
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private TaskHistoryService taskHistoryService = Injectors.getInjector().getInstance(TaskHistoryService.class);
     private PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
     private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
@@ -136,6 +138,13 @@ public class TaskScheduler extends Scheduler {
         taskService.updateStatusWithEnd(taskId, TaskStatus.KILLED);
         LOGGER.info("update {} with KILLED status", taskId);
         reduceTaskNum(taskId);
+
+        taskService.updateProgress(taskId, 1.0F);
+        DAGTask dagTask = taskGraph.getTask(taskId);
+        if (dagTask != null) {
+            int attemptId = dagTask.getAttemptId();
+            taskHistoryService.updateProgress(taskId, attemptId, 1.0F);
+        }
     }
 
     @Subscribe
@@ -213,6 +222,9 @@ public class TaskScheduler extends Scheduler {
                 retryScheduler.remove(key, RetryType.FAILED_RETRY);
                 LOGGER.info("remove from retryScheduler, key={}", key);
             }
+
+            taskService.updateProgress(taskId, 1.0F);
+            taskHistoryService.updateProgress(taskId, attemptId, 1.0F);
         }
 
         reduceTaskNum(taskId);
@@ -298,8 +310,7 @@ public class TaskScheduler extends Scheduler {
 
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask == null) {
-                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
-                        task.getScheduleTime().getTime(), task.getDataTime().getTime());
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime(), task.getDataTime().getTime());
                 taskGraph.addTask(taskId, dagTask);
                 LOGGER.info("add {} to taskGraph", dagTask);
             }
@@ -316,7 +327,7 @@ public class TaskScheduler extends Scheduler {
                 String content = "";
                 if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
                     int scriptId = Integer.valueOf(job.getContent());
-                    if (scriptService.getContentById(scriptId) != null ) {
+                    if (scriptService.getContentById(scriptId) != null) {
                         content = scriptService.getContentById(scriptId);
                     } else {
                         LOGGER.error("cant't find content from scriptId={}", scriptId);
@@ -361,7 +372,7 @@ public class TaskScheduler extends Scheduler {
         Job job = jobService.get(dagTask.getJobId()).getJob();
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.valueOf(job.getContent());
-            if (scriptService.getContentById(scriptId) != null ) {
+            if (scriptService.getContentById(scriptId) != null) {
                 String content = scriptService.getContentById(scriptId);
                 task.setContent(content);
             } else {
@@ -372,10 +383,10 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("update {} with READY status", dagTask.getTaskId());
 
         // submit to TaskQueue
-        try{
+        try {
             TaskDetail taskDetail = getTaskInfo(dagTask);
             taskQueue.put(taskDetail);
-        } catch (NotFoundException ex){
+        } catch (NotFoundException ex) {
             LOGGER.error(ex);
         }
     }
@@ -408,19 +419,11 @@ public class TaskScheduler extends Scheduler {
         String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setUser(job.getSubmitUser())
-                .setPriority(job.getPriority())
-                .setJobType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
-                .setScheduleTime(new DateTime(dagTask.getScheduleTime()))
-                .setDataTime(new DateTime(dagTask.getDataTime()))
-                .setGroupId(job.getWorkerGroupId())
-                .setFailedRetries(job.getFailedAttempts())
-                .setFailedInterval(job.getFailedInterval())
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
+                .setAppName(appService.getAppNameByAppId(job.getAppId())).setUser(job.getSubmitUser()).setPriority(job.getPriority())
+                .setJobType(job.getJobType()).setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
+                .setScheduleTime(new DateTime(dagTask.getScheduleTime())).setDataTime(new DateTime(dagTask.getDataTime()))
+                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
                 .setExpiredTime(job.getExpiredTime());
         String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {

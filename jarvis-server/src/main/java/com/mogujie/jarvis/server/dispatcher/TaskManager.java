@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.dispatcher;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,13 +21,16 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 
 @Singleton
 public class TaskManager {
 
+    private Configuration serverConfig = ConfigUtils.getServerConfig();
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
 
     private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
@@ -49,7 +53,8 @@ public class TaskManager {
     }
 
     public synchronized boolean addTask(String fullId, WorkerInfo workerInfo, int appId) {
-        if (parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
+        boolean parallelismLimitEnable = serverConfig.getBoolean(ServerConigKeys.APP_MAX_PARALLELISM_LIMIT_ENABLE, false);
+        if (parallelismLimitEnable && parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
             return false;
         }
 

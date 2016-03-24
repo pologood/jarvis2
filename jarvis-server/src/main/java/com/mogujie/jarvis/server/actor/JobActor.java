@@ -98,8 +98,8 @@ import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.BizGroupService;
-import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.JobActorLogService;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -284,7 +284,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             // roll back submit job
             removeJob(jobId);
-            response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             Throwables.propagate(e);
