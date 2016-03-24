@@ -46,4 +46,6 @@
 		maxResultRows="10000" maxMapperNum="2000" />
 	<App name="流量数据平台" user="fanping" isAdmin="0"
 		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="traffic_dmp" user="junhe" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
 </Apps>
