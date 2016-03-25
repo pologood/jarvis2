@@ -313,16 +313,10 @@ public class JobService {
         }
     }
 
-    public void clearTempJobsBefore(DateTime dateTime) {
+    public List<Job> getTempJobsBefore(DateTime dateTime) {
         JobExample example = new JobExample();
         example.createCriteria().andIsTempEqualTo(true).andCreateTimeLessThan(dateTime.toDate());
-        List<Job> jobs = jobMapper.selectByExample(example);
-        if (jobs != null) {
-            for (Job job : jobs) {
-                job.setStatus(JobStatus.DELETED.getValue());
-                updateJob(job);
-            }
-        }
+        return jobMapper.selectByExample(example);
     }
 
     public void deleteJobAndRelation(long jobId) {

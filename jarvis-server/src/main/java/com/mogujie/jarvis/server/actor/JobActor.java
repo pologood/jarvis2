@@ -504,6 +504,8 @@ public class JobActor extends UntypedActor {
                 Job job = new Job();
                 job.setJobId(jobId);
                 job.setStatus(status);
+                job.setUpdateTime(DateTime.now().toDate());
+                job.setUpdateUser(msg.getUser());
                 validService.checkJob(CheckMode.EDIT_STATUS, job);
 
                 // 1. update job to DB

@@ -29,16 +29,20 @@ import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
@@ -52,6 +56,7 @@ public enum JobGraph {
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -175,9 +180,7 @@ public enum JobGraph {
     public synchronized void removeJob(long jobId) {
         if (jobMap.containsKey(jobId)) {
             DAGJob dagJob = jobMap.get(jobId);
-            dag.removeVertex(dagJob);
-            jobMap.remove(jobId);
-            LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", jobId);
+            removeJob(dagJob);
         }
     }
 
@@ -191,6 +194,20 @@ public enum JobGraph {
             jobMap.remove(dagJob.getJobId());
             dag.removeVertex(dagJob);
             LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
+        }
+
+        // 移除job的时候要把对应的task也删除
+        List<Task> tasks = taskService.getTasksByJobId(dagJob.getJobId());
+        List<Long> taskIds = new ArrayList<Long>();
+        if (tasks != null) {
+            for (Task task : tasks) {
+                if (task.getStatus() != TaskStatus.SUCCESS.getValue() &&
+                        task.getStatus() != TaskStatus.REMOVED.getValue() &&
+                        task.getStatus() != TaskStatus.RUNNING.getValue())
+                taskIds.add(task.getTaskId());
+            }
+            RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(taskIds);
+            controller.notify(removeTaskEvent);
         }
     }
 

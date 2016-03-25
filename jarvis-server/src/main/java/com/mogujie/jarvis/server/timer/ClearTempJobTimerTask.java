@@ -8,11 +8,16 @@
 
 package com.mogujie.jarvis.server.timer;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.service.JobService;
 
 /**
@@ -23,12 +28,23 @@ import com.mogujie.jarvis.server.service.JobService;
  */
 public class ClearTempJobTimerTask extends AbstractTimerTask {
     private static final Logger LOGGER = LogManager.getLogger();
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private JobGraph jobGraph = JobGraph.INSTANCE;
 
     @Override
     public void run() {
         DateTime now = DateTime.now();
-        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
-        jobService.clearTempJobsBefore(now);
+        List<Job> jobs = jobService.getTempJobsBefore(now);
+        if (jobs != null) {
+            for (Job oldJob : jobs) {
+                Job newJob = new Job();
+                newJob.setJobId(oldJob.getJobId());
+                newJob.setStatus(JobStatus.DELETED.getValue());
+                newJob.setUpdateTime(now.toDate());
+                jobService.updateJob(newJob);
+                jobGraph.removeJob(oldJob.getJobId());
+            }
+        }
         LOGGER.info("clear temp jobs before {}", now);
     }
 
