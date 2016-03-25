@@ -54,7 +54,21 @@ const CONST = {
             sparkSubmitProperties: 'sparkSubmitProperties',
             sparkVersion: 'sparkVersion'
         }
+    },
+    SCHEDULE_TYPE: { //计划类型
+        PER_DAY: 1,
+        PER_HOUR: 2,
+        PER_WEEK: 3,
+        PER_MONTH: 4,
+        PER_YEAR: 5
+    },
+    SCHEDULE_EXPRESSION_TYPE: { //表达式类型
+        CRON: 1,            //Cron表达式
+        FIXED_RATE: 2,      //固定频率
+        FIXED_DELAY: 3,     //固定时延
+        ISO8601: 4          //ISO8601
     }
+
 };
 
 

@@ -16,7 +16,7 @@ import com.mogujie.bigdata.base.PropUtils;
  */
 public class HdfsUtil {
 
-    public static String uploadFile2Hdfs(MultipartFile file, String title, String userName,boolean isDebugLocal) throws IOException {
+    public static String uploadFile2Hdfs(MultipartFile file, String fileName, String userName,boolean isDebugLocal) throws IOException {
         FileSystem fs=null;
         try {
 
@@ -24,7 +24,6 @@ public class HdfsUtil {
             File localFile = null;
 
             //拷贝到本地临时目录
-            String fileName = title + ".jar";
             String localTmpDirectory = getLocalJarDir();
             tmpDirectory = new File(localTmpDirectory);
             if (!tmpDirectory.exists()) {

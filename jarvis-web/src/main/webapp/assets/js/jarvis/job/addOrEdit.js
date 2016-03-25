@@ -9,6 +9,8 @@ var expressionId = null;
 var contentTypePreviousValue = null;    //前一个_内容类型RadioButton
 var jobContentBuffer = {};              //jobContent缓冲
 
+var pageJobEdit = {curPerHour: 0};              //缓冲
+
 $(function () {
 
     $("#jobType").on('change', function (e) {
@@ -22,9 +24,6 @@ $(function () {
     });
 
     formatDateTimePicker();         //格式化-时间选择器
-    initSearchScriptModal();        //初始化搜索Script模式框
-    //initJobScheduleModal();         //初始化任务计划模式框
-
     initJobData();
 
     //job标签页
@@ -62,10 +61,10 @@ function formatDateTimePicker() {
 function initJobData() {
     if (null != jobId && '' != jobId) {
         $.ajax({
-            url:contextPath+'/api/job/getById',
-            data:{jobId: jobId},
-            async:false,
-            success:function(data){
+            url: contextPath + '/api/job/getById',
+            data: {jobId: jobId},
+            async: false,
+            success: function (data) {
                 if (data.code != CONST.MSG_CODE.SUCCESS) {
                     alert("获取job数据出错(jobId=" + jobId + ").\n" + data.msg);
                     jobId = null;
@@ -138,6 +137,7 @@ function initJobType() {
         }
     };
 })(jQuery);
+
 
 //改变-job类型
 function changeJobType() {
@@ -244,9 +244,7 @@ function changeContentType(curRadio) {
         $("#jobContent").val("");
     }
     contentTypePreviousValue = curValue;
-
     console.log("changeContentType " + curValue + "end ^^^^^^^^^^^^^^^^");
-
 }
 
 //修改textarea大小
@@ -259,12 +257,12 @@ function changeTextArea(thisTag, rows, cols) {
 function initJobParams() {
     if (job != null) {
         var paramsArray = JSON.parse(job.params);
-        var key;
-        key = CONST.JOB_PARAMS_KEY.JAR_URL;
-        if (key in paramsArray) {
-            $("#jarUrl").val(paramsArray[key]);
-            delete paramsArray[key];
-        }
+        //var key;
+        //key = CONST.JOB_PARAMS_KEY.JAR_URL;
+        //if (key in paramsArray) {
+        //    $("#jarUrl").val(paramsArray[key]);
+        //    delete paramsArray[key];
+        //}
         $("#params").val(JSON.stringify(paramsArray));
     }
 }
@@ -272,8 +270,8 @@ function initJobParams() {
 //初始化-job权重
 function initJobPriority() {
     $.ajax({
-        url:contextPath + "/assets/json/jobPriority.json",
-        success:function(data){
+        url: contextPath + "/assets/json/jobPriority.json",
+        success: function (data) {
             var newData = new Array();
             $(data).each(function (i, c) {
                 if (this.id != 'all') {
@@ -299,8 +297,8 @@ function initJobPriority() {
 //初始化-表达式类型
 function initExpressionType() {
     $.ajax({
-        url:contextPath + "/api/job/getExpressionType",
-        success:function(data){
+        url: contextPath + "/api/job/getExpressionType",
+        success: function (data) {
             var newData = new Array();
             var no = {};
             no["id"] = "no";
@@ -349,9 +347,9 @@ function initExpressionType() {
 //初始化-业务类型
 function initBizGroupName() {
     $.ajax({
-        url:contextPath + "/api/bizGroup/getAllByCondition",
-        data:{status: 1},
-        success:function(data){
+        url: contextPath + "/api/bizGroup/getAllByCondition",
+        data: {status: 1},
+        success: function (data) {
             if (data.code == 1000) {
                 var newData = new Array();
                 $(data.data).each(function (i, c) {
@@ -389,9 +387,9 @@ function initBizGroupName() {
 //初始化-WorkerGroup
 function initWorkerGroup() {
     $.ajax({
-        url:contextPath + "/api/workerGroup/getByAppId",
-        data:{appId: appId},
-        success:function(data){
+        url: contextPath + "/api/workerGroup/getByAppId",
+        data: {appId: appId},
+        success: function (data) {
             var newData = new Array();
             $(data.rows).each(function (i, c) {
                 var item = {};
@@ -501,18 +499,18 @@ function checkContentTypeAndContent() {
             return false;
         }
     }
-    if (contentType == CONST.CONTENT_TYPE.JAR) { //jar包类型
-        if ($("#uploadJarInput")[0].files.length == 0) {
-            showMsg('warning', '提交任务', "jar文件未选择,请选择jar文件");
-            return false;
-        }
-    }
+    //if (contentType == CONST.CONTENT_TYPE.JAR) { //jar包类型
+    //    if ($("#uploadJarInput")[0].files.length == 0) {
+    //        showMsg('warning', '提交任务', "jar文件未选择,请选择jar文件");
+    //        return false;
+    //    }
+    //}
 
     if (contentType == CONST.CONTENT_TYPE.EMPTY) { //空
         showMsg('warning', '提交任务', "内容类型未选择,请选择");
     }
 
-    if (checkEmptyByIds(["jobContent"]) == false) {
+    if (!checkEmptyByIds(["jobContent"])) {
         return false;
     }
     return true;
@@ -642,11 +640,11 @@ function getJobDataFromPage() {
 
     var contentType = $("input[name='contentType']:checked").val();
     result['contentType'] = contentType;
-    if (contentType == CONST.CONTENT_TYPE.JAR) {
-        var paramsArray = JSON.parse(result['params']);
-        paramsArray[CONST.JOB_PARAMS_KEY.JAR_URL] = $('#jarUrl').val();
-        result['params'] = JSON.stringify(paramsArray);
-    }
+    //if (contentType == CONST.CONTENT_TYPE.JAR) {
+    //    var paramsArray = JSON.parse(result['params']);
+    //    paramsArray[CONST.JOB_PARAMS_KEY.JAR_URL] = $('#jarUrl').val();
+    //    result['params'] = JSON.stringify(paramsArray);
+    //}
 
     if (contentType == CONST.CONTENT_TYPE.SCRIPT) {
         result['content'] = result['scriptId'];
@@ -659,55 +657,6 @@ function getJobDataFromPage() {
     return result;
 }
 
-function uploadJarFile() {
-
-    var contentType = $("input[name='contentType']:checked").val();
-    //不是jar场合,不上传文件
-    if (contentType != CONST.CONTENT_TYPE.JAR) {
-        return true;
-    }
-
-    var formData = new FormData();
-    formData.append('file', $('#uploadJarInput')[0].files[0]);
-    formData.append('title', $('#jobName').val());
-    //$.ajax({
-    //    url : 'upload.php',
-    //    type : 'POST',
-    //    data : formData,
-    //    processData: false,  // tell jQuery not to process the data
-    //    contentType: false,  // tell jQuery not to set contentType
-    //    success : function(data) {
-    //        console.log(data);
-    //        alert(data);
-    //    }
-    //});
-
-    var async = false;
-    var flag = false;
-    $.ajax({
-        url: contextPath + '/api/file/uploadJar',
-        type: 'POST',
-        async: async,
-        data: formData,
-        processData: false,  // tell jQuery not to process the data
-        contentType: false,  // tell jQuery not to set contentType
-        success: function (json) {
-            if (json.code == CONST.MSG_CODE.SUCCESS) {
-                $('#jarUrl').val(json.data);
-                flag = true;
-            } else {
-                showMsg('warning', '上传jia包', json.msg);
-            }
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '上传jar包', msg);
-        }
-    });
-
-    return flag;
-
-}
 
 //保存job
 function saveJob() {
@@ -725,11 +674,11 @@ function saveJob() {
     var data = getJobDataFromPage();
     if (null != jobId && '' != jobId) {
         data["jobId"] = jobId;
-        var response1 = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
+        var response1 = requestRemoteRestApi("/api/job/edit", "编辑任务", data, false, true);
 
         var flag2 = true;
         if (data["scheduleExpressionList"].length > 0) {
-            var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
+            var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data, false, true);
             flag2 = response2.flag;
         }
 
@@ -741,7 +690,7 @@ function saveJob() {
 
     }
     else {
-        var response = requestRemoteRestApi("/api/job/submit", "新增任务", data);
+        var response = requestRemoteRestApi("/api/job/submit", "新增任务", data, false, true);
         if (response.flag == true) {
             window.setTimeout(function () {
                 window.location.href = window.location.href + "?jobId=" + response.data.data.jobId;
@@ -763,260 +712,13 @@ function resetJob() {
     });
 }
 
-//------------------------------ 1.1 选择脚本  --------------------------------
-//初始化——选择脚本-模态框
-function initSearchScriptModal() {
-
-    $('#searchScriptList').btsListFilter('#searchScriptInput', {
-        resetOnBlur: false,
-        minLength: 0,
-        sourceTmpl: '<a href="javascript:void(0);" data-id="{id}" data-title="{title}" class="list-group-item">{title} &nbsp|&nbsp{creator}</a>',
-        sourceData: function (text, callback) {
-            return $.getJSON(contextPath + "/api/script/queryScript?name=" + text, function (json) {
-                callback(json.data);
-            });
-        }
-    });
-
-    $("#searchScriptList").on("dblclick", "a", function () {
-        $.ajax({
-            url:contextPath + "/api/script/getScriptById?id=" + $(this).attr("data-id"),
-            async:false,
-            success:function(data){
-                if (json.code == 1000 && json.data != null) {
-                    var script = json.data;
-                    $("#scriptId").val(script.id);
-                    $("#scriptTitle").val(script.title);
-                    $("#jobContent").val(script.content);
-                    $("#searchScriptModal").modal("hide");
-                } else {
-                    alert(json.msg);
-                }
-            },
-            error: function (jqXHR, exception) {
-                var msg = getMsg4ajaxError(jqXHR, exception);
-                showMsg('warning', '初始化脚本', msg);
-            }
-        })
-    });
-
-}
-
-//显示-选择脚本-模态框
-function showSearchScriptModal() {
-    $("#searchScriptInput").val("");
-    $("#searchScriptList").empty();
-    $("#searchScriptModal").modal("show");
-}
-
-//------------------------------ 1.2 任务参数  ------------------------------
-//显示-任务参数-模态框
-function showParaModal() {
-    if ($("#jobType").val() == CONST.JOB_TYPE.SPARK_LAUNCHER) {
-        showSparkLauncherParasModal();
-    } else {
-        showCommonJobParaModal()
-    }
-}
-
-//显示-任务参数-模态框
-function showCommonJobParaModal() {
-    var trBody = $("#parasTable tbody");
-    var trPattern = $("#pattern tr");
-    $(trBody).empty();
-    var params = $("#params").val();
-    if (params != null && params != '' && params.indexOf("}") > 0) {
-        var existParas = JSON.parse(params);
-        for (var key in existParas) {
-            var value = existParas[key];
-            var tr = $(trPattern).clone();
-            $($(tr).find("input[name=key]").first()).val(key);
-            $($(tr).find("input[name=value]").first()).val(value);
-            $(trBody).append(tr);
-        }
-    }
-    $("#paraModal").modal("show");
-}
-
-///确认参数选择
-function ensurePara() {
-    var trs = $("#parasTable tbody tr");
-    var paras = {};
-    var flag = true;
-    $(trs).each(function (i, c) {
-        var key = $($(c).find("input[name=key]").first()).val();
-        var value = $($(c).find("input[name=value]").first()).val();
-        if (key == '') {
-            flag = false;
-            return false;
-        }
-        if (testChinese.test(key)) {
-            flag = false;
-            return false;
-        }
-        paras[key] = value;
-    });
-
-    if (flag == false) {
-        showMsg('warning', '修改参数', "key不能为空,且不能为中文,请修改");
-        return;
-    }
-    $("#params").val(JSON.stringify(paras));
-    $("#paraModal").modal("hide");
-}
-
-//添加参数
-function addPara(thisTag) {
-    var tr = $("#pattern tr").clone();
-    if (thisTag == null) {
-        $("#parasTable tbody").append(tr);
-    }
-    else {
-        $(thisTag).parent().parent().after(tr);
-    }
-}
-//删除参数
-function deletePara(thisTag) {
-    $(thisTag).parent().parent().remove();
-}
-
-
-//显示-任务参数-模态框
-function showSparkLauncherParasModal() {
-    var existParas = {};
-    var params = $("#params").val();
-    if (params != null && params != '' && params.indexOf("}") > 0) {
-        existParas = JSON.parse(params);
-    }
-
-    $("#sparkLauncherParasModalBody input, #sparkLauncherParasModalBody textarea").each(function (i, c) {
-        var key = $(this).attr("name");
-        if (key in existParas) {
-            $(this).val(existParas[key]);
-        } else {
-            $(this).val($(this).attr("data-defaultValue"));
-        }
-    });
-
-    $("#sparkLauncherParasModal").modal("show");
-}
-
-///确认参数选择
-function confirmJobParas4SparkLauncher() {
-    var paras = {};
-    var flag = true;
-    $("#sparkLauncherParasModalBody input, #sparkLauncherParasModalBody textarea").each(function (i, c) {
-        var key = $(this).attr("name");
-        var val = $(this).val();
-        var required = $(this).hasClass("required");
-        var desc = $(this).attr("data-desc");
-        //参数验证检查
-        if (!validSparkLauncherParas(key, val, desc, required)) {
-            flag = false;
-        }
-        paras[key] = val;
-    });
-
-    if (flag == false) {
-        return;
-    }
-
-    var paramsStr = JSON.stringify(paras);
-    $("#params").val(paramsStr);
-    $("#jobContent").val(CONST.SPARK_LAUNCHER_JOB.COMMAND + " " + paramsStr);
-    $("#sparkLauncherParasModal").modal("hide");
-}
-
-
-function validSparkLauncherParas(key, val, desc, required) {
-
-    //为空检查
-    if (required && (val == null || val.trim() == "")) {
-        showMsg('warning', 'sparkLauncher参数', desc + "不能为空");
-        return false;
-    }
-
-    switch (key) {
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverCores:    //driver核数
-            if (!$.isNumeric(val) || val < 1 || val > 4) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverMemory :  //driver内存
-            if (!/\d?g/i.test(val)) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorCores:  //executor核数
-            if (!$.isNumeric(val) || val < 1 || val > 4) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorMemory :    //executor内存
-            if (!/\d?g/i.test(val)) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.")
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorNum:    //executor数目
-            if (!$.isNumeric(val) || val < 0) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请大于0的数字.")
-                return false;
-            }
-            break;
-    }
-    return true;
-}
-
-//------------------------------ 1.3 执行计划  ------------------------------
-function initJobScheduleModal(){
-    initPerDaySelect();
-    initPerWeekSelect();
-}
-
-//初始化-perDay
-function initPerDaySelect() {
-    var newData = [];
-    for (var i = 1; i <= 31; i++) {
-        newData.push({id: i, text: i + "日"});
-    }
-
-    var selector = $("#perDay");
-    $(selector).select2({
-        data: newData,
-        width: '100%'
-    });
-}
-
-//初始化-perWeek
-function initPerWeekSelect() {
-    var newData = [{id: 1, text: "星期一"}, {id: 2, text: "星期二"}, {id: 3, text: "星期三"}
-        ,{id: 4, text: "星期四"}, {id: 5, text: "星期五"}, {id: 6, text: "星期六"},{id: 7, text: "星期天"}];
-
-    var selector = $("#perWeek");
-    $(selector).select2({
-        data: newData,
-        width: '100%'
-    });
-}
-
-//显示-任务计划-模态框
-function showJobScheduleModal() {
-    $("#jobScheduleModal").modal("show");
-}
-
-
-
 //------------------------------  2.job依赖相关 ----------------------------------
 
 //初始化通用策略
 function initCommonStrategy() {
     $.ajax({
-        url:contextPath + "/api/job/getCommonStrategy",
-        success:function(data){
+        url: contextPath + "/api/job/getCommonStrategy",
+        success: function (data) {
             var newData = new Array();
             $(data).each(function (i, c) {
                 if (this.id != 'all') {
@@ -1081,14 +783,13 @@ function generateStrategy() {
             $("#strategyList").append(dd);
         }
     });
-
 }
 
 //初始化依赖任务，如果是编辑则初始化已经依赖job
 function initDependJobs() {
     $.ajax({
-        url:contextPath + "/api/job/getAllJobIdAndName",
-        success:function(data){
+        url: contextPath + "/api/job/getAllJobIdAndName",
+        success: function (data) {
             var newData = new Array();
             $(data).each(function (i, c) {
                 var item = {};
@@ -1325,8 +1026,8 @@ function generateAlarmUsers() {
 //初始化报警类型
 function initAlarmType() {
     $.ajax({
-        url:contextPath + "/api/alarm/getAlarmType",
-        success:function(data){
+        url: contextPath + "/api/alarm/getAlarmType",
+        success: function (data) {
             $(data).each(function (i, c) {
                 var input = $('<input name="alarmType" type="checkbox" value="' + c.id + '" />');
                 $("#alarmType").append(input);
