@@ -140,7 +140,7 @@ public enum TaskRetryScheduler {
                                     Event event = new FailedEvent(jobId, taskId, "failed retry");
                                     schedulerController.notify(event);
                                 } else {
-                                    taskManager.appCounterDecrement(appId);
+                                    taskManager.removeTask(taskDetail.getFullId(), appId);
                                     taskQueue.put(taskDetail);
                                     taskFailedRetryCounter.getAndIncrement(jobIdWithTaskId);
                                 }
@@ -154,15 +154,15 @@ public enum TaskRetryScheduler {
                                         Event event = new FailedEvent(jobId, taskId, "task expired");
                                         schedulerController.notify(event);
                                     } else {
-                                        taskManager.appCounterDecrement(appId);
+                                        taskManager.removeTask(taskDetail.getFullId(), appId);
                                         taskQueue.put(taskDetail);
                                     }
                                 } else {
-                                    taskManager.appCounterDecrement(appId);
+                                    taskManager.removeTask(taskDetail.getFullId(), appId);
                                     taskQueue.put(taskDetail);
                                 }
                             } else {
-                                taskManager.appCounterDecrement(appId);
+                                taskManager.removeTask(taskDetail.getFullId(), appId);
                                 taskQueue.put(taskDetail);
                             }
                             it.remove();

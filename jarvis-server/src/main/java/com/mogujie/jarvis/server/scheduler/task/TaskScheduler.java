@@ -424,19 +424,11 @@ public class TaskScheduler extends Scheduler {
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
         Task task = taskService.get(dagTask.getTaskId());
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setUser(job.getSubmitUser())
-                .setPriority(job.getPriority())
-                .setJobType(job.getJobType())
-                .setScheduleTime(new DateTime(dagTask.getScheduleTime()))
-                .setDataTime(new DateTime(dagTask.getDataTime()))
-                .setGroupId(job.getWorkerGroupId())
-                .setFailedRetries(job.getFailedAttempts())
-                .setFailedInterval(job.getFailedInterval())
-                .setExpiredTime(job.getExpiredTime());
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
+                .setAppName(appService.getAppNameByAppId(job.getAppId())).setUser(job.getSubmitUser()).setPriority(job.getPriority())
+                .setJobType(job.getJobType()).setScheduleTime(new DateTime(dagTask.getScheduleTime()))
+                .setDataTime(new DateTime(dagTask.getDataTime())).setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts())
+                .setFailedInterval(job.getFailedInterval()).setExpiredTime(job.getExpiredTime());
         String content = "";
         // 是否重新从job获取content
         if (getContentFromJob) {
@@ -473,7 +465,8 @@ public class TaskScheduler extends Scheduler {
         Task task = taskService.get(taskId);
         if (task != null) {
             int appId = task.getAppId();
-            taskManager.appCounterDecrement(appId);
+            String fullId = IdUtils.getFullId(task.getJobId(), task.getTaskId(), task.getAttemptId());
+            taskManager.removeTask(fullId, appId);
         }
     }
 
