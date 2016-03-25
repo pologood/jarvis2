@@ -237,7 +237,7 @@ public class TaskService {
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
+        example.createCriteria().andStatusNotIn(statusList);
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
             tasks = new ArrayList<>();
@@ -247,7 +247,7 @@ public class TaskService {
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
+        example.createCriteria().andStatusIn(statusList);
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
             tasks = new ArrayList<>();

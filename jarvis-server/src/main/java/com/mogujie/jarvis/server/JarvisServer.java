@@ -166,7 +166,8 @@ public class JarvisServer {
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             DAGJob dagJob = new DAGJob(jobId, type);
             jobGraph.addJob(jobId, dagJob, null);
-            if (type.equals(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
+            if (type.equals(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE)
+                    && jobService.isActive(jobId) && !job.getIsTemp()) {
                 plan.recoverJob(jobId);
             }
         }
@@ -245,8 +246,8 @@ public class JarvisServer {
                         controller.notify(new RetryTaskEvent(jobId, task.getTaskId(), task.getExecuteUser()));
                     } else {
                         //如果该任务不是ACTIVE
-                        LOGGER.warn("{} is not enable or active.", jobId);
-                        controller.notify(new FailedEvent(jobId, task.getTaskId(), "job is not enable or active"));
+                        LOGGER.warn("{} is not enable nor active.", jobId);
+                        controller.notify(new FailedEvent(jobId, task.getTaskId(), "job is not enable nor active"));
                     }
                 } else {
                     //如果该任务已过期，置为失败

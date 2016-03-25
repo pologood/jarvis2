@@ -114,7 +114,7 @@ public class ServerActor extends UntypedActor {
         Class<?> clazz = obj.getClass();
 
         if (!clazz.equals(HeartBeatRequest.class)) {
-            LOGGER.info("receive {}", clazz.getSimpleName());
+            LOGGER.debug("receive {}", clazz.getSimpleName());
         }
 
         Pair<ActorRef, ActorEntry> pair = map.get(clazz);
@@ -153,7 +153,7 @@ public class ServerActor extends UntypedActor {
         }
 
         if (!clazz.equals(HeartBeatRequest.class)) {
-            LOGGER.info("forward message of {} from ServerActor to {}", clazz.getSimpleName(), pair.getFirst().getClass().getSimpleName());
+            LOGGER.debug("forward message of {} from ServerActor to {}", clazz.getSimpleName(), pair.getFirst().getClass().getSimpleName());
         }
         pair.getFirst().forward(obj, getContext());
     }

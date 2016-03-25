@@ -130,9 +130,8 @@ public class JobService {
         List<Long> activeJobIds = Lists.newArrayList();
         if (jobs != null) {
             for (Job job : jobs) {
-                long jobId = job.getJobId();
-                if (isActive(jobId)) {
-                    activeJobIds.add(jobId);
+                if (!job.getIsTemp() && isActive(job.getJobId())) {
+                    activeJobIds.add(job.getJobId());
                 }
             }
         }
@@ -161,8 +160,7 @@ public class JobService {
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
         Date now = DateTime.now().toDate();
-        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))
-                && !job.getIsTemp()) {
+        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
             return true;
         } else {
             return false;
