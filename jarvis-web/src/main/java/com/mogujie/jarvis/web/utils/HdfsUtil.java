@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.utils;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -16,8 +17,10 @@ import com.mogujie.bigdata.base.PropUtils;
  */
 public class HdfsUtil {
 
-    public static String uploadFile2Hdfs(MultipartFile file, String fileName, String userName,boolean isDebugLocal) throws IOException {
-        FileSystem fs=null;
+    static final Logger logger = Logger.getLogger(HdfsUtil.class);
+
+    public static String uploadFile2Hdfs(MultipartFile file, String fileName, String userName, boolean isDebugLocal) throws IOException {
+        FileSystem fs = null;
         try {
 
             File tmpDirectory = null;
@@ -32,7 +35,7 @@ public class HdfsUtil {
             localFile = new File(tmpDirectory, fileName);
             localFile.delete();
             file.transferTo(localFile);
-            if(isDebugLocal){
+            if (isDebugLocal) {
                 return localTmpDirectory + fileName;
             }
 
@@ -40,7 +43,9 @@ public class HdfsUtil {
             fs = initHadoopFileSystem();
             String distString = getHdfsJarDir(userName);
             Path distPath = new Path(distString);
+            logger.info("distPath:" + distString);
             if (!fs.exists(distPath)) {
+                logger.info("distPath not exist. path:" + distString);
                 fs.mkdirs(distPath);
             }
             fs.copyFromLocalFile(new Path(localFile.getAbsolutePath()), distPath);
@@ -56,19 +61,19 @@ public class HdfsUtil {
     /**
      * HDFS文件改名
      */
-    public static String renameFile4Hdfs(String curUrl, String newTitle,boolean isDebugLocal) throws IOException {
-        FileSystem fs=null;
+    public static String renameFile4Hdfs(String curUrl, String newTitle, boolean isDebugLocal) throws IOException {
+        FileSystem fs = null;
         try {
-            String dirPrefix = curUrl.substring(0,curUrl.lastIndexOf('/'));
+            String dirPrefix = curUrl.substring(0, curUrl.lastIndexOf('/'));
             String newUrl = dirPrefix + newTitle + ".jar";
 
-            if(isDebugLocal){
+            if (isDebugLocal) {
                 return newUrl;
             }
 
             //上传到HDFS
             fs = initHadoopFileSystem();
-            fs.rename(new Path(curUrl),new Path(newUrl));
+            fs.rename(new Path(curUrl), new Path(newUrl));
             return newUrl;
         } finally {
             IOUtils.closeQuietly(fs);
