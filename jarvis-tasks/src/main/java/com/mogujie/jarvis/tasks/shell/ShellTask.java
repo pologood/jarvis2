@@ -45,7 +45,9 @@ public class ShellTask extends AbstractTask {
         super(taskContext);
         File file = new File(STATUS_PATH);
         if (!file.exists()) {
-            file.mkdirs();
+            if (!file.mkdirs()) {
+                LOGGER.error("Can't mkdir: {}", file.getAbsolutePath());
+            }
         }
     }
 
