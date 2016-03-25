@@ -11,12 +11,15 @@ package com.mogujie.jarvis.tasks.jdbc;
 import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 
 /**
  * @author guangming
  *
  */
 public class MysqlJdbcTask extends JdbcTask {
+    private static String USER = ConfigUtils.getWorkerConfig().getString("mysql.user");
+    private static String PASSWD = ConfigUtils.getWorkerConfig().getString("mysql.passwd");
 
     public MysqlJdbcTask(TaskContext taskContext) {
         super(taskContext);
@@ -40,6 +43,16 @@ public class MysqlJdbcTask extends JdbcTask {
     @Override
     protected int getMaxQueryRows(Configuration conf) {
         return conf.getInt("mysql.max.query.rows", DEFAULT_MAX_QUERY_ROWS);
+    }
+
+    @Override
+    protected String getUser() {
+        return USER;
+    }
+
+    @Override
+    protected String getPasswd() {
+        return PASSWD;
     }
 
 }
