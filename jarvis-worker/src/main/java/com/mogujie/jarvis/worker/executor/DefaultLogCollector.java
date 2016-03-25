@@ -42,7 +42,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
     }
 
     private void sendLog(String line, boolean isEnd, StreamType streamType) {
-        LOGGER.info("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
+        LOGGER.debug("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
 
         String text = (line != null && line.length() > 0) ? line + JarvisConstants.LINE_SEPARATOR : "";
         byte[] bytes = (text).getBytes(StandardCharsets.UTF_8);
