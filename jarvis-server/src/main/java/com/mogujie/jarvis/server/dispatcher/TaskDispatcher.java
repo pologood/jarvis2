@@ -114,10 +114,12 @@ public class TaskDispatcher extends Thread {
                                         taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                                     }
                                 } else {
-                                    LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
+                                    LOGGER.error("Task[{}] Send ServerSubmitTaskRequest error: {}", fullId, response.getMessage());
                                 }
                             } catch (Exception e) {
-                                LOGGER.error("Send ServerSubmitTaskRequest error", e);
+                                taskRetryScheduler.addTask(task, RetryType.AUTO_RETRY);
+                                LOGGER.info("Auto retry to dispatch task[{}], cause: {}", fullId, e.getMessage());
+                                continue;
                             }
                         } else {
                             taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);

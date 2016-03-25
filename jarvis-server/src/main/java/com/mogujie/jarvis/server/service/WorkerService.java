@@ -41,6 +41,10 @@ public class WorkerService {
         return workerId;
     }
 
+    public Worker getWorkerById(int workId) {
+        return workerMapper.selectByPrimaryKey(workId);
+    }
+
     public void saveWorker(String ip, int port, int groupId) {
         Date dt = DateTime.now().toDate();
         Worker worker = new Worker();

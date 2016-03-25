@@ -159,7 +159,7 @@ public class JobActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        LOGGER.info("receive {}", obj.getClass().getSimpleName());
+        LOGGER.debug("receive {}", obj.getClass().getSimpleName());
         _jobActorLogService.handleLog(obj);
         try {
             if (obj instanceof RestSubmitJobRequest) {
@@ -504,6 +504,8 @@ public class JobActor extends UntypedActor {
                 Job job = new Job();
                 job.setJobId(jobId);
                 job.setStatus(status);
+                job.setUpdateTime(DateTime.now().toDate());
+                job.setUpdateUser(msg.getUser());
                 validService.checkJob(CheckMode.EDIT_STATUS, job);
 
                 // 1. update job to DB

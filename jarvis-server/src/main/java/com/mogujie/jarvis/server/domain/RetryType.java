@@ -9,5 +9,5 @@
 package com.mogujie.jarvis.server.domain;
 
 public enum RetryType {
-    REJECT_RETRY, FAILED_RETRY;
+    REJECT_RETRY, FAILED_RETRY, AUTO_RETRY;
 }

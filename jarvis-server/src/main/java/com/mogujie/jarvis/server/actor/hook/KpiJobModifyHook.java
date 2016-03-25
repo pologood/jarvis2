@@ -29,7 +29,7 @@ import com.mogujie.jarvis.server.service.JobService;
 public class KpiJobModifyHook implements JobPostHook {
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
-    private int BIZ_KPI_ID = ConfigUtils.getServerConfig().getInt(ServerConigKeys.BIZ_KPI_ID);
+    private final static int BIZ_KPI_ID = ConfigUtils.getServerConfig().getInt(ServerConigKeys.BIZ_KPI_ID);
 
     public void execute(Object obj) {
         if (obj instanceof RestModifyJobRequest) {
