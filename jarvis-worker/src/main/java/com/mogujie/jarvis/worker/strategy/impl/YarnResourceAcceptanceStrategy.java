@@ -69,16 +69,16 @@ public class YarnResourceAcceptanceStrategy implements AcceptanceStrategy {
                 for (int j = 0, jlen = childQueues.length(); j < jlen; j++) {
                     JSONObject queue = childQueues.getJSONObject(j);
                     if (queue.getString("queueName").equals(queueName)) {
-                        JSONObject queueMaxResources = queue.getJSONObject("maxResources");
-                        long queueMaxMemory = queueMaxResources.getLong("memory");
-                        long queueMaxVCores = queueMaxResources.getLong("vCores");
+                        JSONObject queueMinResources = queue.getJSONObject("minResources");
+                        long queueMinMemory = queueMinResources.getLong("memory");
+                        long queueMinVCores = queueMinResources.getLong("vCores");
 
                         JSONObject queueUsedResources = queue.getJSONObject("usedResources");
                         long queueUsedMemory = queueUsedResources.getLong("memory");
                         long queueUsedVCores = queueUsedResources.getLong("vCores");
 
-                        boolean memoryAllowed = queueUsedMemory < queueMaxMemory || clusterMemoryUsage < MAX_YARN_MEMORY_USAGE;
-                        boolean vCoresAllowed = queueUsedVCores < queueMaxVCores || clusterVCoresUsage < MAX_YARN_VCORES_USAGE;
+                        boolean memoryAllowed = queueUsedMemory < queueMinMemory || clusterMemoryUsage < MAX_YARN_MEMORY_USAGE;
+                        boolean vCoresAllowed = queueUsedVCores < queueMinVCores || clusterVCoresUsage < MAX_YARN_VCORES_USAGE;
 
                         boolean result = memoryAllowed && vCoresAllowed;
                         if (result) {
@@ -97,7 +97,7 @@ public class YarnResourceAcceptanceStrategy implements AcceptanceStrategy {
             }
         }
 
-        return new AcceptanceResult(false, "Can't get yarn resource metrics");
+        return new AcceptanceResult(true, "Can't get yarn resource metrics");
     }
 
 }
