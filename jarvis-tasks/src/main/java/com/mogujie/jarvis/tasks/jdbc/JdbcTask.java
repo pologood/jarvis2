@@ -53,8 +53,8 @@ public abstract class JdbcTask extends AbstractTask {
 
         try {
             Class.forName(getDriverName());
-            String user = task.getUser();
-            String passwd = user;
+            String user = getUser();
+            String passwd = getPasswd();
 
             connection = DriverManager.getConnection(getJdbcUrl(config), user, passwd);
             statement = connection.createStatement();
@@ -138,5 +138,9 @@ public abstract class JdbcTask extends AbstractTask {
     protected abstract String getJdbcUrl(Configuration conf);
 
     protected abstract int getMaxQueryRows(Configuration conf);
+
+    protected abstract String getUser();
+
+    protected abstract String getPasswd();
 
 }

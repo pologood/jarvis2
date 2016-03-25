@@ -41,4 +41,18 @@ public class PrestoJdbcTask extends JdbcTask {
     protected int getMaxQueryRows(Configuration conf) {
         return conf.getInt("presto.max.query.rows", DEFAULT_MAX_QUERY_ROWS);
     }
+
+    @Override
+    protected String getUser() {
+        String user = getTaskContext().getTaskDetail().getUser();
+        if (user == null || user.isEmpty()) {
+            user = getTaskContext().getTaskDetail().getAppName();
+        }
+        return user;
+    }
+
+    @Override
+    protected String getPasswd() {
+        return getUser();
+    }
 }

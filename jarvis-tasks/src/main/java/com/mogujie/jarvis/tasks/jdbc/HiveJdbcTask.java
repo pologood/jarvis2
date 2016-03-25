@@ -11,6 +11,8 @@ package com.mogujie.jarvis.tasks.jdbc;
 import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
+import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
 
 /**
  * @author guangming
@@ -40,5 +42,20 @@ public class HiveJdbcTask extends JdbcTask {
     @Override
     protected int getMaxQueryRows(Configuration conf) {
         return conf.getInt("hiveserver2.max.query.rows", DEFAULT_MAX_QUERY_ROWS);
+    }
+
+    @Override
+    protected String getUser() {
+        String user = getTaskContext().getTaskDetail().getUser();
+        if (user == null || user.isEmpty()) {
+            HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(getTaskContext().getTaskDetail().getAppName());
+            user = entity.getUser();
+        }
+        return user;
+    }
+
+    @Override
+    protected String getPasswd() {
+        return getUser();
     }
 }
