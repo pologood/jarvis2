@@ -107,10 +107,12 @@
         b.id as expressionId,
         b.expressionType,
         b.expression,
+        app.appName,
         c.id as scriptId,
         c.title as scriptTitle,
         c.content as scriptContent
         FROM job a
+        LEFT JOIN app ON a.appId=app.appId
         LEFT JOIN job_schedule_expression b  ON a.jobId=b.jobId
         LEFT JOIN ironman.script  c ON a.contentType = 2 and c.id = a.content and c.status = 0
         WHERE a.jobId=#{jobId} limit 1

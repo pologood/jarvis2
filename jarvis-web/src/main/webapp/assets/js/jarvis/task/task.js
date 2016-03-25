@@ -15,6 +15,24 @@ $(function () {
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
 
+    initTaskStatus();
+    initTaskColor();
+    initTaskOperation();
+
+    initBatchOperation();
+
+
+    glFuncs.initJobId("jobId");
+
+    glFuncs.initExecuteUser("executeUser");
+
+    glFuncs.initJobName("jobName");
+
+    initSearchCondition();
+    initData();
+});
+
+function initTaskStatus() {
     $.ajax({
         url: contextPath + "/api/task/getTaskStatus",
         async: false,
@@ -67,6 +85,9 @@ $(function () {
             showMsg('warning', '初始化执行状态', msg);
         }
     });
+}
+
+function initTaskColor() {
     //初始化颜色
     $.ajax({
         url: contextPath + "/assets/json/taskStatusColor.json",
@@ -79,7 +100,10 @@ $(function () {
             showMsg('warning', '初始化执行状态颜色', msg);
         }
     });
-    //初始化操作类型
+}
+
+//初始化操作类型
+function initTaskOperation() {
     $.ajax({
         url: contextPath + "/assets/json/taskOperation.json",
         async: false,
@@ -91,22 +115,82 @@ $(function () {
             showMsg('warning', '初始化操作类型', msg);
         }
     })
+}
+
+function initBatchOperation() {
+    if (null == taskOperation) {
+        return;
+    }
+    var result = {};
+    for (var key in taskOperation) {
+        var arr = taskOperation[key];
+        arr.forEach(function (e) {
+            if (result[e.url]) {
+                item = result[e.url];
+                item.allowStatus.push(key);
+            }
+            else {
+                var item = {};
+                item["text"] = e.text;
+                item["allowStatus"] = [key];
+                result[e.url] = item;
+            }
+        });
+    }
+
+    var op = $("<div  style='display: inline-block'></div>");
+    for (var key in result) {
+        var item = result[key];
+        var button = $("<button type='button' class='btn btn-sm btn-default' style='margin: 2px'></button>");
+        button.text(item.text);
+        button.attr("url", key);
+        button.attr("allowStatus", JSON.stringify(item.allowStatus));
+        button.on("click", function (e) {
+            var self = e.target;
+            var arr = JSON.parse($(self).attr("allowstatus"));
+            var operationName=$(self).text();
+            //允许的状态
+            var allowStatus = {};
+            arr.forEach(function (e) {
+                allowStatus[e] = e;
+            });
+
+            var selecteds = glFuncs.getIdSelections("content");
+            var flag=false;
+
+            for(var i=0;i<selecteds.length;i++){
+                var item=selecteds[i];
+                if(allowStatus[item.status]){
+                    flag=true;
+                }
+                else{
+                    flag=false;
+                    showMsg("warning","批量删除",item.jobName+'的当前状态不支持'+operationName+"操作,请重新选择");
+                    break;
+                }
+            }
+            //删除
+            if(flag){
+                var url = $(self).attr("url");
+                var taskIds=[];
+                for(var i=0;i<selecteds.length;i++){
+                    taskIds.push(selecteds[i].taskId);
+                };
+                var data={taskIds:taskIds};
+                requestRemoteRestApi(url,'批量'+operationName,data,true,true);
+            }
 
 
-    glFuncs.initJobId("jobId");
+        });
+        op.append(button);
+    }
+    $("#toolBar").append(op);
+}
 
-    glFuncs.initExecuteUser("executeUser");
-
-    glFuncs.initJobName("jobName");
-
-    initSearchCondition();
-    initData();
-});
 
 //查找
 function search() {
     $("#content").bootstrapTable("refresh");
-
 }
 
 function initSearchCondition() {
@@ -226,8 +310,13 @@ function initData() {
         exportDataType: 'basic'
     });
 }
+
 //字段配置
 var columns = [{
+    field: 'choose',
+    checkbox: true,
+    visible: true
+}, {
     field: 'taskId',
     title: '执行ID',
     switchable: true,
@@ -297,8 +386,8 @@ var columns = [{
     sortable: true,
     visible: false
 }, {
-    field: 'workerId',
-    title: 'workerId',
+    field: 'ip',
+    title: 'IP',
     sortable: true,
     switchable: true,
     visible: false
@@ -435,6 +524,7 @@ function jobNameFormatter(value, row, index) {
 
     return result;
 }
+
 //执行状态格式化
 function taskStatusFormatter(value, row, index) {
     var color = taskStatusColor[value].color;
@@ -445,6 +535,7 @@ function taskStatusFormatter(value, row, index) {
 
     return result;
 }
+
 //百分比格式化
 function progressFormatter(value, row, index) {
     var result = value * 100 + "%";
@@ -455,10 +546,12 @@ function progressFormatter(value, row, index) {
 function formatResult(result) {
     return result.text;
 }
+
 //格式化结果选择框
 function formatResultSelection(result) {
     return result.id;
 }
+
 function appNameFormatter(value, row, index) {
 
     var result = "<div style='white-space: nowrap'>" + value + "</div>";

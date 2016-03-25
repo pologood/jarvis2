@@ -125,7 +125,7 @@
                 <tr>
                     <td class="bg-warning" width="7%">应用</td>
                     <td class="bg-info">
-                        <span id="appId"></span>
+                        <span id="appName"></span>
                     </td>
 
                     <td class="bg-warning" width="7%">worker组</td>
@@ -150,7 +150,7 @@
                         <span id="activeEndDate"></span>
                     </td>
 
-                    <td class="bg-warning" width="7%">超时时长</td>
+                    <td class="bg-warning" width="7%">超时调度时长</td>
                     <td class="bg-info">
                         <span id="expiredTime"></span>
                     </td>

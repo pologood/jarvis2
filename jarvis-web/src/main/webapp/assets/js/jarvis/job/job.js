@@ -1,4 +1,3 @@
-
 var jobPriority = {};
 var bizGroup = {};
 
@@ -7,15 +6,16 @@ $(function () {
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
 
-    glFuncs.initJobType("jobType",false);
+    glFuncs.initJobType("jobType", false);
 
-    glFuncs.initJobStatus("jobStatus",false);
+    glFuncs.initJobStatus("jobStatus", false);
 
+    initJobBatchOperation();
 
     $.ajax({
-        url:contextPath + "/assets/json/jobPriority.json",
-        async:false,
-        success:function(data){
+        url: contextPath + "/assets/json/jobPriority.json",
+        async: false,
+        success: function (data) {
             $(data).each(function (i, c) {
                 var key = c.id;
                 var text = c.text;
@@ -47,8 +47,8 @@ $(function () {
 
 function initSubmitUser() {
     $.ajax({
-        url:contextPath + "/api/job/getSubmitUsers",
-        success:function(data){
+        url: contextPath + "/api/job/getSubmitUsers",
+        success: function (data) {
             var newData = new Array();
             $(data).each(function (i, c) {
                 var item = {};
@@ -69,10 +69,49 @@ function initSubmitUser() {
 
 }
 
+//批量操作
+function initJobBatchOperation() {
+    var $wrapper = $("<div style='display: inline-block'></div>");
+    $(glFuncs.jobStatus).each(function (i, c) {
+        if (c.id != 3) {
+            var $button = $("<button class='btn btn-sm btn-default' style='margin:2px'></button>");
+            $button.attr("status", c.id);
+            $button.text(c.text);
+            $wrapper.append($button);
+            $button.on("click", function (e) {
+                var self = e.target;
+                var status = $(self).attr("status");
+                var operationName = $(self).text();
+                var selecteds = glFuncs.getIdSelections("content");
+
+                var flag = false;
+                var jobIds = [];
+                $(selecteds).each(function (i, c) {
+                    if (appId == c.appId) {
+                        flag = true;
+                        jobIds.push(c.jobId);
+                    }
+                    else {
+                        showMsg("warning", "批量" + operationName, "只能" + operationName + "本系统提交的任务，本系统为jarvis-web");
+                        flag = false;
+                        return false;
+                    }
+                });
+
+                if (flag) {
+                    var data = {jobIds: jobIds, status: status};
+                    requestRemoteRestApi("/api/job/status/set", "批量"+operationName, data,true,true);
+                }
+
+            })
+        }
+    });
+    $("#toobar").append($wrapper);
+}
 function initApp() {
     $.ajax({
-        url:contextPath + "/api/app/getApps",
-        success:function(data){
+        url: contextPath + "/api/app/getApps",
+        success: function (data) {
             var newData = new Array();
             $(data.rows).each(function (i, c) {
                 var item = {};
@@ -95,8 +134,8 @@ function initApp() {
 
 function initWorkerGroup() {
     $.ajax({
-        url:contextPath + "/api/workerGroup/getAllWorkerGroup",
-        success:function(data){
+        url: contextPath + "/api/workerGroup/getAllWorkerGroup",
+        success: function (data) {
             var newData = new Array();
             $(data).each(function (i, c) {
                 var item = {};
@@ -180,9 +219,9 @@ function getQueryPara() {
 
 function getBizGroup() {
     $.ajax({
-        url:contextPath + "/api/bizGroup/getAllByCondition",
-        async:false,
-        success:function(data){
+        url: contextPath + "/api/bizGroup/getAllByCondition",
+        async: false,
+        success: function (data) {
             $(data.data).each(function (i, c) {
                 bizGroup[c.id] = c.name;
             });
@@ -210,12 +249,12 @@ function initData() {
             }
             return params;
         },
-        responseHandler:function(res){
-            if(res.status){
-                showMsg("error","初始化任务列表",res.status.msg);
+        responseHandler: function (res) {
+            if (res.status) {
+                showMsg("error", "初始化任务列表", res.status.msg);
                 return res;
             }
-            else{
+            else {
                 return res;
             }
         },
@@ -242,6 +281,9 @@ function updateJobStatus(jobId, jobStatus) {
 }
 //job的字段列表
 var columns = [{
+    field: 'choose',
+    checkbox: true
+}, {
     field: 'jobId',
     title: '任务id',
     sortable: true,
@@ -377,8 +419,8 @@ function jobPriorityFormatter(value, row, index) {
     var text = jobPriority[value];
     if (text == null) {
         $.ajax({
-            url:contextPath + "/assets/json/jobPriority.json",
-            success:function(data){
+            url: contextPath + "/assets/json/jobPriority.json",
+            success: function (data) {
                 $(data).each(function (i, c) {
                     var key = c.id;
                     if (value == key) {
@@ -408,8 +450,7 @@ function operateFormatter(value, row, index) {
     var status = row["status"];
 
 
-    var result = [
-        ].join('');
+    var result = [].join('');
 
     if (appId == jobAppId) {
         var edit = [
@@ -423,7 +464,7 @@ function operateFormatter(value, row, index) {
 
         var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span> </button>';
         operation = operation + '<ul class="dropdown-menu">';
-        $(jobStatus).each(function (i, c) {
+        $(glFuncs.jobStatus).each(function (i, c) {
             if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
                 var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',' + c["id"] + ')" >' + c["text"] + '</a></li>';
                 operation = operation + li;

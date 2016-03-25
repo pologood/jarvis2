@@ -173,7 +173,7 @@ function stringToArr(source) {
 
 var glFuncs = {
 
-    jobStatus:null,
+    jobStatus: null,
 
     initJobStatus: function (id, async) {
         $.ajax({
@@ -181,7 +181,7 @@ var glFuncs = {
             async: async != null ? async : true,
             success: function (data) {
                 glFuncs.jobStatus = data;
-                $("#"+id).select2({
+                $("#" + id).select2({
                     data: data,
                     width: '100%'
                 });
@@ -193,7 +193,7 @@ var glFuncs = {
         })
     },
 
-    jobTypeJson:null,
+    jobTypeJson: null,
 
     initJobType: function (id, async) {
 
@@ -202,7 +202,7 @@ var glFuncs = {
             async: async != null ? async : true,
             success: function (data) {
                 glFuncs.jobTypeJson = data;
-                $("#"+id).select2({
+                $("#" + id).select2({
                     data: data,
                     width: '100%',
                     tags: true
@@ -282,11 +282,17 @@ var glFuncs = {
             escapeMarkup: function (markup) {
                 return markup;
             },
-            minimumInputLength: 3,
+            minimumInputLength: 1,
             templateResult: formatResult,
             templateSelection: formatResultSelection,
             width: '100%',
             tags: true
+        });
+    },
+    //获取被选中的执行信息
+    getIdSelections: function (id) {
+        return $.map($("#" + id).bootstrapTable('getSelections'), function (row) {
+            return row;
         });
     }
 

@@ -94,8 +94,10 @@
         job.priority,
         job.workerGroupId,
         app.appName,
+        worker.ip,
         time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
+        LEFT JOIN worker ON task.workerId=worker.id
         <include refid="condition"/>
         <choose>
             <when test="sort!=null and sort!=''">
