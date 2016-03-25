@@ -13,11 +13,16 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.mybatis.guice.transactional.Transactional;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
+import com.mogujie.jarvis.dto.generate.Department;
+import com.mogujie.jarvis.dto.generate.DepartmentBizMap;
 import com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequest;
 import com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequest;
 import com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequest;
@@ -58,6 +63,7 @@ public class DepartmentActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
+        LOGGER.info("receive {}", obj.getClass().getSimpleName());
         if (obj instanceof RestCreateDepartmentRequest) {
             createDepartment((RestCreateDepartmentRequest) obj);
         } else if (obj instanceof RestModifyDepartmentRequest) {
@@ -74,24 +80,99 @@ public class DepartmentActor extends UntypedActor {
 
     }
 
+    @Transactional
     private void createDepartment(RestCreateDepartmentRequest request) {
-        //TODO
+        ServerCreateDepartmentResponse response;
+        try {
+            Department department = new Department();
+            department.setName(request.getName());
+            department.setUpdateUser(request.getUser());
+            DateTime now = DateTime.now();
+            department.setCreateTime(now.toDate());
+            department.setUpdateTime(now.toDate());
+            departmentService.insert(department);
+
+            response = ServerCreateDepartmentResponse.newBuilder().setSuccess(true).setId(department.getId()).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerCreateDepartmentResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
     }
 
+    @Transactional
     private void modifyDepartment(RestModifyDepartmentRequest request) {
-        //TODO
+        ServerModifyDepartmentResponse response;
+        try {
+            Department department = new Department();
+            department.setName(request.getName());
+            department.setUpdateUser(request.getUser());
+            department.setUpdateTime(DateTime.now().toDate());
+            departmentService.update(department);
+
+            response = ServerModifyDepartmentResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerModifyDepartmentResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
     }
 
+    @Transactional
     private void deleteDepartment(RestDeleteDepartmentRequest request) {
-        //TODO
+        ServerDeleteDepartmentResponse response;
+        try {
+            departmentService.deleteDepartmen(request.getId());
+            response = ServerDeleteDepartmentResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerDeleteDepartmentResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
     }
 
+    @Transactional
     private void createDeparmentBizMap(RestCreateDepartmentBizMapRequest request) {
-        //TODO
+        ServerCreateDepartmentBizMapResponse response;
+        try {
+            DepartmentBizMap map = new DepartmentBizMap();
+            map.setDepartmentId(request.getDepartmentId());
+            map.setBizId(request.getBizId());
+            map.setUpdateUser(request.getUser());
+            DateTime now = DateTime.now();
+            map.setCreateTime(now.toDate());
+            map.setUpdateTime(now.toDate());
+            departmentService.insertMap(map);
+
+            response = ServerCreateDepartmentBizMapResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerCreateDepartmentBizMapResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
     }
 
+    @Transactional
     private void deleteDepartmentBizMap(RestDeleteDepartmentBizMapRequest request) {
-        //TODO
+        ServerDeleteDepartmentBizMapResponse response;
+        try {
+            departmentService.deleteMap(request.getDepartmentId(), request.getBizId());
+            response = ServerDeleteDepartmentBizMapResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerDeleteDepartmentBizMapResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
     }
 
 }

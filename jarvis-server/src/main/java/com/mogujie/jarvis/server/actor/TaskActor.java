@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import com.mogujie.jarvis.server.service.TaskActorLogService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -75,14 +78,11 @@ import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskActorLogService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.util.PlanUtil;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -163,10 +163,10 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void killTask(RestServerKillTaskRequest msg) throws Exception {
-        LOGGER.info("start killTask");
         ServerKillTaskResponse response;
         try {
             List<Long> taskIds = msg.getTaskIdList();
+            LOGGER.info("start killTask taskIds={}", taskIds);
             for (long taskId : taskIds) {
                 Task task = taskService.get(taskId);
                 if (task == null) {
@@ -236,7 +236,6 @@ public class TaskActor extends UntypedActor {
      */
     @Transactional
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
-        LOGGER.info("start manualRerunTask");
         ServerManualRerunTaskResponse response;
         String user = msg.getUser();
         try {
@@ -244,6 +243,7 @@ public class TaskActor extends UntypedActor {
             List<Long> taskIdList = new ArrayList<Long>();
             DateTime startDate = new DateTime(msg.getStartTime());
             DateTime endDate = new DateTime(msg.getEndTime());
+            LOGGER.info("start manualRerunTask, jobIdList={}, startDate={}, endDate={}", jobIdList, startDate, endDate);
             // 1.生成所有任务的执行计划
             Range<DateTime> range = Range.closed(startDate, endDate);
             Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
@@ -340,11 +340,11 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void modifyTaskStatus(RestServerModifyTaskStatusRequest msg) {
-        LOGGER.info("start modifyTaskStatus");
         ServerModifyTaskStatusResponse response;
         try {
             long taskId = msg.getTaskId();
             TaskStatus status = TaskStatus.parseValue(msg.getStatus());
+            LOGGER.info("start modifyTaskStatus, taskId={}, status={}", taskId, status);
             Event event = new UnhandleEvent();
             String reason = "Manual modify task status.";
             if (status.equals(TaskStatus.SUCCESS)) {
@@ -373,10 +373,10 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void queryTaskRelation(RestServerQueryTaskRelationRequest msg) throws Exception {
-        LOGGER.info("start queryTaskRelation");
         ServerQueryTaskRelationResponse response;
         try {
             long taskId = msg.getTaskId();
+            LOGGER.debug("start queryTaskRelation, taskId={}", taskId);
             ServerQueryTaskRelationResponse.Builder builder = ServerQueryTaskRelationResponse.newBuilder();
             Map<Long, List<Long>> taskRelationMap;
             if (msg.getRelationType() == JobRelationType.PARENT.getValue()) {
@@ -412,10 +412,10 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void queryTaskStatus(RestServerQueryTaskStatusRequest msg) throws Exception {
-        LOGGER.info("start queryTaskStatus");
         ServerQueryTaskStatusResponse response;
         try {
             long taskId = msg.getTaskId();
+            LOGGER.debug("start queryTaskStatus, taskId={}", taskId);
             Task task = taskService.get(taskId);
             if (task != null) {
                 response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(true).setStatus(task.getStatus()).build();
@@ -437,10 +437,10 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void removeTask(RestServerRemoveTaskRequest msg) throws Exception {
-        LOGGER.info("start removeTask");
         ServerRemoveTaskResponse response;
         try {
             List<Long> taskIds = msg.getTaskIdList();
+            LOGGER.debug("start removeTask, taskIds={}", taskIds);
             RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(taskIds);
             controller.notify(removeTaskEvent);
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(true).setMessage("task has been removed").build();
@@ -458,10 +458,10 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void queryTaskByJobId(RestServerQueryTaskByJobIdRequest msg) throws Exception {
-        LOGGER.info("start queryTaskByJobId");
         ServerQueryTaskByJobIdResponse response;
         try {
             long jobId = msg.getJobId();
+            LOGGER.debug("start queryTaskByJobId, jobId={}", jobId);
             ServerQueryTaskByJobIdResponse.Builder builder = ServerQueryTaskByJobIdResponse.newBuilder();
             List<Task> tasks = taskService.getTasksByJobId(jobId);
             if (tasks != null) {
