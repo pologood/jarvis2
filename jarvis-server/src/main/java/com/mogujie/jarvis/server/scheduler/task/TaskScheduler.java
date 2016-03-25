@@ -229,6 +229,9 @@ public class TaskScheduler extends Scheduler {
 
             taskService.updateProgress(taskId, 1.0F);
             taskHistoryService.updateProgress(taskId, attemptId, 1.0F);
+        } else {
+            LOGGER.warn("can't find DAGTask[taskId={}] from taskGraph", taskId);
+            taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, reason);
         }
 
         reduceTaskNum(taskId);
