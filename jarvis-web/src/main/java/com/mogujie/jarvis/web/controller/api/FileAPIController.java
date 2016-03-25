@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.api;
 
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.passport.user.UserContextHolder;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.web.utils.HdfsUtil;
 import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.apache.log4j.Logger;
@@ -55,7 +56,7 @@ public class FileAPIController{
                 logger.error("上传jar文件出错", e);
             }
             map.put("code", MessageStatus.FAILED.getValue());
-            map.put("msg", e.getMessage());
+            map.put("msg", ExceptionUtil.getErrMsg(e));
         }
         return map;
     }
@@ -86,7 +87,7 @@ public class FileAPIController{
                 logger.error("jar文件改名", e);
             }
             map.put("code", MessageStatus.FAILED.getValue());
-            map.put("msg", e.getMessage());
+            map.put("msg", ExceptionUtil.getErrMsg(e));
         }
         return map;
     }
