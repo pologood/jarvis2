@@ -1,11 +1,14 @@
 package com.mogujie.jarvis.logstorage.logStream;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.io.UTFDataFormatException;
+import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 
@@ -58,28 +61,24 @@ public class LocalLogStream implements LogStream {
      * 读取日志
      *
      * @param offset ：偏移量
-     * @param size   ：字节数
+     * @param size   ：字符数
      * @return ：读取内容返回
      * @throws java.io.IOException
      */
     @Override
-    public LogReadResult readText(long offset, int size) throws IOException {
+    public LogReadResult readText(long offset, int maxCharSize) throws IOException {
         if (offset < 0) {
             offset = 0;
         }
 
-        if (size <= 0) {
-            return new LogReadResult(false, "", offset);
-        }
-        if (size > LogSetting.LOG_READ_MAX_SIZE) {
-            size = LogSetting.LOG_READ_MAX_SIZE;
+        if (maxCharSize <= 0 || maxCharSize > LogSetting.LOG_READ_MAX_SIZE) {
+            maxCharSize = LogSetting.LOG_READ_MAX_SIZE;
         }
 
         try (RandomAccessFile raf = new RandomAccessFile(logFile, "r")) {
             if (offset > raf.length()) {
                 raf.seek(raf.length() - 1);
                 int c = raf.read();
-
                 if (c == LogConstants.END_OF_LOG) {
                     return new LogReadResult(true, "", raf.length());
                 } else {
@@ -87,83 +86,47 @@ public class LocalLogStream implements LogStream {
                 }
             }
             raf.seek(offset);
-            StringBuilder sb = new StringBuilder();
-            int c;
-            int i = 0;
-            boolean isEnd = false;
-            while (true) {
-                c = readUtfChar(raf);
-                if (c == LogConstants.END_OF_LOG) {
-                    isEnd = true;
-                    break;
-                } else if (c == -1) {
-                    break;
-                }
 
-                i++;
-                if (i > size) {
-                    break;
+            int readCharSize = 0;
+            StringBuilder sb = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(Channels.newInputStream(raf.getChannel()), StandardCharsets.UTF_8))) {
+                char[] charBuffer = new char[1024];
+                int readCount = 0;
+                int highSurrogateCount = 0;
+                while ((readCount = br.read(charBuffer)) > -1) {
+                    char[] readChars = readCount == charBuffer.length ? charBuffer : Arrays.copyOf(charBuffer, readCount);
+                    for (char c : readChars) {
+                        if (c == LogConstants.END_OF_LOG) {
+                            return new LogReadResult(true, sb.toString(), offset + sb.toString().getBytes(StandardCharsets.UTF_8).length);
+                        } else {
+                            if (readCharSize < maxCharSize) {
+                                sb.append(c);
+
+                                // handle emoji
+                                boolean isHighSurrogate = Character.isHighSurrogate(c);
+                                if (!isHighSurrogate && highSurrogateCount == 0) {
+                                    readCharSize++;
+                                } else {
+                                    if (!isHighSurrogate && highSurrogateCount == 2) {
+                                        readCharSize++;
+                                        highSurrogateCount = 0;
+                                    }
+
+                                    if (isHighSurrogate) {
+                                        highSurrogateCount++;
+                                    }
+                                }
+                            } else {
+                                return new LogReadResult(false, sb.toString(), offset + sb.toString().getBytes(StandardCharsets.UTF_8).length);
+                            }
+                        }
+                    }
                 }
-                offset = raf.getFilePointer();
-                sb.append((char) c);
+                return new LogReadResult(false, sb.toString(), offset + sb.toString().getBytes(StandardCharsets.UTF_8).length);
             }
-            return new LogReadResult(isEnd, sb.toString(), offset);
         } catch (FileNotFoundException ex) {
             return new LogReadResult(false, "", 0);
         }
-    }
-
-    /**
-     * 读取UTF字符(单个)
-     * 代码参考java源码 java.io DataInputStream类 readUTF方法
-     */
-    private int readUtfChar(RandomAccessFile raf) throws IOException {
-        int c1, c2, c3;
-        int ret;
-        c1 = raf.read();
-        if (c1 == -1)
-            return -1;
-        switch (c1 >> 4) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                /* 0xxxxxxx*/
-                ret = c1;
-                break;
-            case 12:
-            case 13:
-                /* 110x xxxx   10xx xxxx*/
-                c2 = raf.readByte();
-                if (c2 == -1)
-                    return -1;
-                if ((c2 & 0xC0) != 0x80)
-                    throw new UTFDataFormatException("uft转换出错. c1:" + c1 + ";c2" + c2);
-                ret = (((c1 & 0x1F) << 6) | (c2 & 0x3F));
-                break;
-            case 14:
-                /* 1110 xxxx  10xx xxxx  10xx xxxx */
-                c2 = raf.readByte();
-                if (c2 == -1)
-                    return -1;
-                c3 = raf.readByte();
-                if (c3 == -1)
-                    return -1;
-                if (((c2 & 0xC0) != 0x80) || ((c3 & 0xC0) != 0x80))
-                    throw new UTFDataFormatException("uft转换出错. c1:" + c1 + ";c2:" + c2 + ";c3:" + c3);
-                ret = (((c1 & 0x0F) << 12) | ((c2 & 0x3F) << 6) | ((c3 & 0x3F) << 0));
-                break;
-
-            default:
-                /* 10xx xxxx,  1111 xxxx */
-                throw new UTFDataFormatException("uft转换出错. c1:" + c1);
-        }
-        return ret;
-
     }
 
     @VisibleForTesting

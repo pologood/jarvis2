@@ -17,6 +17,11 @@
     label.disabled {
         color: darkgrey;
     }
+
+    input.disabled{
+        background: lightgrey;
+    }
+
 </style>
 
 
@@ -89,7 +94,8 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">业务标签</span>
-                                    <select id="bizGroups" desc="业务标签" multiple="multiple" placeholder="标签可多选,标签增加请联系管理员"></select>
+                                    <select id="bizGroups" desc="业务标签" multiple="multiple"
+                                            placeholder="标签可多选,标签增加请联系管理员"></select>
                                 </div>
                             </div>
                         </div>
@@ -194,30 +200,44 @@
                                            onclick="showParaModal()"/>
                                 </div>
                             </div>
-
                         </div>
 
-                        <!--表达式类型 -->
+                        <!--任务计划 -->
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:35%">表达式类型</span>
-                                    <select id="expressionType">
+                                    <span class="input-group-addon" style="width:35%">任务计划</span>
+                                    <input id="jobSchedule" value="" defaultValue="" class="form-control"
+                                           onclick="showJobScheduleModal()"/>
 
-                                    </select>
+                                    <input id="expressionType" hidden/>
+                                    <input id="expression" hidden/>
+
+
                                 </div>
                             </div>
                         </div>
 
-                        <!--表达式 -->
-                        <div class="row top-buffer">
-                            <div class="col-md-6 col-md-offset-3">
-                                <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:35%">表达式</span>
-                                    <input id="expression" class="form-control"/>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<!--表达式类型 -->--%>
+                        <%--<div class="row top-buffer">--%>
+                            <%--<div class="col-md-6 col-md-offset-3">--%>
+                                <%--<div class="input-group" style="width:100%">--%>
+                                    <%--<span class="input-group-addon" style="width:35%">表达式类型</span>--%>
+                                    <%--<select id="expressionType">--%>
+                                    <%--</select>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+
+                        <%--<!--表达式 -->--%>
+                        <%--<div class="row top-buffer">--%>
+                            <%--<div class="col-md-6 col-md-offset-3">--%>
+                                <%--<div class="input-group" style="width:100%">--%>
+                                    <%--<span class="input-group-addon" style="width:35%">表达式</span>--%>
+                                    <%--<input id="expression" class="form-control"/>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                         <!--优先级 -->
                         <div class="row top-buffer">
@@ -401,11 +421,8 @@
 
                 </div>
             </div>
-
         </div>
     </div>
-
-
 </div>
 
 <%@include file="addOrEditModal.jsp" %>
@@ -421,5 +438,7 @@
 </script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/addOrEdit.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/addOrEditModal.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/cron.js"></script>
 
 

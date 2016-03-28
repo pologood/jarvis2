@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.api;
 
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.passport.user.UserContextHolder;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.web.utils.HdfsUtil;
 import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.apache.log4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -33,17 +35,19 @@ public class FileAPIController{
     @ResponseBody
     public Object uploadJar(String title, HttpServletRequest request) {
         User user = UserContextHolder.getUser();
+        String userName = (user != null) ? user.getUname() : "muming";
         Map<String, Object> map = new HashMap<>();
         try {
-            if (title == null || title.trim().isEmpty()) {
-                throw new IllegalArgumentException("标题不能为空");
-            }
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             MultipartFile jarFile = multipartRequest.getFile("file");
             if (jarFile == null) {
                 throw new IllegalArgumentException("上传文件不能为空");
             }
-            String url = HdfsUtil.uploadFile2Hdfs(jarFile, title, user.getUname(), true);
+            String fileName =  ((CommonsMultipartFile) jarFile).getFileItem().getName();
+            if (title != null && !title.trim().isEmpty()) {
+                fileName = title + ".jar";
+            }
+            String url = HdfsUtil.uploadFile2Hdfs(jarFile, fileName, userName, false);
             map.put("code", MessageStatus.SUCCESS.getValue());
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", url);
@@ -52,7 +56,7 @@ public class FileAPIController{
                 logger.error("上传jar文件出错", e);
             }
             map.put("code", MessageStatus.FAILED.getValue());
-            map.put("msg", e.getMessage());
+            map.put("msg", ExceptionUtil.getErrMsg(e));
         }
         return map;
     }
@@ -83,7 +87,7 @@ public class FileAPIController{
                 logger.error("jar文件改名", e);
             }
             map.put("code", MessageStatus.FAILED.getValue());
-            map.put("msg", e.getMessage());
+            map.put("msg", ExceptionUtil.getErrMsg(e));
         }
         return map;
     }
