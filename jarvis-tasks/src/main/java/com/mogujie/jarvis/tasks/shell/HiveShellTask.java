@@ -160,9 +160,6 @@ public class HiveShellTask extends ShellTask {
     public boolean kill() {
 
         boolean result = true;
-
-        result &= super.kill();
-
         // kill掉yarn application
         try {
             YarnUtils.killApplicationByIds(applicationIdSet);
@@ -170,6 +167,7 @@ public class HiveShellTask extends ShellTask {
             result = false;
         }
 
+        result &= super.kill();
         return result;
     }
 

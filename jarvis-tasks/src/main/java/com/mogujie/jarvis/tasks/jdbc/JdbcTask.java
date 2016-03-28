@@ -123,6 +123,7 @@ public abstract class JdbcTask extends AbstractTask {
                 connection.close();
                 connection = null;
             }
+            getTaskContext().getLogCollector().collectStderr("Task killed!");
         } catch (SQLException e) {
             LOGGER.warn("Error when close jdbc connection, caused by {}", e.getMessage());
             return false;
