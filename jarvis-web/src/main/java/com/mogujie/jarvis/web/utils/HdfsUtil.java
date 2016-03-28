@@ -1,10 +1,13 @@
 package com.mogujie.jarvis.web.utils;
 
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -41,6 +44,8 @@ public class HdfsUtil {
 
             //上传到HDFS
             fs = initHadoopFileSystem();
+            getAllFilePath(new Path("/"),fs);
+
             String distString = getHdfsJarDir(userName);
             Path distPath = new Path(distString);
             logger.info("distPath:" + distString);
@@ -97,6 +102,23 @@ public class HdfsUtil {
 
     private static String getLocalJarDir() {
         return PropUtils.getProp("config.properties", "local.temp.jar.dir", "/tmp/jar", false);
+    }
+
+    public static List<String> getAllFilePath(Path filePath, FileSystem fs) throws IOException {
+        List<String> fileList = new ArrayList<String>();
+        FileStatus[] fileStatus = fs.listStatus(filePath);
+        for (FileStatus fileStat : fileStatus) {
+            if (fileStat.isDirectory()) {
+                fileList.addAll(getAllFilePath(fileStat.getPath(), fs));
+            } else {
+                fileList.add(fileStat.getPath().toString());
+            }
+        }
+
+        for(String a : fileList){
+            logger.info("dir:" + a);
+        }
+        return fileList;
     }
 
 }
