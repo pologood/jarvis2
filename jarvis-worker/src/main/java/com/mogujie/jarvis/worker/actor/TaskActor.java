@@ -19,10 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
@@ -43,6 +39,10 @@ import com.mogujie.jarvis.worker.executor.DefaultLogCollector;
 import com.mogujie.jarvis.worker.executor.DefaultProgressReporter;
 import com.mogujie.jarvis.worker.executor.TaskExecutor;
 import com.mogujie.jarvis.worker.executor.TaskUpdateReporter;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 public class TaskActor extends UntypedActor {
 
@@ -123,7 +123,11 @@ public class TaskActor extends UntypedActor {
         if (task != null) {
             taskPool.remove(fullId);
             try {
-                return WorkerKillTaskResponse.newBuilder().setSuccess(task.kill()).build();
+                boolean result = task.kill();
+                if (result) {
+                    taskPool.markTaskKilled(fullId);
+                }
+                return WorkerKillTaskResponse.newBuilder().setSuccess(result).build();
             } catch (TaskException e) {
                 return WorkerKillTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             }

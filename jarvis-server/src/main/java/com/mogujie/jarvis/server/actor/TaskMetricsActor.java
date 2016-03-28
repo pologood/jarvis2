@@ -15,11 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
-import akka.actor.ActorRef;
-import akka.actor.Address;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -49,6 +44,11 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskHistoryService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.WorkerService;
+
+import akka.actor.ActorRef;
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process)
@@ -86,6 +86,10 @@ public class TaskMetricsActor extends UntypedActor {
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             TaskStatus status = TaskStatus.parseValue(msg.getStatus());
             LOGGER.info("receive WorkerReportTaskStatusRequest [taskId={},status={}]", taskId, status);
+
+            ServerReportTaskStatusResponse response = ServerReportTaskStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+
             Event event = new UnhandleEvent();
             Address address = getSender().path().address();
             String ip = address.host().get();
@@ -127,7 +131,7 @@ public class TaskMetricsActor extends UntypedActor {
             WorkerReportTaskProgressRequest msg = (WorkerReportTaskProgressRequest) obj;
             String fullId = msg.getFullId();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-            int attemptId = (int)IdUtils.parse(fullId, IdType.ATTEMPT_ID);
+            int attemptId = (int) IdUtils.parse(fullId, IdType.ATTEMPT_ID);
             float progress = msg.getProgress();
             LOGGER.info("receive WorkerReportTaskProgressRequest [taskId={},progress={}]", taskId, progress);
             taskService.updateProgress(taskId, progress);

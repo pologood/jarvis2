@@ -22,7 +22,6 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
-import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.TaskActor;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.typesafe.config.Config;
@@ -30,7 +29,6 @@ import com.typesafe.config.Config;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
-import akka.actor.DeadLetter;
 import akka.routing.SmallestMailboxPool;
 import scala.concurrent.duration.Duration;
 
@@ -75,9 +73,6 @@ public class JarvisWorker {
                 ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 5000));
             }
 
-            ActorRef deadLetterActor = system.actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
-            system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
-
             // 心跳汇报
             ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
             int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS, 10);
@@ -87,7 +82,10 @@ public class JarvisWorker {
             //与logStorage心跳
             String logStorageAkkaPath = workerConfig.getString(WorkerConfigKeys.LOGSTORAGE_AKKA_PATH) + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
             ActorSelection logHeartbeatActor = system.actorSelection(logStorageAkkaPath);
-            system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS), new LogStorageHeartbeatThread(logHeartbeatActor),
+            system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
+                    new LogStorageHeartbeatThread(logHeartbeatActor), system.dispatcher());
+
+            system.scheduler().schedule(Duration.Zero(), Duration.create(5, TimeUnit.SECONDS), TaskStatusRetryReporter.getInstance(),
                     system.dispatcher());
 
             int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);

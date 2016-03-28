@@ -9,8 +9,10 @@
 package com.mogujie.jarvis.worker;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.AbstractTask;
 
 /**
@@ -19,23 +21,33 @@ import com.mogujie.jarvis.core.AbstractTask;
  */
 public enum TaskPool {
 
-  INSTANCE;
+    INSTANCE;
 
-  private Map<String, AbstractTask> pool = Maps.newConcurrentMap();
+    private Map<String, AbstractTask> pool = Maps.newConcurrentMap();
+    private Set<String> killTaskSet = Sets.newConcurrentHashSet();
 
-  public void add(String fullId, AbstractTask task) {
-    pool.put(fullId, task);
-  }
+    public void add(String fullId, AbstractTask task) {
+        pool.put(fullId, task);
+    }
 
-  public void remove(String fullId) {
-    pool.remove(fullId);
-  }
+    public void remove(String fullId) {
+        pool.remove(fullId);
+        killTaskSet.remove(fullId);
+    }
 
-  public AbstractTask get(String fullId) {
-    return pool.get(fullId);
-  }
+    public AbstractTask get(String fullId) {
+        return pool.get(fullId);
+    }
 
-  public int size() {
-    return pool.size();
-  }
+    public void markTaskKilled(String fullId) {
+        killTaskSet.add(fullId);
+    }
+
+    public boolean isKilled(String fullId) {
+        return killTaskSet.contains(fullId);
+    }
+
+    public int size() {
+        return pool.size();
+    }
 }

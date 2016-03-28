@@ -21,14 +21,17 @@ import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.AcceptanceException;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskStatusResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.TaskPool;
+import com.mogujie.jarvis.worker.TaskStatusRetryReporter;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
+import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
 import akka.actor.ActorRef;
@@ -60,6 +63,7 @@ public class TaskExecutor extends Thread {
         if (taskEntry == null) {
             String errMsg = "cant't get jobType={" + jobType + "} from task.xml";
             LOGGER.error(errMsg);
+            taskContext.getLogCollector().collectStderr("Error type: " + jobType, true);
             senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(errMsg).build(), selfActor);
             return;
         }
@@ -124,21 +128,31 @@ public class TaskExecutor extends Thread {
                 LOGGER.error("", e);
             }
 
+            long ts = System.currentTimeMillis() / 1000;
+            TaskStatus taskStatus = null;
+            if (taskPool.isKilled(fullId)) {
+                logCollector.collectStderr("Task killed!");
+                taskStatus = TaskStatus.KILLED;
+            } else {
+                taskStatus = result ? TaskStatus.SUCCESS : TaskStatus.FAILED;
+            }
+
             logCollector.collectStderr("", true);
             logCollector.collectStdout("", true);
 
-            if (result) {
-                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.SUCCESS.getValue())
-                        .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
-                LOGGER.info("report status[fullId={},status=SUCCESS] to server.", fullId);
-            } else {
-                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
-                        .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
-                LOGGER.info("report status[fullId={},status=FAILED] to server.", fullId);
-            }
-
             // task finished
-            reporter.report(1);
+            WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus.getValue())
+                    .setTimestamp(ts).build();
+            try {
+                ServerReportTaskStatusResponse response = (ServerReportTaskStatusResponse) FutureUtils.awaitResult(serverActor, request, 60);
+                if (response.getSuccess()) {
+                    LOGGER.info("report status[fullId={},status={}] to server.", fullId, taskStatus);
+                    reporter.report(1);
+                }
+            } catch (Exception e) {
+                LOGGER.error("", e.getMessage());
+                TaskStatusRetryReporter.getInstance().addEntry(serverActor, request, reporter);
+            }
         } catch (Throwable e) {
             LOGGER.error("", e);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
