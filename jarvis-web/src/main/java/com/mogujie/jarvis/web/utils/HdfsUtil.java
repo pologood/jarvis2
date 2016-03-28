@@ -90,7 +90,7 @@ public class HdfsUtil {
         FileSystem fs;
         //设置Hadoop用户
         System.setProperty("HADOOP_USER_NAME", PropUtils.getProp("config.properties", "hdfs.super.account", false));
-        conf.addResource(HdfsUtil.class.getResourceAsStream("/core-site.xml"));
+//        conf.addResource(HdfsUtil.class.getResourceAsStream("/core-site.xml"));
         conf.addResource(HdfsUtil.class.getResourceAsStream("/hdfs-site.xml"));
         fs = FileSystem.get(conf);
         return fs;
