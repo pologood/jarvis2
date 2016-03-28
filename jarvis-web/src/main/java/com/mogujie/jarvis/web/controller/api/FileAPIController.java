@@ -52,9 +52,9 @@ public class FileAPIController{
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", url);
         } catch (Exception e) {
-            if (!(e instanceof IllegalArgumentException)) {
+//            if (!(e instanceof IllegalArgumentException)) {
                 logger.error("上传jar文件出错", e);
-            }
+//            }
             map.put("code", MessageStatus.FAILED.getValue());
             map.put("msg", ExceptionUtil.getErrMsg(e));
         }

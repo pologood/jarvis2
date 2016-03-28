@@ -244,7 +244,7 @@ function saveApp() {
     var flag1 = false, flag2 = false;
     if (null == appId || '' == appId) { //新增
         title = "新增app";
-        response = requestRemoteRestApi("/api/app/add", title, data);
+        response = requestRemoteRestApi("/api/app/add", title, data,false,true);
         flag1 = response.flag;
         if (true == flag1) {
             appId = response.data.data.appId;
@@ -252,7 +252,7 @@ function saveApp() {
         }
     } else {  //编辑
         title = "修改app";
-        response = requestRemoteRestApi("/api/app/edit", title, data);
+        response = requestRemoteRestApi("/api/app/edit", title, data,false,true);
         flag1 = response.flag;
         if (true == flag1) {    //修改成功
             flag2 = modifyAppWorkerGroup();
@@ -274,11 +274,11 @@ function modifyAppWorkerGroup() {
     var response;
     var flag = true;
     if (workerGroupData["add"].length > 0) {
-        response = requestRemoteRestApi("/api/app/workerGroup/add", "app加入WorkerGroup", workerGroupData["add"]);
+        response = requestRemoteRestApi("/api/app/workerGroup/add", "app加入WorkerGroup", workerGroupData["add"],false,true);
         flag = response.flag;
     }
     if (workerGroupData["remove"].length > 0) {
-        response = requestRemoteRestApi("/api/app/workerGroup/delete", "app移除WorkerGroup", workerGroupData["remove"]);
+        response = requestRemoteRestApi("/api/app/workerGroup/delete", "app移除WorkerGroup", workerGroupData["remove"],false,true);
         flag = response.flag;
     }
     return flag;

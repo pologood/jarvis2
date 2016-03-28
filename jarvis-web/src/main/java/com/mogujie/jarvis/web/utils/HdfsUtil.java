@@ -44,7 +44,7 @@ public class HdfsUtil {
 
             //上传到HDFS
             fs = initHadoopFileSystem();
-            getAllFilePath(new Path("/"),fs);
+//            getAllFilePath(new Path("hdfs://mgjcluster/"),fs);
 
             String distString = getHdfsJarDir(userName);
             Path distPath = new Path(distString);
@@ -90,6 +90,7 @@ public class HdfsUtil {
         FileSystem fs;
         //设置Hadoop用户
         System.setProperty("HADOOP_USER_NAME", PropUtils.getProp("config.properties", "hdfs.super.account", false));
+//        conf.addResource(HdfsUtil.class.getResourceAsStream("/core-site.xml"));
         conf.addResource(HdfsUtil.class.getResourceAsStream("/hdfs-site.xml"));
         fs = FileSystem.get(conf);
         return fs;

@@ -105,7 +105,7 @@ function initLog() {
 
     var url;
     url = "/api/log/readExecuteLog";
-    var result = requestRemoteRestApi(url, "读取执行日志", data);
+    var result = requestRemoteRestApi(url, "读取执行日志", data,false);
     if (result.flag == true) {
         var log = result.data.data.log;
         $("#log").html(log);
@@ -130,7 +130,7 @@ function initLogMore() {
     data["size"] = 10000;
     var url;
     url = "/api/log/readResult";
-    var result = requestRemoteRestApi(url, "读取执行日志", data);
+    var result = requestRemoteRestApi(url, "读取执行日志", data,false);
     if (result.flag == true) {
         var log = result.data.data.log;
         $("#logMore").html(log);

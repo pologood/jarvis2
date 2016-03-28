@@ -71,26 +71,22 @@ public class LogController extends AbstractController {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            String fullId = para.getString("fullId");
-            if (fullId == null || fullId.equals("")) {
-                long jobId = 0;
-//                Long jobId = para.getLong("jobId");
-//                if (jobId == null) {
-//                    throw new IllegalArgumentException("请传入jobId 或者 fullId");
-//                }
-                Long taskId = para.getLong("taskId");
-                if (taskId == null) {
-                    throw new IllegalArgumentException("请传入taskId 或者 fullId");
-                }
-                if (taskId == 0) {
-                    throw new IllegalArgumentException("taskId不能等于0");
-                }
-                Integer attemptId = para.getInteger("attemptId");
-                if (attemptId == null) {
-                    throw new IllegalArgumentException("请传入attemptId 或者 fullId");
-                }
-                fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+            Long jobId = para.getLong("jobId");
+            if (jobId == null) {
+                jobId = 0L;
             }
+            Long taskId = para.getLong("taskId");
+            if (taskId == null) {
+                throw new IllegalArgumentException("请传入taskId 或者 fullId");
+            }
+            if (taskId == 0) {
+                throw new IllegalArgumentException("taskId不能等于0");
+            }
+            Integer attemptId = para.getInteger("attemptId");
+            if (attemptId == null) {
+                attemptId = 1;
+            }
+            String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
             Long offset = para.getLong("offset", 0L);
             Integer lines = para.getInteger("size", DEFAULT_SIZE);
 
