@@ -5,7 +5,7 @@ $(function () {
 //初始化系统状态：初始状态、switch、事件
 function initSystemStatus() {
     //详细处理方式等待rest接口完成
-    var response = requestRemoteRestApi("/api/system/status/get", "获取系统当前状态", {});
+    var response = requestRemoteRestApi("/api/system/status/get", "获取系统当前状态", {},false,false);
 
 
     if (response.flag == false) {

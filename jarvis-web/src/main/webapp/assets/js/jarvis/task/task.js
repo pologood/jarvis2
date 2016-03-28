@@ -45,7 +45,7 @@ function initTaskStatus() {
             all["text"] = "全部";
             newData.push(all);
             $(data).each(function (i, c) {
-                if (0 != c.id && 99 != c.id) {
+                if (0 != c.id && 99 != c.id && 6 != c.id) {
                     var item = {};
                     item["id"] = c["id"];
                     item["text"] = c["text"];
@@ -148,7 +148,7 @@ function initBatchOperation() {
         button.on("click", function (e) {
             var self = e.target;
             var arr = JSON.parse($(self).attr("allowstatus"));
-            var operationName=$(self).text();
+            var operationName = $(self).text();
             //允许的状态
             var allowStatus = {};
             arr.forEach(function (e) {
@@ -156,28 +156,34 @@ function initBatchOperation() {
             });
 
             var selecteds = glFuncs.getIdSelections("content");
-            var flag=false;
+            if (selecteds.length <= 0) {
+                showMsg("warning", "批量" + operationName, "请至少选择一条执行记录");
+                return;
+            }
 
-            for(var i=0;i<selecteds.length;i++){
-                var item=selecteds[i];
-                if(allowStatus[item.status]){
-                    flag=true;
+            var flag = false;
+
+            for (var i = 0; i < selecteds.length; i++) {
+                var item = selecteds[i];
+                if (allowStatus[item.status]) {
+                    flag = true;
                 }
-                else{
-                    flag=false;
-                    showMsg("warning","批量删除",item.jobName+'的当前状态不支持'+operationName+"操作,请重新选择");
+                else {
+                    flag = false;
+                    showMsg("warning", "批量" + operationName, item.jobName + '的当前状态不支持' + operationName + "操作,请重新选择");
                     break;
                 }
             }
             //删除
-            if(flag){
+            if (flag) {
                 var url = $(self).attr("url");
-                var taskIds=[];
-                for(var i=0;i<selecteds.length;i++){
+                var taskIds = [];
+                for (var i = 0; i < selecteds.length; i++) {
                     taskIds.push(selecteds[i].taskId);
-                };
-                var data={taskIds:taskIds};
-                requestRemoteRestApi(url,'批量'+operationName,data,true,true);
+                }
+                ;
+                var data = {taskIds: taskIds};
+                requestRemoteRestApi(url, '批量' + operationName, data, true, true);
             }
 
 
@@ -489,7 +495,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             data["jobId"] = jobId;
             data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
-            requestRemoteRestApi(url, text, data, true,true);
+            requestRemoteRestApi(url, text, data, true, true);
         }).on('pnotify.cancel', function () {
         });
 }

@@ -162,14 +162,14 @@ function modifyAppStatus(appId, status, appName, maxConcurrency) {
                 history: false
             }
         })).get().on('pnotify.confirm', function () {
-                requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
+                requestRemoteRestApi("/api/app/edit", "修改应用状态", data,false,true);
                 search();
             }).on('pnotify.cancel', function () {
             });
     }
     //启用或停用
     else {
-        requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
+        requestRemoteRestApi("/api/app/edit", "修改应用状态", data,false,true);
         search();
     }
 }

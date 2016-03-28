@@ -77,7 +77,7 @@ function getHeartbeatInfo() {
     workerPage.heartbeatInfo = {};
 
 
-    var response = requestRemoteRestApi("/api/worker/heartbeat/get", "获取worker在线状态", {},false);
+    var response = requestRemoteRestApi("/api/worker/heartbeat/get", "获取worker在线状态", {},false,false);
     var list = response.flag == true ? response.data.data.list : [];
 
     if (list.length == 0) {
@@ -250,7 +250,7 @@ function resetWorker() {
 //修改worker
 function modifyWorkerStatus(workerId, status, ip, port) {
     var data = {workerId: workerId, status: status, ip: ip, port: port};
-    requestRemoteRestApi("/api/worker/status/set", "修改Worker Group状态", data);
+    requestRemoteRestApi("/api/worker/status/set", "修改Worker Group状态", data,false,false);
     $("#workerContent").bootstrapTable("destroy");
     initWorkerData();
 
@@ -421,7 +421,7 @@ function resetWorkerGroup() {
 //修改worker group状态
 function modifyWorkerGroupStatus(workerGroupId, authKey, status) {
     var data = {workerGroupId: workerGroupId, status: status};
-    requestRemoteRestApi("/api/workerGroup/status/set", "修改Worker Group状态", data);
+    requestRemoteRestApi("/api/workerGroup/status/set", "修改Worker Group状态", data,false,true);
     $("#workerGroupContent").bootstrapTable("destroy");
     initWorkerGroupData();
 }
