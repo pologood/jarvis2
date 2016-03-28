@@ -44,7 +44,7 @@ public class HdfsUtil {
 
             //上传到HDFS
             fs = initHadoopFileSystem();
-            getAllFilePath(new Path("hdfs://mgjcluster/"),fs);
+//            getAllFilePath(new Path("hdfs://mgjcluster/"),fs);
 
             String distString = getHdfsJarDir(userName);
             Path distPath = new Path(distString);
