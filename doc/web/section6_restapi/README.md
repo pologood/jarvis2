@@ -4,7 +4,7 @@ Rest API
 ## 一、任务基本描述
 
 1. 任务称为job，拥有唯一的jobId. 可以配置时间表达式由时间触发，也可以配置依赖表达式由前置依赖触发。可以周期性执行或一次性执行。
-2. job的每一次执行（周期性可以有多次，一次性任务就一次）称为作业，即task，拥有唯一的taskId. task有状态，比如等待、准备、执行中、成功、失败等。
+2. job的每一次执行（周期性可以有多次，一次性任务就一次）称为作业，即task，拥有唯一的taskId。 task有状态，比如等待、准备、执行中、成功、失败等。
 3. job可以配置失败重试策略，task如果失败可以进行失败重试，叫做attempt. 每一次attempt，jobId和taskId都不会变，attemptId自增一。
 
 ## 二、接入规范  
@@ -15,22 +15,30 @@ Rest API
 
 ## 三、接口描述
 
-所有接口参照如下json格式，在parameters这个参数实现自己的json
+* requst: 所有接口参照如下json格式，在parameters这个参数实现自己的json
 
 | 参数  | 解释  | 是否必要  | 默认值 | 
 | ------ | ------ | ----   | ----  |
-| user (String) | 用户名  |   否   |     |
+| user (String) | 用户名  |   是   |     |
 | appToken (String)|timestamp+MD5(appKey+timestamp)| 是 |  |
 | appName (String)| 业务系统名称| 是 |  |
 | parameters (String) | json格式参数map | 是 | | 
+
+* response: 所有接口返回值按照如下格式
+
+| 参数  | 解释  | 
+| ------ | ------  |
+| code (int) | 错误码，0:成功，1:失败，9999:系统异常 | 
+| msg (String)| 错误信息|
+| data (String)| json格式返回值 |
 
 ---
 
 ### 1. 提交job
 
-* 接口地址：http://10.11.3.198:8280/api/job/submit
+* 接口地址：http://sentinel.bigdata.service.mogujie.org/api/job/submit
 * 方法POST
-* parameters参数列表
+* request parameters参数列表
 
 | 参数  | 解释  | 是否必要  | 默认值 | 
 | ------ | ------ | ----   | ----  |
@@ -71,6 +79,13 @@ Rest API
 | expressionId (long)|时间表达式ID| 否 | 0 |
 | expressionType(int)| 时间表达式类型，1:cron; 2:rate; 3:delay; 4:ISO8601| 否 | 1:crontab|
 | expression(String)| 时间表达式 | 否 | 空 | 
+
+* response返回data说明
+
+| 参数  | 解释  | 
+| ------ | ------  |
+| jobId (long) | 提交任务返回的jobId |
+
  
 ---
 
@@ -84,9 +99,33 @@ Rest API
 
 ### 4. 根据taskId查询task状态
 
+* 接口地址：http://sentinel.bigdata.service.mogujie.org/api/task/query/status
+* 方法POST
+* request parameters参数列表
+
+| 参数  | 解释  | 是否必要  | 默认值 | 
+| ------ | ------ | ----   | ----  |
+| taskId (long) | 作业ID  |   是   |     |
+
+* response返回data说明
+
+| 参数  | 解释  | 
+| ------ | ------  |
+| taskId (long) | taskId |
+| status (int) | task状态，1:waiting；2:ready；3:running；4:success；5:failed；6:killed；99:removed |
+
 ---
 
 ### 5. kill task
+
+* 接口地址：http://sentinel.bigdata.service.mogujie.org/api/task/kill
+* 方法POST
+* request parameters参数列表
+
+| 参数  | 解释  | 是否必要  | 默认值 | 
+| ------ | ------ | ----   | ----  |
+| taskIds (list of Long) | 作业ID链表  |   是   |     |
+
 
 ---
 
@@ -96,6 +135,24 @@ Rest API
 
 ### 7. 分批查询task执行结果（结果很大的情况下）
 
+* 接口地址：http://sentinel.bigdata.service.mogujie.org/api/log/readResult
+* 方法POST
+* request parameters参数列表
+
+| 参数  | 解释  | 是否必要  | 默认值 | 
+| ------ | ------ | ----   | ----  |
+| taskId (long) | 作业ID  |   是   |     |
+| attemptId (int) | 尝试ID  |   否   |  1   |
+
+* response返回data说明
+
+| 参数  | 解释  | 
+| ------ | ------  |
+| log (String) | 执行结果 |
+| offset (long) | 本次查询的偏移|
+| isEnd (boolean) | 是否查询结束|
+
+
 ---
 
 ### 8. 查询task日志
@@ -104,5 +161,22 @@ Rest API
 
 ### 9. 分批查询task日志（日志很大的情况下）
 
+* 接口地址：http://sentinel.bigdata.service.mogujie.org/api/log/readExecuteLog
+* 方法POST
+* request parameters参数列表
 
-四、使用示例
+| 参数  | 解释  | 是否必要  | 默认值 | 
+| ------ | ------ | ----   | ----  |
+| taskId (long) | 作业ID  |   是   |     |
+| attemptId (int) | 尝试ID  |   否   |  1   |
+
+* response返回data说明
+
+| 参数  | 解释  | 
+| ------ | ------  |
+| log (String) | 日志 |
+| offset (long) | 本次查询的偏移|
+| isEnd (boolean) | 是否查询结束|
+
+
+## 四、使用示例
