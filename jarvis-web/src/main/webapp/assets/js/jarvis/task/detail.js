@@ -1,10 +1,10 @@
 $(function () {
     initLogMore();
     initChart(echarts);
-    $('#tabNav a[href="#log"]').click(function(e){
+    $('#tabNav a[href="#log"]').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
-        initLog();
+        initLog(true, 0, 10000);
     });
 });
 
@@ -27,7 +27,7 @@ function initChart(echarts) {
         xAxis.push(result);
         data.push(task["executeTime"]);
     }
-    if(data.length<1){
+    if (data.length < 1) {
         return;
     }
 
@@ -95,21 +95,44 @@ function initChart(echarts) {
 }
 
 
-function initLog() {
+function initLog(isInit, offset, size) {
+    var logContent = $("#log").html();
+    if (isInit && null != logContent && logContent.length > 0) {
+        return
+    }
+
+
     var data = {};
     data["taskId"] = taskId;
     data["jobId"] = jobId;
     data["attemptId"] = attemptId;
-    data["offset"] = 0;
-    data["size"] = 10000;
+    data["offset"] = offset;
+    data["size"] = size;
 
     var url;
     url = "/api/log/readExecuteLog";
-    var result = requestRemoteRestApi(url, "读取执行日志", data,false);
+    var result = requestRemoteRestApi(url, "读取执行日志", data, false);
     if (result.flag == true) {
         var log = result.data.data.log;
-        $("#log").html(log);
+        $("#log").append(log);
         $("#errorNotifyMsg").html(result.data.errorNotify);
+
+        $("#moreLog").off("click");
+        if (result.data.data.end) {
+            $("#moreLog").hide();
+        }
+        else {
+            if(result.data.data.offset < size){
+                $("#moreLog").hide();
+            }
+            else{
+                $("#moreLog").show();
+                $("#moreLog").on("click", function () {
+                    console.log("click");
+                    initLog(false, offset + result.data.data.offset, size);
+                })
+            }
+        }
     }
 }
 
@@ -118,7 +141,7 @@ function initLog() {
 function initLogMore() {
 
     //标准输出div不存在,则推出
-    if($("#logMore").length == 0){
+    if ($("#logMore").length == 0) {
         return;
     }
 
@@ -130,7 +153,7 @@ function initLogMore() {
     data["size"] = 10000;
     var url;
     url = "/api/log/readResult";
-    var result = requestRemoteRestApi(url, "读取执行日志", data,false);
+    var result = requestRemoteRestApi(url, "读取执行日志", data, false);
     if (result.flag == true) {
         var log = result.data.data.log;
         $("#logMore").html(log);
@@ -156,12 +179,12 @@ function showTaskHistory(taskId) {
                 params[key] = value;
             }
             return params;
-        },responseHandler:function(res){
-            if(res.status){
-                showMsg("error","初始化执行历史列表",res.status.msg);
+        }, responseHandler: function (res) {
+            if (res.status) {
+                showMsg("error", "初始化执行历史列表", res.status.msg);
                 return res;
             }
-            else{
+            else {
                 return res;
             }
         },

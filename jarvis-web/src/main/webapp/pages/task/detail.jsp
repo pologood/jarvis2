@@ -169,6 +169,7 @@
                                         </div>
 
                                         <pre id="log" class="tab-pane" style="width: 1150px"></pre>
+                                        <a id="moreLog" style="display: none" href="javascript:void(0)" class="pull-right"><i class="glyphicon glyphicon-arrow-down text-primary"></i></a>
                                         <c:if test="${debug == 1}">
                                             <pre id="logMore" class="tab-pane"></pre>
                                         </c:if>
