@@ -201,9 +201,9 @@ function saveBizGroup() {
     }
 
     if (null != id && '' != id) {
-        requestRemoteRestApi("/api/bizGroup/edit", "修改业务标签", data,true);
+        requestRemoteRestApi("/api/bizGroup/edit", "修改业务标签", data,true,true);
     }
     else {
-        requestRemoteRestApi("/api/bizGroup/add", "新增业务标签", data,true);
+        requestRemoteRestApi("/api/bizGroup/add", "新增业务标签", data,true,true);
     }
 }

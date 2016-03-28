@@ -11,28 +11,7 @@ $(function () {
     glFuncs.initJobStatus("jobStatus", false);
 
     initJobBatchOperation();
-
-    $.ajax({
-        url: contextPath + "/assets/json/jobPriority.json",
-        async: false,
-        success: function (data) {
-            $(data).each(function (i, c) {
-                var key = c.id;
-                var text = c.text;
-                jobPriority[key] = text;
-            });
-
-
-            $("#jobPriority").select2({
-                data: data,
-                width: '100%'
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务优先级信息', msg);
-        }
-    })
+    initJobPriority();
 
     getBizGroup();
     initSubmitUser();
@@ -84,6 +63,11 @@ function initJobBatchOperation() {
                 var operationName = $(self).text();
                 var selecteds = glFuncs.getIdSelections("content");
 
+                if(selecteds.length<=0){
+                    showMsg("warning", "批量" + operationName, "请至少选择一个任务");
+                    return;
+                }
+
                 var flag = false;
                 var jobIds = [];
                 $(selecteds).each(function (i, c) {
@@ -108,6 +92,31 @@ function initJobBatchOperation() {
     });
     $("#toobar").append($wrapper);
 }
+
+function initJobPriority(){
+    $.ajax({
+        url: contextPath + "/assets/json/jobPriority.json",
+        async: false,
+        success: function (data) {
+            $(data).each(function (i, c) {
+                var key = c.id;
+                var text = c.text;
+                jobPriority[key] = text;
+            });
+
+
+            $("#jobPriority").select2({
+                data: data,
+                width: '100%'
+            });
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务优先级信息', msg);
+        }
+    });
+}
+
 function initApp() {
     $.ajax({
         url: contextPath + "/api/app/getApps",
@@ -276,7 +285,7 @@ function initData() {
 //更新job的状态
 function updateJobStatus(jobId, jobStatus) {
     var data = {jobIds: [jobId], status: jobStatus};
-    requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
+    requestRemoteRestApi("/api/job/status/set", "更新任务状态", data,false,true);
     search();
 }
 //job的字段列表

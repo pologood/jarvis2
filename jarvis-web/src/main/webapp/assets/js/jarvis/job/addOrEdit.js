@@ -969,7 +969,7 @@ function saveDepend() {
     data["jobId"] = jobId;
     data["dependencyList"] = dependJobData;
 
-    var response = requestRemoteRestApi("/api/job/dependency/set", "修改依赖信息", data);
+    var response = requestRemoteRestApi("/api/job/dependency/set", "修改依赖信息", data,true,true);
 }
 
 //重置依赖
@@ -1156,11 +1156,11 @@ function saveAlarm() {
             if (data.code == 1000) {
                 //代表不存在，需要新增
                 if (null == data.data.jobId) {
-                    response = requestRemoteRestApi("/api/alarm/add", "新增报警信息", alarmData);
+                    response = requestRemoteRestApi("/api/alarm/add", "新增报警信息", alarmData,true,true);
                 }
                 //修改
                 else {
-                    response = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData);
+                    response = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData,true,true);
                 }
             }
             else {

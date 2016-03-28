@@ -250,7 +250,7 @@ function removeBizGroup(id) {
     })).get().on('pnotify.confirm', function () {
             var data = {};
             data["id"] = id;
-            requestRemoteRestApi("/api/bizGroup/delete", "删除业务标签", data);
+            requestRemoteRestApi("/api/bizGroup/delete", "删除业务标签", data,false,true);
             window.setTimeout(function(){
                 search();
             },1000);
