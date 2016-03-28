@@ -130,11 +130,13 @@ public class RemoteRestApiController {
         try {
             logger.info(data.toString());
             Connection connection = Jsoup.connect(url)
-                .data(data)
-                .postDataCharset("UTF-8")
-                .ignoreContentType(true)
-                .timeout(15000)
-                .method(Connection.Method.POST);
+                    .data(data)
+                    .postDataCharset("UTF-8")
+                    .ignoreContentType(true)
+                    .timeout(15000)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .method(Connection.Method.POST);
+
             Connection.Response response = connection.execute();
             logger.info("request url:" + response.url());
             String resultBody = response.body();
