@@ -150,6 +150,7 @@ public class ShellTask extends AbstractTask {
     public boolean kill() {
         if (shellProcess != null) {
             shellProcess.destroy();
+            getTaskContext().getLogCollector().collectStderr("Task killed!");
         }
         return true;
     }
