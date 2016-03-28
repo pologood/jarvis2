@@ -20,7 +20,6 @@ public class JobActorLogService {
 
   @OperationLog
   public Object handleLog(Object obj) {
-    LOGGER.info("begin to handle job actor log");
     return null;
   }
 

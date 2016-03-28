@@ -20,7 +20,6 @@ public class TaskActorLogService {
 
   @OperationLog
   public Object handleLog(Object obj) {
-    LOGGER.info("begin to handle task actor log");
     return null;
   }
 
