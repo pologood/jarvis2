@@ -7,11 +7,11 @@ import com.mogujie.bigdata.base.StringUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
 import com.mogujie.jarvis.web.utils.SystemErrorType;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ public class RemoteRestApiController {
     static String domain = "";
     static AppVo app = new AppVo();
 
-    static Logger logger = LoggerFactory.getLogger(RemoteRestApiController.class);
+    static Logger logger = Logger.getLogger("jarvisLogger");
 
     /*
     * 读取配置文件

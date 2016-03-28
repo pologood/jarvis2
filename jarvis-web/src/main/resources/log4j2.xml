@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="DEBUG">
     <Properties>
+        <Property name="jarvisLogDir">../logs/jarvis2</Property>
         <Property name="exceptionLogDir">../logs/exception</Property>
         <Property name="exceptionLogFile">exception.log</Property>
         <Property name="exceptionLogRollingFile">exceptionRolling.log</Property>
@@ -18,6 +19,11 @@
             <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss}\t%m%n"/>
             <SizeBasedTriggeringPolicy size="4 MB"/>
         </RollingFile>
+        <RollingFile name="jarvisLogRollingFile" fileName="${jarvisLogDir}/jarvis2.log" append="true" filePattern="${jarvisLogDir}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss}\t%m %l%n"/>
+            <SizeBasedTriggeringPolicy size="4 MB"/>
+        </RollingFile>
+
     </Appenders>
 
     <Loggers>
@@ -27,6 +33,9 @@
         <Logger name="exceptionLogger" additivity="TRUE" level="info">
             <AppenderRef ref="exceptionLogFile" level="info" />
             <AppenderRef ref="exceptionLogRollingFile" level="info" />
+        </Logger>
+        <Logger name="jarvisLogger" additivity="TRUE" level="info">
+            <AppenderRef ref="jarvisLogRollingFile" level="info" />
         </Logger>
     </Loggers>
 
