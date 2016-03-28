@@ -489,7 +489,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             data["jobId"] = jobId;
             data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
-            requestRemoteRestApi(url, text, data, true);
+            requestRemoteRestApi(url, text, data, true,true);
         }).on('pnotify.cancel', function () {
         });
 }

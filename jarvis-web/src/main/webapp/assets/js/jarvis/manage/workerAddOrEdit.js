@@ -51,11 +51,11 @@ function updateWorker() {
     if (flag == false) {
         return;
     }
-    requestRemoteRestApi("/api/worker/update", "更新Worker", data);
+    requestRemoteRestApi("/api/worker/update", "更新Worker", data,true);
 }
 
 function modifyWorkerStatus(workerGroupId, status) {
     var data = {workerGroupId: workerGroupId, status: status}
-    requestRemoteRestApi("/api/worker/status/set", "修改worker group 状态", data);
+    requestRemoteRestApi("/api/worker/status/set", "修改worker group 状态", data,true);
 
 }

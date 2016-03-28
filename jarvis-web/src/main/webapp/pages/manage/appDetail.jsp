@@ -18,7 +18,7 @@
                     <li><a href="${contextPath}/manage/app">应用管理</a></li>
                     <li class="current"><em>
                         <c:choose>
-                            <c:when test="${appVo==null}">
+                            <c:when test="${appId==null}">
                                 新增应用
                             </c:when>
                             <c:otherwise>

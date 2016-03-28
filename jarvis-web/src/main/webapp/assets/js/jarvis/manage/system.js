@@ -76,11 +76,11 @@ function initSystemAutoStatus() {
 //更新系统是否可用状态
 function updateSystemStatus(status) {
     var data = {status: status};
-    requestRemoteRestApi("/api/system/status", "修改系统状态", data);
+    requestRemoteRestApi("/api/system/status", "修改系统状态", data,true,true);
 }
 //更新系统是否可以自动调度状态
 function updateSystemAutoStatus(status) {
     var data = {status: status};
-    requestRemoteRestApi("/api/system/autoSchedule", "修改系统是否自动调度", data);
+    requestRemoteRestApi("/api/system/autoSchedule", "修改系统是否自动调度", data,true,true);
 
 }

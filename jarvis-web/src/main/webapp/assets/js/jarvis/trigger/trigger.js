@@ -190,7 +190,7 @@ function submit() {
     var startDate = (new Date(startTime)).getTime();
     var endDate = (new Date(endTime)).getTime();
     var data = {startDate: startDate, endDate: endDate, jobIdList: reRunJobs};
-    requestRemoteRestApi("/api/task/rerun", "重跑任务", data, true);
+    requestRemoteRestApi("/api/task/rerun", "重跑任务", data, true,true);
 }
 
 //格式化结果
