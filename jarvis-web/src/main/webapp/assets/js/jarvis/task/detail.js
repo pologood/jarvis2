@@ -128,7 +128,6 @@ function initLog(isInit, offset, size) {
             else{
                 $("#moreLog").show();
                 $("#moreLog").on("click", function () {
-                    console.log("click");
                     initLog(false, offset + result.data.data.offset, size);
                 })
             }

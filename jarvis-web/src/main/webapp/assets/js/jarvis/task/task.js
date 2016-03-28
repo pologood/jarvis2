@@ -125,15 +125,17 @@ function initBatchOperation() {
     for (var key in taskOperation) {
         var arr = taskOperation[key];
         arr.forEach(function (e) {
-            if (result[e.url]) {
-                item = result[e.url];
-                item.allowStatus.push(key);
-            }
-            else {
-                var item = {};
-                item["text"] = e.text;
-                item["allowStatus"] = [key];
-                result[e.url] = item;
+            if(e.url!='/api/task/retry'){
+                if (result[e.url]) {
+                    item = result[e.url];
+                    item.allowStatus.push(key);
+                }
+                else {
+                    var item = {};
+                    item["text"] = e.text;
+                    item["allowStatus"] = [key];
+                    result[e.url] = item;
+                }
             }
         });
     }
@@ -493,7 +495,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
     })).get().on('pnotify.confirm', function () {
             var data = {};
             data["jobId"] = jobId;
-            data["taskIds"] = [taskId];
+            data["taskId"] = taskId;
             data["attemptId"] = attemptId;
             requestRemoteRestApi(url, text, data, true, true);
         }).on('pnotify.cancel', function () {
