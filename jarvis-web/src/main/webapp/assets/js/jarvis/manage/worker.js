@@ -163,7 +163,7 @@ function operateWorkerFormatter(value, row, index) {
         status = CONST.WORKER_STATUS.OFFLINE;
         desc = "停用";
     }
-    var item = '<a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerStatus('
+    var item = ' <a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerStatus('
         + id + ',' + status + ',\'' + ip + '\',' + port + ')" >' + desc + '</a>';
     operation = operation + item;
     return operation;
@@ -381,7 +381,7 @@ function operateWorkerGroupFormatter(value, row, index) {
                 style = "btn btn-xs btn-success";
             }
 
-            var item = '<a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a>';
+            var item = ' <a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a>';
             operation = operation + item;
         }
     });
