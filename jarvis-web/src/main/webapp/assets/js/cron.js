@@ -167,11 +167,11 @@ function convertWeekDay(weekDay) {
     }
 
     return weekDay.replace(/(1)/g, '周一')
-        .(/(2)/g, '周二')
-        .(/(3)/g, '周三')
-        .(/(4)/g, '周四')
-        .(/(5)/g, '周五')
-        .(/(6)/g, '周六')
-        .(/(7)/g, '周日');
+        .replace(/(2)/g, '周二')
+        .replace(/(3)/g, '周三')
+        .replace(/(4)/g, '周四')
+        .replace(/(5)/g, '周五')
+        .replace(/(6)/g, '周六')
+        .replace(/(7)/g, '周日');
 
 }

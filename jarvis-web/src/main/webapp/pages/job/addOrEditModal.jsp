@@ -331,7 +331,7 @@
         width: 70px;
     }
 
-    #cronTable tr td{
+    #cronTable tr td {
         text-align-last: center;
     }
 
@@ -357,13 +357,13 @@
                         <a href="#cronTab" data-toggle="tab">高级设定</a>
                     </li>
                     <%--<li role="presentation">--%>
-                        <%--<a href="#fixedDelayTab" data-toggle="tab">固定延迟</a>--%>
+                    <%--<a href="#fixedDelayTab" data-toggle="tab">固定延迟</a>--%>
                     <%--</li>--%>
                     <%--<li role="presentation">--%>
-                        <%--<a href="#fixedRateTab" data-toggle="tab">固定频率</a>--%>
+                    <%--<a href="#fixedRateTab" data-toggle="tab">固定频率</a>--%>
                     <%--</li>--%>
                     <%--<li role="presentation">--%>
-                        <%--<a href="#iso8601Tab" data-toggle="tab">ISO8601</a>--%>
+                    <%--<a href="#iso8601Tab" data-toggle="tab">ISO8601</a>--%>
                     <%--</li>--%>
 
                 </ul>
@@ -381,8 +381,7 @@
 
                                     <div class="form-control">
                                         <label class="radio-inline">
-                                            <input name="circleType" id="circleDay" value="1" type="radio" checked>
-                                            每天
+                                            <input name="circleType" id="circleDay" value="1" type="radio">每天
                                         </label>
                                         <label class="radio-inline">
                                             <input name="circleType" id="circleHour" value="2" type="radio"> 每小时
@@ -506,7 +505,8 @@
                                                 <td><input id="cronMonth" type="text" class="cronInput" data-desc="月份">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
-                                                <td><input id="cronWeekDay" type="text" class="cronInput" data-desc="星期">
+                                                <td><input id="cronWeekDay" type="text" class="cronInput"
+                                                           data-desc="星期">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
                                                 <td><input id="cronYear" type="text" class="cronInput" data-desc="年份">
@@ -524,9 +524,11 @@
                             <div class="col-md-11 col-md-offset-0">
                                 <a href="javascript:void(0)" onclick="toggleCronHelpDiv(this)">
                                     <i class="pull-right text-primary glyphicon glyphicon-chevron-down"
-                                       data-state="down"></i></a>
-                                <span class="pull-right text-info" style="margin-right:20px">输入帮助</span>
+                                       data-state="down"></i>
+                                    <span class="pull-right text-info" style="margin-right:20px">更多帮助</span>
+                                </a>
                             </div>
+
                         </div>
 
 
