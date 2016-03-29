@@ -58,3 +58,25 @@ message ServerDeleteDepartmentBizMapResponse {
     optional string message = 2 [default = ""];
 }
 
+message RestDeleteDepartmentBizMapByDepartmentIdRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int32 department_id = 3;
+}
+
+message ServerDeleteDepartmentBizMapByDepartmentIdResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+
+message RestDeleteDepartmentBizMapByBizGroupIdRequest {
+      required AppAuth app_auth = 1;
+      required string user = 2;
+      required int32 biz_id = 3;
+}
+
+message ServerDeleteDepartmentBizMapByBizGroupIdResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+

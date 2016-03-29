@@ -13,4 +13,5 @@ public interface JarvisAuthType {
     String manage_biz = "5004"; //业务类型管理
     String help = "6001"; //使用帮助手册
     String operation = "7001"; // 操作记录
+    String department = "8001"; //部门管理
 }

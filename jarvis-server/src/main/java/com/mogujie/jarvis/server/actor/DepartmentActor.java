@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.protocol.DepartmentProtos;
+import com.mogujie.jarvis.server.service.ValidService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,10 @@ import com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentRespon
 import com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponse;
 import com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponse;
 import com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponse;
+import com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest;
+import com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse;
+import com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest;
+import com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.DepartmentService;
@@ -47,6 +53,8 @@ public class DepartmentActor extends UntypedActor {
 
     private DepartmentService departmentService = Injectors.getInjector().getInstance(DepartmentService.class);
 
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
+
     public static Props props() {
         return Props.create(DepartmentActor.class);
     }
@@ -58,6 +66,8 @@ public class DepartmentActor extends UntypedActor {
         list.add(new ActorEntry(RestDeleteDepartmentRequest.class, ServerDeleteDepartmentResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestCreateDepartmentBizMapRequest.class, ServerCreateDepartmentBizMapResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestDeleteDepartmentBizMapRequest.class, ServerDeleteDepartmentBizMapResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestDeleteDepartmentBizMapByDepartmentIdRequest.class, ServerDeleteDepartmentBizMapByDepartmentIdResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestDeleteDepartmentBizMapByBizGroupIdRequest.class, ServerDeleteDepartmentBizMapByBizGroupIdResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -74,6 +84,10 @@ public class DepartmentActor extends UntypedActor {
             createDeparmentBizMap((RestCreateDepartmentBizMapRequest) obj);
         } else if (obj instanceof RestDeleteDepartmentBizMapRequest) {
             deleteDepartmentBizMap((RestDeleteDepartmentBizMapRequest) obj);
+        } else if(obj instanceof DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest) {
+            deleteMapByDepartId((DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest) obj);
+        } else if(obj instanceof DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest){
+            deleteMapByBizGroupId((DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -90,6 +104,9 @@ public class DepartmentActor extends UntypedActor {
             DateTime now = DateTime.now();
             department.setCreateTime(now.toDate());
             department.setUpdateTime(now.toDate());
+
+            validService.checkDepartment(ValidService.CheckMode.ADD, department);
+
             departmentService.insert(department);
 
             response = ServerCreateDepartmentResponse.newBuilder().setSuccess(true).setId(department.getId()).build();
@@ -148,6 +165,9 @@ public class DepartmentActor extends UntypedActor {
             DateTime now = DateTime.now();
             map.setCreateTime(now.toDate());
             map.setUpdateTime(now.toDate());
+
+            this.validService.checkDepartmentBizMap(ValidService.CheckMode.ADD, map);
+
             departmentService.insertMap(map);
 
             response = ServerCreateDepartmentBizMapResponse.newBuilder().setSuccess(true).build();
@@ -171,6 +191,35 @@ public class DepartmentActor extends UntypedActor {
             response = ServerDeleteDepartmentBizMapResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", ex);
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void deleteMapByDepartId(RestDeleteDepartmentBizMapByDepartmentIdRequest request) {
+        ServerDeleteDepartmentBizMapByDepartmentIdResponse response;
+        try {
+            this.departmentService.deleteMapByBizGroupId(request.getDepartmentId());
+            response = ServerDeleteDepartmentBizMapByDepartmentIdResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerDeleteDepartmentBizMapByDepartmentIdResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
+            throw ex;
+        }
+    }
+
+    @Transactional
+    private void deleteMapByBizGroupId(RestDeleteDepartmentBizMapByBizGroupIdRequest request) {
+        ServerDeleteDepartmentBizMapByBizGroupIdResponse response;
+        try {
+            this.departmentService.deleteMapByDepartmentId(request.getBizId());
+            response = ServerDeleteDepartmentBizMapByBizGroupIdResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerDeleteDepartmentBizMapByBizGroupIdResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
             throw ex;
         }
     }

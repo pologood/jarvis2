@@ -38,7 +38,7 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     com.google.protobuf.ByteString
-        getUserBytes();
+    getUserBytes();
 
     // required string name = 3;
     /**
@@ -53,13 +53,13 @@ public final class DepartmentProtos {
      * <code>required string name = 3;</code>
      */
     com.google.protobuf.ByteString
-        getNameBytes();
+    getNameBytes();
   }
   /**
    * Protobuf type {@code RestCreateDepartmentRequest}
    */
   public static final class RestCreateDepartmentRequest extends
-      com.google.protobuf.GeneratedMessage
+                                                        com.google.protobuf.GeneratedMessage
       implements RestCreateDepartmentRequestOrBuilder {
     // Use RestCreateDepartmentRequest.newBuilder() to construct.
     private RestCreateDepartmentRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -80,7 +80,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private RestCreateDepartmentRequest(
@@ -101,7 +101,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -142,12 +142,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequest.Builder.class);
@@ -155,13 +155,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<RestCreateDepartmentRequest> PARSER =
         new com.google.protobuf.AbstractParser<RestCreateDepartmentRequest>() {
-      public RestCreateDepartmentRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestCreateDepartmentRequest(input, extensionRegistry);
-      }
-    };
+          public RestCreateDepartmentRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestCreateDepartmentRequest(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<RestCreateDepartmentRequest> getParserForType() {
@@ -208,7 +208,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -221,10 +221,10 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
+    getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -251,7 +251,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -264,10 +264,10 @@ public final class DepartmentProtos {
      * <code>required string name = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getNameBytes() {
+    getNameBytes() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         name_ = b;
@@ -308,7 +308,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
@@ -330,15 +330,15 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
+            .computeMessageSize(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUserBytes());
+            .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getNameBytes());
+            .computeBytesSize(3, getNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -422,15 +422,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code RestCreateDepartmentRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequestOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentRequest.Builder.class);
@@ -475,7 +475,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentRequest_descriptor;
       }
 
@@ -546,19 +546,19 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasName()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -641,7 +641,7 @@ public final class DepartmentProtos {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
             appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
           } else {
             appAuth_ = value;
           }
@@ -687,14 +687,14 @@ public final class DepartmentProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  appAuth_,
-                  getParentForChildren(),
-                  isClean());
+              appAuth_,
+              getParentForChildren(),
+              isClean());
           appAuth_ = null;
         }
         return appAuthBuilder_;
@@ -726,10 +726,10 @@ public final class DepartmentProtos {
        * <code>required string user = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserBytes() {
+      getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -744,9 +744,9 @@ public final class DepartmentProtos {
       public Builder setUser(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -766,9 +766,9 @@ public final class DepartmentProtos {
       public Builder setUserBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -800,10 +800,10 @@ public final class DepartmentProtos {
        * <code>required string name = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getNameBytes() {
+      getNameBytes() {
         java.lang.Object ref = name_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           name_ = b;
@@ -818,9 +818,9 @@ public final class DepartmentProtos {
       public Builder setName(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
         name_ = value;
         onChanged();
         return this;
@@ -840,9 +840,9 @@ public final class DepartmentProtos {
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
         name_ = value;
         onChanged();
         return this;
@@ -885,7 +885,7 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     com.google.protobuf.ByteString
-        getMessageBytes();
+    getMessageBytes();
 
     // optional int32 id = 3;
     /**
@@ -901,7 +901,7 @@ public final class DepartmentProtos {
    * Protobuf type {@code ServerCreateDepartmentResponse}
    */
   public static final class ServerCreateDepartmentResponse extends
-      com.google.protobuf.GeneratedMessage
+                                                           com.google.protobuf.GeneratedMessage
       implements ServerCreateDepartmentResponseOrBuilder {
     // Use ServerCreateDepartmentResponse.newBuilder() to construct.
     private ServerCreateDepartmentResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -922,7 +922,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ServerCreateDepartmentResponse(
@@ -943,7 +943,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -976,12 +976,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponse.Builder.class);
@@ -989,13 +989,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<ServerCreateDepartmentResponse> PARSER =
         new com.google.protobuf.AbstractParser<ServerCreateDepartmentResponse>() {
-      public ServerCreateDepartmentResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerCreateDepartmentResponse(input, extensionRegistry);
-      }
-    };
+          public ServerCreateDepartmentResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerCreateDepartmentResponse(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ServerCreateDepartmentResponse> getParserForType() {
@@ -1036,7 +1036,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1049,10 +1049,10 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     public com.google.protobuf.ByteString
-        getMessageBytes() {
+    getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -1097,7 +1097,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(1, success_);
@@ -1119,15 +1119,15 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
+            .computeBoolSize(1, success_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
+            .computeBytesSize(2, getMessageBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, id_);
+            .computeInt32Size(3, id_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1211,15 +1211,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code ServerCreateDepartmentResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponseOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentResponse.Builder.class);
@@ -1259,7 +1259,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentResponse_descriptor;
       }
 
@@ -1324,7 +1324,7 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         return true;
@@ -1408,10 +1408,10 @@ public final class DepartmentProtos {
        * <code>optional string message = 2 [default = ""];</code>
        */
       public com.google.protobuf.ByteString
-          getMessageBytes() {
+      getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -1426,9 +1426,9 @@ public final class DepartmentProtos {
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -1448,9 +1448,9 @@ public final class DepartmentProtos {
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -1530,7 +1530,7 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     com.google.protobuf.ByteString
-        getUserBytes();
+    getUserBytes();
 
     // required int32 id = 3;
     /**
@@ -1555,13 +1555,13 @@ public final class DepartmentProtos {
      * <code>optional string name = 4;</code>
      */
     com.google.protobuf.ByteString
-        getNameBytes();
+    getNameBytes();
   }
   /**
    * Protobuf type {@code RestModifyDepartmentRequest}
    */
   public static final class RestModifyDepartmentRequest extends
-      com.google.protobuf.GeneratedMessage
+                                                        com.google.protobuf.GeneratedMessage
       implements RestModifyDepartmentRequestOrBuilder {
     // Use RestModifyDepartmentRequest.newBuilder() to construct.
     private RestModifyDepartmentRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -1582,7 +1582,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private RestModifyDepartmentRequest(
@@ -1603,7 +1603,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -1649,12 +1649,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestModifyDepartmentRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestModifyDepartmentRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequest.Builder.class);
@@ -1662,13 +1662,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<RestModifyDepartmentRequest> PARSER =
         new com.google.protobuf.AbstractParser<RestModifyDepartmentRequest>() {
-      public RestModifyDepartmentRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestModifyDepartmentRequest(input, extensionRegistry);
-      }
-    };
+          public RestModifyDepartmentRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestModifyDepartmentRequest(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<RestModifyDepartmentRequest> getParserForType() {
@@ -1715,7 +1715,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1728,10 +1728,10 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
+    getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -1774,7 +1774,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1787,10 +1787,10 @@ public final class DepartmentProtos {
      * <code>optional string name = 4;</code>
      */
     public com.google.protobuf.ByteString
-        getNameBytes() {
+    getNameBytes() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         name_ = b;
@@ -1832,7 +1832,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
@@ -1857,19 +1857,19 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
+            .computeMessageSize(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUserBytes());
+            .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, id_);
+            .computeInt32Size(3, id_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getNameBytes());
+            .computeBytesSize(4, getNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1953,15 +1953,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code RestModifyDepartmentRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequestOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestModifyDepartmentRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestModifyDepartmentRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestModifyDepartmentRequest.Builder.class);
@@ -2008,7 +2008,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestModifyDepartmentRequest_descriptor;
       }
 
@@ -2086,19 +2086,19 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -2181,7 +2181,7 @@ public final class DepartmentProtos {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
             appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
           } else {
             appAuth_ = value;
           }
@@ -2227,14 +2227,14 @@ public final class DepartmentProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  appAuth_,
-                  getParentForChildren(),
-                  isClean());
+              appAuth_,
+              getParentForChildren(),
+              isClean());
           appAuth_ = null;
         }
         return appAuthBuilder_;
@@ -2266,10 +2266,10 @@ public final class DepartmentProtos {
        * <code>required string user = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserBytes() {
+      getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -2284,9 +2284,9 @@ public final class DepartmentProtos {
       public Builder setUser(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -2306,9 +2306,9 @@ public final class DepartmentProtos {
       public Builder setUserBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -2373,10 +2373,10 @@ public final class DepartmentProtos {
        * <code>optional string name = 4;</code>
        */
       public com.google.protobuf.ByteString
-          getNameBytes() {
+      getNameBytes() {
         java.lang.Object ref = name_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           name_ = b;
@@ -2391,9 +2391,9 @@ public final class DepartmentProtos {
       public Builder setName(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000008;
         name_ = value;
         onChanged();
         return this;
@@ -2413,9 +2413,9 @@ public final class DepartmentProtos {
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000008;
         name_ = value;
         onChanged();
         return this;
@@ -2458,13 +2458,13 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     com.google.protobuf.ByteString
-        getMessageBytes();
+    getMessageBytes();
   }
   /**
    * Protobuf type {@code ServerModifyDepartmentResponse}
    */
   public static final class ServerModifyDepartmentResponse extends
-      com.google.protobuf.GeneratedMessage
+                                                           com.google.protobuf.GeneratedMessage
       implements ServerModifyDepartmentResponseOrBuilder {
     // Use ServerModifyDepartmentResponse.newBuilder() to construct.
     private ServerModifyDepartmentResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -2485,7 +2485,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ServerModifyDepartmentResponse(
@@ -2506,7 +2506,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -2534,12 +2534,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerModifyDepartmentResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerModifyDepartmentResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponse.Builder.class);
@@ -2547,13 +2547,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<ServerModifyDepartmentResponse> PARSER =
         new com.google.protobuf.AbstractParser<ServerModifyDepartmentResponse>() {
-      public ServerModifyDepartmentResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerModifyDepartmentResponse(input, extensionRegistry);
-      }
-    };
+          public ServerModifyDepartmentResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerModifyDepartmentResponse(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ServerModifyDepartmentResponse> getParserForType() {
@@ -2594,7 +2594,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -2607,10 +2607,10 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     public com.google.protobuf.ByteString
-        getMessageBytes() {
+    getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -2638,7 +2638,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(1, success_);
@@ -2657,11 +2657,11 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
+            .computeBoolSize(1, success_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
+            .computeBytesSize(2, getMessageBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2745,15 +2745,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code ServerModifyDepartmentResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponseOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerModifyDepartmentResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerModifyDepartmentResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerModifyDepartmentResponse.Builder.class);
@@ -2791,7 +2791,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerModifyDepartmentResponse_descriptor;
       }
 
@@ -2849,7 +2849,7 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         return true;
@@ -2933,10 +2933,10 @@ public final class DepartmentProtos {
        * <code>optional string message = 2 [default = ""];</code>
        */
       public com.google.protobuf.ByteString
-          getMessageBytes() {
+      getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -2951,9 +2951,9 @@ public final class DepartmentProtos {
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -2973,9 +2973,9 @@ public final class DepartmentProtos {
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -3022,7 +3022,7 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     com.google.protobuf.ByteString
-        getUserBytes();
+    getUserBytes();
 
     // required int32 id = 3;
     /**
@@ -3038,7 +3038,7 @@ public final class DepartmentProtos {
    * Protobuf type {@code RestDeleteDepartmentRequest}
    */
   public static final class RestDeleteDepartmentRequest extends
-      com.google.protobuf.GeneratedMessage
+                                                        com.google.protobuf.GeneratedMessage
       implements RestDeleteDepartmentRequestOrBuilder {
     // Use RestDeleteDepartmentRequest.newBuilder() to construct.
     private RestDeleteDepartmentRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -3059,7 +3059,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private RestDeleteDepartmentRequest(
@@ -3080,7 +3080,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3121,12 +3121,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequest.Builder.class);
@@ -3134,13 +3134,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<RestDeleteDepartmentRequest> PARSER =
         new com.google.protobuf.AbstractParser<RestDeleteDepartmentRequest>() {
-      public RestDeleteDepartmentRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestDeleteDepartmentRequest(input, extensionRegistry);
-      }
-    };
+          public RestDeleteDepartmentRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestDeleteDepartmentRequest(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<RestDeleteDepartmentRequest> getParserForType() {
@@ -3187,7 +3187,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -3200,10 +3200,10 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
+    getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -3260,7 +3260,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
@@ -3282,15 +3282,15 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
+            .computeMessageSize(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUserBytes());
+            .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, id_);
+            .computeInt32Size(3, id_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3374,15 +3374,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code RestDeleteDepartmentRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequestOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentRequest.Builder.class);
@@ -3427,7 +3427,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentRequest_descriptor;
       }
 
@@ -3496,19 +3496,19 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -3591,7 +3591,7 @@ public final class DepartmentProtos {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
             appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
           } else {
             appAuth_ = value;
           }
@@ -3637,14 +3637,14 @@ public final class DepartmentProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  appAuth_,
-                  getParentForChildren(),
-                  isClean());
+              appAuth_,
+              getParentForChildren(),
+              isClean());
           appAuth_ = null;
         }
         return appAuthBuilder_;
@@ -3676,10 +3676,10 @@ public final class DepartmentProtos {
        * <code>required string user = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserBytes() {
+      getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -3694,9 +3694,9 @@ public final class DepartmentProtos {
       public Builder setUser(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -3716,9 +3716,9 @@ public final class DepartmentProtos {
       public Builder setUserBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -3794,13 +3794,13 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     com.google.protobuf.ByteString
-        getMessageBytes();
+    getMessageBytes();
   }
   /**
    * Protobuf type {@code ServerDeleteDepartmentResponse}
    */
   public static final class ServerDeleteDepartmentResponse extends
-      com.google.protobuf.GeneratedMessage
+                                                           com.google.protobuf.GeneratedMessage
       implements ServerDeleteDepartmentResponseOrBuilder {
     // Use ServerDeleteDepartmentResponse.newBuilder() to construct.
     private ServerDeleteDepartmentResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -3821,7 +3821,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ServerDeleteDepartmentResponse(
@@ -3842,7 +3842,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3870,12 +3870,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponse.Builder.class);
@@ -3883,13 +3883,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<ServerDeleteDepartmentResponse> PARSER =
         new com.google.protobuf.AbstractParser<ServerDeleteDepartmentResponse>() {
-      public ServerDeleteDepartmentResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerDeleteDepartmentResponse(input, extensionRegistry);
-      }
-    };
+          public ServerDeleteDepartmentResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerDeleteDepartmentResponse(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ServerDeleteDepartmentResponse> getParserForType() {
@@ -3930,7 +3930,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -3943,10 +3943,10 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     public com.google.protobuf.ByteString
-        getMessageBytes() {
+    getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -3974,7 +3974,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(1, success_);
@@ -3993,11 +3993,11 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
+            .computeBoolSize(1, success_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
+            .computeBytesSize(2, getMessageBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4081,15 +4081,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code ServerDeleteDepartmentResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponseOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentResponse.Builder.class);
@@ -4127,7 +4127,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentResponse_descriptor;
       }
 
@@ -4185,7 +4185,7 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         return true;
@@ -4269,10 +4269,10 @@ public final class DepartmentProtos {
        * <code>optional string message = 2 [default = ""];</code>
        */
       public com.google.protobuf.ByteString
-          getMessageBytes() {
+      getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -4287,9 +4287,9 @@ public final class DepartmentProtos {
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -4309,9 +4309,9 @@ public final class DepartmentProtos {
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -4358,7 +4358,7 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     com.google.protobuf.ByteString
-        getUserBytes();
+    getUserBytes();
 
     // required int32 department_id = 3;
     /**
@@ -4384,7 +4384,7 @@ public final class DepartmentProtos {
    * Protobuf type {@code RestCreateDepartmentBizMapRequest}
    */
   public static final class RestCreateDepartmentBizMapRequest extends
-      com.google.protobuf.GeneratedMessage
+                                                              com.google.protobuf.GeneratedMessage
       implements RestCreateDepartmentBizMapRequestOrBuilder {
     // Use RestCreateDepartmentBizMapRequest.newBuilder() to construct.
     private RestCreateDepartmentBizMapRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -4405,7 +4405,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private RestCreateDepartmentBizMapRequest(
@@ -4426,7 +4426,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -4472,12 +4472,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentBizMapRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentBizMapRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequest.Builder.class);
@@ -4485,13 +4485,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<RestCreateDepartmentBizMapRequest> PARSER =
         new com.google.protobuf.AbstractParser<RestCreateDepartmentBizMapRequest>() {
-      public RestCreateDepartmentBizMapRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestCreateDepartmentBizMapRequest(input, extensionRegistry);
-      }
-    };
+          public RestCreateDepartmentBizMapRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestCreateDepartmentBizMapRequest(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<RestCreateDepartmentBizMapRequest> getParserForType() {
@@ -4538,7 +4538,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -4551,10 +4551,10 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
+    getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -4632,7 +4632,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
@@ -4657,19 +4657,19 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
+            .computeMessageSize(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUserBytes());
+            .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, departmentId_);
+            .computeInt32Size(3, departmentId_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, bizId_);
+            .computeInt32Size(4, bizId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4753,15 +4753,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code RestCreateDepartmentBizMapRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequestOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentBizMapRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentBizMapRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestCreateDepartmentBizMapRequest.Builder.class);
@@ -4808,7 +4808,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestCreateDepartmentBizMapRequest_descriptor;
       }
 
@@ -4884,23 +4884,23 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasDepartmentId()) {
-          
+
           return false;
         }
         if (!hasBizId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -4983,7 +4983,7 @@ public final class DepartmentProtos {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
             appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
           } else {
             appAuth_ = value;
           }
@@ -5029,14 +5029,14 @@ public final class DepartmentProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  appAuth_,
-                  getParentForChildren(),
-                  isClean());
+              appAuth_,
+              getParentForChildren(),
+              isClean());
           appAuth_ = null;
         }
         return appAuthBuilder_;
@@ -5068,10 +5068,10 @@ public final class DepartmentProtos {
        * <code>required string user = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserBytes() {
+      getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -5086,9 +5086,9 @@ public final class DepartmentProtos {
       public Builder setUser(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -5108,9 +5108,9 @@ public final class DepartmentProtos {
       public Builder setUserBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -5219,13 +5219,13 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     com.google.protobuf.ByteString
-        getMessageBytes();
+    getMessageBytes();
   }
   /**
    * Protobuf type {@code ServerCreateDepartmentBizMapResponse}
    */
   public static final class ServerCreateDepartmentBizMapResponse extends
-      com.google.protobuf.GeneratedMessage
+                                                                 com.google.protobuf.GeneratedMessage
       implements ServerCreateDepartmentBizMapResponseOrBuilder {
     // Use ServerCreateDepartmentBizMapResponse.newBuilder() to construct.
     private ServerCreateDepartmentBizMapResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -5246,7 +5246,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ServerCreateDepartmentBizMapResponse(
@@ -5267,7 +5267,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -5295,12 +5295,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentBizMapResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentBizMapResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponse.Builder.class);
@@ -5308,13 +5308,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<ServerCreateDepartmentBizMapResponse> PARSER =
         new com.google.protobuf.AbstractParser<ServerCreateDepartmentBizMapResponse>() {
-      public ServerCreateDepartmentBizMapResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerCreateDepartmentBizMapResponse(input, extensionRegistry);
-      }
-    };
+          public ServerCreateDepartmentBizMapResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerCreateDepartmentBizMapResponse(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ServerCreateDepartmentBizMapResponse> getParserForType() {
@@ -5355,7 +5355,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -5368,10 +5368,10 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     public com.google.protobuf.ByteString
-        getMessageBytes() {
+    getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -5399,7 +5399,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(1, success_);
@@ -5418,11 +5418,11 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
+            .computeBoolSize(1, success_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
+            .computeBytesSize(2, getMessageBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5506,15 +5506,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code ServerCreateDepartmentBizMapResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponseOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentBizMapResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentBizMapResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerCreateDepartmentBizMapResponse.Builder.class);
@@ -5552,7 +5552,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerCreateDepartmentBizMapResponse_descriptor;
       }
 
@@ -5610,7 +5610,7 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         return true;
@@ -5694,10 +5694,10 @@ public final class DepartmentProtos {
        * <code>optional string message = 2 [default = ""];</code>
        */
       public com.google.protobuf.ByteString
-          getMessageBytes() {
+      getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -5712,9 +5712,9 @@ public final class DepartmentProtos {
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -5734,9 +5734,9 @@ public final class DepartmentProtos {
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -5783,7 +5783,7 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     com.google.protobuf.ByteString
-        getUserBytes();
+    getUserBytes();
 
     // required int32 department_id = 3;
     /**
@@ -5809,7 +5809,7 @@ public final class DepartmentProtos {
    * Protobuf type {@code RestDeleteDepartmentBizMapRequest}
    */
   public static final class RestDeleteDepartmentBizMapRequest extends
-      com.google.protobuf.GeneratedMessage
+                                                              com.google.protobuf.GeneratedMessage
       implements RestDeleteDepartmentBizMapRequestOrBuilder {
     // Use RestDeleteDepartmentBizMapRequest.newBuilder() to construct.
     private RestDeleteDepartmentBizMapRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -5830,7 +5830,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private RestDeleteDepartmentBizMapRequest(
@@ -5851,7 +5851,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -5897,12 +5897,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequest.Builder.class);
@@ -5910,13 +5910,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<RestDeleteDepartmentBizMapRequest> PARSER =
         new com.google.protobuf.AbstractParser<RestDeleteDepartmentBizMapRequest>() {
-      public RestDeleteDepartmentBizMapRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestDeleteDepartmentBizMapRequest(input, extensionRegistry);
-      }
-    };
+          public RestDeleteDepartmentBizMapRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestDeleteDepartmentBizMapRequest(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<RestDeleteDepartmentBizMapRequest> getParserForType() {
@@ -5963,7 +5963,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -5976,10 +5976,10 @@ public final class DepartmentProtos {
      * <code>required string user = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
+    getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -6057,7 +6057,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
@@ -6082,19 +6082,19 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
+            .computeMessageSize(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getUserBytes());
+            .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, departmentId_);
+            .computeInt32Size(3, departmentId_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, bizId_);
+            .computeInt32Size(4, bizId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6178,15 +6178,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code RestDeleteDepartmentBizMapRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequestOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapRequest.Builder.class);
@@ -6233,7 +6233,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapRequest_descriptor;
       }
 
@@ -6309,23 +6309,23 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasDepartmentId()) {
-          
+
           return false;
         }
         if (!hasBizId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -6408,7 +6408,7 @@ public final class DepartmentProtos {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
               appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
             appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
           } else {
             appAuth_ = value;
           }
@@ -6454,14 +6454,14 @@ public final class DepartmentProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  appAuth_,
-                  getParentForChildren(),
-                  isClean());
+              appAuth_,
+              getParentForChildren(),
+              isClean());
           appAuth_ = null;
         }
         return appAuthBuilder_;
@@ -6493,10 +6493,10 @@ public final class DepartmentProtos {
        * <code>required string user = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getUserBytes() {
+      getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -6511,9 +6511,9 @@ public final class DepartmentProtos {
       public Builder setUser(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -6533,9 +6533,9 @@ public final class DepartmentProtos {
       public Builder setUserBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         user_ = value;
         onChanged();
         return this;
@@ -6644,13 +6644,13 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     com.google.protobuf.ByteString
-        getMessageBytes();
+    getMessageBytes();
   }
   /**
    * Protobuf type {@code ServerDeleteDepartmentBizMapResponse}
    */
   public static final class ServerDeleteDepartmentBizMapResponse extends
-      com.google.protobuf.GeneratedMessage
+                                                                 com.google.protobuf.GeneratedMessage
       implements ServerDeleteDepartmentBizMapResponseOrBuilder {
     // Use ServerDeleteDepartmentBizMapResponse.newBuilder() to construct.
     private ServerDeleteDepartmentBizMapResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
@@ -6671,7 +6671,7 @@ public final class DepartmentProtos {
     private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ServerDeleteDepartmentBizMapResponse(
@@ -6692,7 +6692,7 @@ public final class DepartmentProtos {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -6720,12 +6720,12 @@ public final class DepartmentProtos {
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponse.Builder.class);
@@ -6733,13 +6733,13 @@ public final class DepartmentProtos {
 
     public static com.google.protobuf.Parser<ServerDeleteDepartmentBizMapResponse> PARSER =
         new com.google.protobuf.AbstractParser<ServerDeleteDepartmentBizMapResponse>() {
-      public ServerDeleteDepartmentBizMapResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerDeleteDepartmentBizMapResponse(input, extensionRegistry);
-      }
-    };
+          public ServerDeleteDepartmentBizMapResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerDeleteDepartmentBizMapResponse(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ServerDeleteDepartmentBizMapResponse> getParserForType() {
@@ -6780,7 +6780,7 @@ public final class DepartmentProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -6793,10 +6793,10 @@ public final class DepartmentProtos {
      * <code>optional string message = 2 [default = ""];</code>
      */
     public com.google.protobuf.ByteString
-        getMessageBytes() {
+    getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -6824,7 +6824,7 @@ public final class DepartmentProtos {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(1, success_);
@@ -6843,11 +6843,11 @@ public final class DepartmentProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
+            .computeBoolSize(1, success_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
+            .computeBytesSize(2, getMessageBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6931,15 +6931,15 @@ public final class DepartmentProtos {
      * Protobuf type {@code ServerDeleteDepartmentBizMapResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponseOrBuilder {
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapResponse.Builder.class);
@@ -6977,7 +6977,7 @@ public final class DepartmentProtos {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapResponse_descriptor;
       }
 
@@ -7035,7 +7035,7 @@ public final class DepartmentProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         return true;
@@ -7119,10 +7119,10 @@ public final class DepartmentProtos {
        * <code>optional string message = 2 [default = ""];</code>
        */
       public com.google.protobuf.ByteString
-          getMessageBytes() {
+      getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -7137,9 +7137,9 @@ public final class DepartmentProtos {
       public Builder setMessage(
           java.lang.String value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -7159,9 +7159,9 @@ public final class DepartmentProtos {
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
@@ -7178,164 +7178,2890 @@ public final class DepartmentProtos {
     // @@protoc_insertion_point(class_scope:ServerDeleteDepartmentBizMapResponse)
   }
 
+  public interface RestDeleteDepartmentBizMapByDepartmentIdRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+    getUserBytes();
+
+    // required int32 department_id = 3;
+    /**
+     * <code>required int32 department_id = 3;</code>
+     */
+    boolean hasDepartmentId();
+    /**
+     * <code>required int32 department_id = 3;</code>
+     */
+    int getDepartmentId();
+  }
+  /**
+   * Protobuf type {@code RestDeleteDepartmentBizMapByDepartmentIdRequest}
+   */
+  public static final class RestDeleteDepartmentBizMapByDepartmentIdRequest extends
+                                                                            com.google.protobuf.GeneratedMessage
+      implements RestDeleteDepartmentBizMapByDepartmentIdRequestOrBuilder {
+    // Use RestDeleteDepartmentBizMapByDepartmentIdRequest.newBuilder() to construct.
+    private RestDeleteDepartmentBizMapByDepartmentIdRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestDeleteDepartmentBizMapByDepartmentIdRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestDeleteDepartmentBizMapByDepartmentIdRequest defaultInstance;
+    public static RestDeleteDepartmentBizMapByDepartmentIdRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestDeleteDepartmentBizMapByDepartmentIdRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestDeleteDepartmentBizMapByDepartmentIdRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                  extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              departmentId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestDeleteDepartmentBizMapByDepartmentIdRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestDeleteDepartmentBizMapByDepartmentIdRequest>() {
+          public RestDeleteDepartmentBizMapByDepartmentIdRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestDeleteDepartmentBizMapByDepartmentIdRequest(input, extensionRegistry);
+          }
+        };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestDeleteDepartmentBizMapByDepartmentIdRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+    getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required int32 department_id = 3;
+    public static final int DEPARTMENT_ID_FIELD_NUMBER = 3;
+    private int departmentId_;
+    /**
+     * <code>required int32 department_id = 3;</code>
+     */
+    public boolean hasDepartmentId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 department_id = 3;</code>
+     */
+    public int getDepartmentId() {
+      return departmentId_;
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      departmentId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDepartmentId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, departmentId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(3, departmentId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestDeleteDepartmentBizMapByDepartmentIdRequest}
+     */
+    public static final class Builder extends
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        departmentId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest build() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest buildPartial() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest result = new com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.departmentId_ = departmentId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest other) {
+        if (other == com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasDepartmentId()) {
+          setDepartmentId(other.getDepartmentId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+
+          return false;
+        }
+        if (!hasUser()) {
+
+          return false;
+        }
+        if (!hasDepartmentId()) {
+
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByDepartmentIdRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+              appAuth_,
+              getParentForChildren(),
+              isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+      getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int32 department_id = 3;
+      private int departmentId_ ;
+      /**
+       * <code>required int32 department_id = 3;</code>
+       */
+      public boolean hasDepartmentId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 department_id = 3;</code>
+       */
+      public int getDepartmentId() {
+        return departmentId_;
+      }
+      /**
+       * <code>required int32 department_id = 3;</code>
+       */
+      public Builder setDepartmentId(int value) {
+        bitField0_ |= 0x00000004;
+        departmentId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 department_id = 3;</code>
+       */
+      public Builder clearDepartmentId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        departmentId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestDeleteDepartmentBizMapByDepartmentIdRequest)
+    }
+
+    static {
+      defaultInstance = new RestDeleteDepartmentBizMapByDepartmentIdRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestDeleteDepartmentBizMapByDepartmentIdRequest)
+  }
+
+  public interface ServerDeleteDepartmentBizMapByDepartmentIdResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // optional string message = 2 [default = ""];
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+    getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerDeleteDepartmentBizMapByDepartmentIdResponse}
+   */
+  public static final class ServerDeleteDepartmentBizMapByDepartmentIdResponse extends
+                                                                               com.google.protobuf.GeneratedMessage
+      implements ServerDeleteDepartmentBizMapByDepartmentIdResponseOrBuilder {
+    // Use ServerDeleteDepartmentBizMapByDepartmentIdResponse.newBuilder() to construct.
+    private ServerDeleteDepartmentBizMapByDepartmentIdResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerDeleteDepartmentBizMapByDepartmentIdResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerDeleteDepartmentBizMapByDepartmentIdResponse defaultInstance;
+    public static ServerDeleteDepartmentBizMapByDepartmentIdResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerDeleteDepartmentBizMapByDepartmentIdResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerDeleteDepartmentBizMapByDepartmentIdResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                  extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerDeleteDepartmentBizMapByDepartmentIdResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerDeleteDepartmentBizMapByDepartmentIdResponse>() {
+          public ServerDeleteDepartmentBizMapByDepartmentIdResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerDeleteDepartmentBizMapByDepartmentIdResponse(input, extensionRegistry);
+          }
+        };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerDeleteDepartmentBizMapByDepartmentIdResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // optional string message = 2 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+    getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerDeleteDepartmentBizMapByDepartmentIdResponse}
+     */
+    public static final class Builder extends
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse build() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse buildPartial() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse result = new com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse other) {
+        if (other == com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000002;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByDepartmentIdResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // optional string message = 2 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+      getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerDeleteDepartmentBizMapByDepartmentIdResponse)
+    }
+
+    static {
+      defaultInstance = new ServerDeleteDepartmentBizMapByDepartmentIdResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerDeleteDepartmentBizMapByDepartmentIdResponse)
+  }
+
+  public interface RestDeleteDepartmentBizMapByBizGroupIdRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+    getUserBytes();
+
+    // required int32 biz_id = 3;
+    /**
+     * <code>required int32 biz_id = 3;</code>
+     */
+    boolean hasBizId();
+    /**
+     * <code>required int32 biz_id = 3;</code>
+     */
+    int getBizId();
+  }
+  /**
+   * Protobuf type {@code RestDeleteDepartmentBizMapByBizGroupIdRequest}
+   */
+  public static final class RestDeleteDepartmentBizMapByBizGroupIdRequest extends
+                                                                          com.google.protobuf.GeneratedMessage
+      implements RestDeleteDepartmentBizMapByBizGroupIdRequestOrBuilder {
+    // Use RestDeleteDepartmentBizMapByBizGroupIdRequest.newBuilder() to construct.
+    private RestDeleteDepartmentBizMapByBizGroupIdRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestDeleteDepartmentBizMapByBizGroupIdRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestDeleteDepartmentBizMapByBizGroupIdRequest defaultInstance;
+    public static RestDeleteDepartmentBizMapByBizGroupIdRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestDeleteDepartmentBizMapByBizGroupIdRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestDeleteDepartmentBizMapByBizGroupIdRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                  extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              bizId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestDeleteDepartmentBizMapByBizGroupIdRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestDeleteDepartmentBizMapByBizGroupIdRequest>() {
+          public RestDeleteDepartmentBizMapByBizGroupIdRequest parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new RestDeleteDepartmentBizMapByBizGroupIdRequest(input, extensionRegistry);
+          }
+        };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestDeleteDepartmentBizMapByBizGroupIdRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+    getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required int32 biz_id = 3;
+    public static final int BIZ_ID_FIELD_NUMBER = 3;
+    private int bizId_;
+    /**
+     * <code>required int32 biz_id = 3;</code>
+     */
+    public boolean hasBizId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 biz_id = 3;</code>
+     */
+    public int getBizId() {
+      return bizId_;
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      bizId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBizId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, bizId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(3, bizId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestDeleteDepartmentBizMapByBizGroupIdRequest}
+     */
+    public static final class Builder extends
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.class, com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bizId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest build() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest buildPartial() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest result = new com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bizId_ = bizId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest other) {
+        if (other == com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasBizId()) {
+          setBizId(other.getBizId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+
+          return false;
+        }
+        if (!hasUser()) {
+
+          return false;
+        }
+        if (!hasBizId()) {
+
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+                com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
+      getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+              appAuth_,
+              getParentForChildren(),
+              isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+      getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int32 biz_id = 3;
+      private int bizId_ ;
+      /**
+       * <code>required int32 biz_id = 3;</code>
+       */
+      public boolean hasBizId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 biz_id = 3;</code>
+       */
+      public int getBizId() {
+        return bizId_;
+      }
+      /**
+       * <code>required int32 biz_id = 3;</code>
+       */
+      public Builder setBizId(int value) {
+        bitField0_ |= 0x00000004;
+        bizId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 biz_id = 3;</code>
+       */
+      public Builder clearBizId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        bizId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestDeleteDepartmentBizMapByBizGroupIdRequest)
+    }
+
+    static {
+      defaultInstance = new RestDeleteDepartmentBizMapByBizGroupIdRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestDeleteDepartmentBizMapByBizGroupIdRequest)
+  }
+
+  public interface ServerDeleteDepartmentBizMapByBizGroupIdResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // optional string message = 2 [default = ""];
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+    getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerDeleteDepartmentBizMapByBizGroupIdResponse}
+   */
+  public static final class ServerDeleteDepartmentBizMapByBizGroupIdResponse extends
+                                                                             com.google.protobuf.GeneratedMessage
+      implements ServerDeleteDepartmentBizMapByBizGroupIdResponseOrBuilder {
+    // Use ServerDeleteDepartmentBizMapByBizGroupIdResponse.newBuilder() to construct.
+    private ServerDeleteDepartmentBizMapByBizGroupIdResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerDeleteDepartmentBizMapByBizGroupIdResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerDeleteDepartmentBizMapByBizGroupIdResponse defaultInstance;
+    public static ServerDeleteDepartmentBizMapByBizGroupIdResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerDeleteDepartmentBizMapByBizGroupIdResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerDeleteDepartmentBizMapByBizGroupIdResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                  extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+    getDescriptor() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerDeleteDepartmentBizMapByBizGroupIdResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerDeleteDepartmentBizMapByBizGroupIdResponse>() {
+          public ServerDeleteDepartmentBizMapByBizGroupIdResponse parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new ServerDeleteDepartmentBizMapByBizGroupIdResponse(input, extensionRegistry);
+          }
+        };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerDeleteDepartmentBizMapByBizGroupIdResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // optional string message = 2 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+    getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerDeleteDepartmentBizMapByBizGroupIdResponse}
+     */
+    public static final class Builder extends
+                                      com.google.protobuf.GeneratedMessage.Builder<Builder>
+        implements com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+      getDescriptor() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.class, com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+      getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse build() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse buildPartial() {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse result = new com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse other) {
+        if (other == com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000002;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // optional string message = 2 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+      getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b =
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerDeleteDepartmentBizMapByBizGroupIdResponse)
+    }
+
+    static {
+      defaultInstance = new ServerDeleteDepartmentBizMapByBizGroupIdResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerDeleteDepartmentBizMapByBizGroupIdResponse)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestCreateDepartmentRequest_descriptor;
+      internal_static_RestCreateDepartmentRequest_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestCreateDepartmentRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerCreateDepartmentResponse_descriptor;
+      internal_static_ServerCreateDepartmentResponse_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerCreateDepartmentResponse_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestModifyDepartmentRequest_descriptor;
+      internal_static_RestModifyDepartmentRequest_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyDepartmentRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerModifyDepartmentResponse_descriptor;
+      internal_static_ServerModifyDepartmentResponse_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyDepartmentResponse_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestDeleteDepartmentRequest_descriptor;
+      internal_static_RestDeleteDepartmentRequest_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestDeleteDepartmentRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerDeleteDepartmentResponse_descriptor;
+      internal_static_ServerDeleteDepartmentResponse_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerDeleteDepartmentResponse_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestCreateDepartmentBizMapRequest_descriptor;
+      internal_static_RestCreateDepartmentBizMapRequest_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestCreateDepartmentBizMapRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerCreateDepartmentBizMapResponse_descriptor;
+      internal_static_ServerCreateDepartmentBizMapResponse_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerCreateDepartmentBizMapResponse_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestDeleteDepartmentBizMapRequest_descriptor;
+      internal_static_RestDeleteDepartmentBizMapRequest_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestDeleteDepartmentBizMapRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerDeleteDepartmentBizMapResponse_descriptor;
+      internal_static_ServerDeleteDepartmentBizMapResponse_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerDeleteDepartmentBizMapResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+      internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor;
+  private static
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+      internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor;
+  private static
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+      internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor;
+  private static
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+      internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor;
+  private static
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
   private static com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020department.proto\032\016app_auth.proto\"U\n\033Re" +
-      "stCreateDepartmentRequest\022\032\n\010app_auth\030\001 " +
-      "\002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\014\n\004name\030\003 \002(" +
-      "\t\"P\n\036ServerCreateDepartmentResponse\022\017\n\007s" +
-      "uccess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\022\n\n\002id\030\003 " +
-      "\001(\005\"a\n\033RestModifyDepartmentRequest\022\032\n\010ap" +
-      "p_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\n\n\002" +
-      "id\030\003 \002(\005\022\014\n\004name\030\004 \001(\t\"D\n\036ServerModifyDe" +
-      "partmentResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes" +
-      "sage\030\002 \001(\t:\000\"S\n\033RestDeleteDepartmentRequ",
-      "est\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030" +
-      "\002 \002(\t\022\n\n\002id\030\003 \002(\005\"D\n\036ServerDeleteDepartm" +
-      "entResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030" +
-      "\002 \001(\t:\000\"t\n!RestCreateDepartmentBizMapReq" +
-      "uest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user" +
-      "\030\002 \002(\t\022\025\n\rdepartment_id\030\003 \002(\005\022\016\n\006biz_id\030" +
-      "\004 \002(\005\"J\n$ServerCreateDepartmentBizMapRes" +
-      "ponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:" +
-      "\000\"t\n!RestDeleteDepartmentBizMapRequest\022\032" +
-      "\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t",
-      "\022\025\n\rdepartment_id\030\003 \002(\005\022\016\n\006biz_id\030\004 \002(\005\"" +
-      "J\n$ServerDeleteDepartmentBizMapResponse\022" +
-      "\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B/\n\033c" +
-      "om.mogujie.jarvis.protocolB\020DepartmentPr" +
-      "otos"
+        "\n\020department.proto\032\016app_auth.proto\"U\n\033Re" +
+            "stCreateDepartmentRequest\022\032\n\010app_auth\030\001 " +
+            "\002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\014\n\004name\030\003 \002(" +
+            "\t\"P\n\036ServerCreateDepartmentResponse\022\017\n\007s" +
+            "uccess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\022\n\n\002id\030\003 " +
+            "\001(\005\"a\n\033RestModifyDepartmentRequest\022\032\n\010ap" +
+            "p_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\n\n\002" +
+            "id\030\003 \002(\005\022\014\n\004name\030\004 \001(\t\"D\n\036ServerModifyDe" +
+            "partmentResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes" +
+            "sage\030\002 \001(\t:\000\"S\n\033RestDeleteDepartmentRequ",
+        "est\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030" +
+            "\002 \002(\t\022\n\n\002id\030\003 \002(\005\"D\n\036ServerDeleteDepartm" +
+            "entResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030" +
+            "\002 \001(\t:\000\"t\n!RestCreateDepartmentBizMapReq" +
+            "uest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user" +
+            "\030\002 \002(\t\022\025\n\rdepartment_id\030\003 \002(\005\022\016\n\006biz_id\030" +
+            "\004 \002(\005\"J\n$ServerCreateDepartmentBizMapRes" +
+            "ponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:" +
+            "\000\"t\n!RestDeleteDepartmentBizMapRequest\022\032" +
+            "\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t",
+        "\022\025\n\rdepartment_id\030\003 \002(\005\022\016\n\006biz_id\030\004 \002(\005\"" +
+            "J\n$ServerDeleteDepartmentBizMapResponse\022" +
+            "\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"r\n/R" +
+            "estDeleteDepartmentBizMapByDepartmentIdR" +
+            "equest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004us" +
+            "er\030\002 \002(\t\022\025\n\rdepartment_id\030\003 \002(\005\"X\n2Serve" +
+            "rDeleteDepartmentBizMapByDepartmentIdRes" +
+            "ponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:" +
+            "\000\"i\n-RestDeleteDepartmentBizMapByBizGrou" +
+            "pIdRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014",
+        "\n\004user\030\002 \002(\t\022\016\n\006biz_id\030\003 \002(\005\"V\n0ServerDe" +
+            "leteDepartmentBizMapByBizGroupIdResponse" +
+            "\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B/\n\033" +
+            "com.mogujie.jarvis.protocolB\020DepartmentP" +
+            "rotos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_RestCreateDepartmentRequest_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_RestCreateDepartmentRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RestCreateDepartmentRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "Name", });
-          internal_static_ServerCreateDepartmentResponse_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_ServerCreateDepartmentResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerCreateDepartmentResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", "Id", });
-          internal_static_RestModifyDepartmentRequest_descriptor =
-            getDescriptor().getMessageTypes().get(2);
-          internal_static_RestModifyDepartmentRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RestModifyDepartmentRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "Id", "Name", });
-          internal_static_ServerModifyDepartmentResponse_descriptor =
-            getDescriptor().getMessageTypes().get(3);
-          internal_static_ServerModifyDepartmentResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerModifyDepartmentResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", });
-          internal_static_RestDeleteDepartmentRequest_descriptor =
-            getDescriptor().getMessageTypes().get(4);
-          internal_static_RestDeleteDepartmentRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RestDeleteDepartmentRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "Id", });
-          internal_static_ServerDeleteDepartmentResponse_descriptor =
-            getDescriptor().getMessageTypes().get(5);
-          internal_static_ServerDeleteDepartmentResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerDeleteDepartmentResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", });
-          internal_static_RestCreateDepartmentBizMapRequest_descriptor =
-            getDescriptor().getMessageTypes().get(6);
-          internal_static_RestCreateDepartmentBizMapRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RestCreateDepartmentBizMapRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "DepartmentId", "BizId", });
-          internal_static_ServerCreateDepartmentBizMapResponse_descriptor =
-            getDescriptor().getMessageTypes().get(7);
-          internal_static_ServerCreateDepartmentBizMapResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerCreateDepartmentBizMapResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", });
-          internal_static_RestDeleteDepartmentBizMapRequest_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_RestDeleteDepartmentBizMapRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RestDeleteDepartmentBizMapRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "DepartmentId", "BizId", });
-          internal_static_ServerDeleteDepartmentBizMapResponse_descriptor =
-            getDescriptor().getMessageTypes().get(9);
-          internal_static_ServerDeleteDepartmentBizMapResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerDeleteDepartmentBizMapResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            internal_static_RestCreateDepartmentRequest_descriptor =
+                getDescriptor().getMessageTypes().get(0);
+            internal_static_RestCreateDepartmentRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestCreateDepartmentRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "Name", });
+            internal_static_ServerCreateDepartmentResponse_descriptor =
+                getDescriptor().getMessageTypes().get(1);
+            internal_static_ServerCreateDepartmentResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerCreateDepartmentResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", "Id", });
+            internal_static_RestModifyDepartmentRequest_descriptor =
+                getDescriptor().getMessageTypes().get(2);
+            internal_static_RestModifyDepartmentRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestModifyDepartmentRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "Id", "Name", });
+            internal_static_ServerModifyDepartmentResponse_descriptor =
+                getDescriptor().getMessageTypes().get(3);
+            internal_static_ServerModifyDepartmentResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerModifyDepartmentResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            internal_static_RestDeleteDepartmentRequest_descriptor =
+                getDescriptor().getMessageTypes().get(4);
+            internal_static_RestDeleteDepartmentRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestDeleteDepartmentRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "Id", });
+            internal_static_ServerDeleteDepartmentResponse_descriptor =
+                getDescriptor().getMessageTypes().get(5);
+            internal_static_ServerDeleteDepartmentResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerDeleteDepartmentResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            internal_static_RestCreateDepartmentBizMapRequest_descriptor =
+                getDescriptor().getMessageTypes().get(6);
+            internal_static_RestCreateDepartmentBizMapRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestCreateDepartmentBizMapRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "DepartmentId", "BizId", });
+            internal_static_ServerCreateDepartmentBizMapResponse_descriptor =
+                getDescriptor().getMessageTypes().get(7);
+            internal_static_ServerCreateDepartmentBizMapResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerCreateDepartmentBizMapResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            internal_static_RestDeleteDepartmentBizMapRequest_descriptor =
+                getDescriptor().getMessageTypes().get(8);
+            internal_static_RestDeleteDepartmentBizMapRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestDeleteDepartmentBizMapRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "DepartmentId", "BizId", });
+            internal_static_ServerDeleteDepartmentBizMapResponse_descriptor =
+                getDescriptor().getMessageTypes().get(9);
+            internal_static_ServerDeleteDepartmentBizMapResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerDeleteDepartmentBizMapResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor =
+                getDescriptor().getMessageTypes().get(10);
+            internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestDeleteDepartmentBizMapByDepartmentIdRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "DepartmentId", });
+            internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor =
+                getDescriptor().getMessageTypes().get(11);
+            internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerDeleteDepartmentBizMapByDepartmentIdResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor =
+                getDescriptor().getMessageTypes().get(12);
+            internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestDeleteDepartmentBizMapByBizGroupIdRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "User", "BizId", });
+            internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor =
+                getDescriptor().getMessageTypes().get(13);
+            internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerDeleteDepartmentBizMapByBizGroupIdResponse_descriptor,
+                new java.lang.String[] { "Success", "Message", });
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
-        }, assigner);
+        .internalBuildGeneratedFileFrom(descriptorData,
+            new com.google.protobuf.Descriptors.FileDescriptor[] {
+                com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
+            }, assigner);
   }
 
   // @@protoc_insertion_point(outer_class_scope)

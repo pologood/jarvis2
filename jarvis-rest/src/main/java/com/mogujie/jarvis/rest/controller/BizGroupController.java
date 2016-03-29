@@ -2,14 +2,21 @@ package com.mogujie.jarvis.rest.controller;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.BizGroupProtos.*;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestCreateBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestDeleteBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestModifyBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerCreateBizGroupResponse;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerDeleteBizGroupResponse;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerModifyBizGroupResponse;
+import com.mogujie.jarvis.protocol.DepartmentProtos;
+import com.mogujie.jarvis.protocol.DepartmentProtos.RestDeleteDepartmentBizMapByBizGroupIdRequest;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.vo.BizGroupResultVo;
 import com.mogujie.jarvis.rest.vo.BizGroupVo;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -36,6 +43,8 @@ public class BizGroupController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             BizGroupVo vo = JsonHelper.fromJson(parameters, BizGroupVo.class);
+            JsonParameters para = new JsonParameters(parameters);
+            vo.setName(para.getString("bizGroupName"));
             ValidUtils.checkBizGroup(CheckMode.ADD, vo);
 
             RestCreateBizGroupRequest request = RestCreateBizGroupRequest.newBuilder()
@@ -115,7 +124,18 @@ public class BizGroupController extends AbstractController {
                     .build();
 
             ServerDeleteBizGroupResponse response = (ServerDeleteBizGroupResponse) callActor(AkkaType.SERVER, request);
-            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+            if(response.getSuccess()) {
+                RestDeleteDepartmentBizMapByBizGroupIdRequest request1 =
+                    RestDeleteDepartmentBizMapByBizGroupIdRequest.newBuilder().setAppAuth(appAuth).setUser(user)
+                        .setBizId(vo.getId()).build();
+                DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse response1 =
+                    (DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse) callActor(AkkaType.SERVER,
+                        request);
+
+                return response1.getSuccess() ? successResult() : errorResult(response1.getMessage());
+            } else {
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             LOGGER.error("", e);
             return errorResult(e);

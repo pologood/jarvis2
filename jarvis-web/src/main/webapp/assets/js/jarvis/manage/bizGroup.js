@@ -224,7 +224,7 @@ function bizGroupStatusFormatter(value, row, index) {
 function operationFormatter(value, row, index) {
     var result = '<a href="' + contextPath + '/manage/bizDetail?id=' + row["id"] + '" target="_blank"><i class="glyphicon glyphicon-pencil"></i></a>';
 
-    result += ' <a href="javascript:void(0)" onclick="removeBizGroup(' + row["id"] + ')" title="删除业务标签"><i class="glyphicon glyphicon-remove text-danger"></i></a>';
+    result += ' <a href="javascript:void(0)" onclick="removeBizGroup(' + row["id"] + ')" title="删除部门"><i class="glyphicon glyphicon-remove text-danger"></i></a>';
 
     return result;
 }
