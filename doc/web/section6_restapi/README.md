@@ -15,7 +15,7 @@ Rest API
 
 ## 三、接口描述
 
-* requst: 所有接口参照如下json格式，在parameters这个参数实现自己的json
+* request: 所有接口参照如下json格式，在parameters这个参数实现自己的json
 
 | 参数  | 解释  | 是否必要  | 默认值 | 
 | ------ | ------ | ----   | ----  |
@@ -45,13 +45,13 @@ Rest API
 | jobName (String) | 任务名称  |   是   |     |
 | jobType (String)| 任务类型，比如hive,presto,shell等| 是 |  |
 | status (int)| 任务状态，1:有效； 2:无效；3：过期；4：垃圾箱；5:暂停| 否 | 1 |
-| contentType (int)| 执行内容类型， 1: 文本，2:脚本，3: jar包 | 是 | | 
+| contentType (int)| 执行内容类型， 1: 文本，2:脚本，3: jar包 | 否 | 1:文本 | 
 | content (String)| 执行内容 | 是 | |
 | params (String)| json格式扩展参数 | 否 | {} | 
 | appName (String)| 业务名称 | 是 | |
 | workerGroupId (int)| 工作组Id | 否 | 1|
-| department (String)| 部门 | 否 | |
-| bizGroups (String)| 业务线Id串，比如",1,2," | 否 | |
+| department (String)| 部门 | 否 | 空 |
+| bizGroups (String)| 业务线Id串，比如",1,2," | 否 | 空|
 | priority (int)| 优先级 | 否 | 1 |
 | isTemp (boolean)| 是否是一次性临时任务 | 否 | 0 |
 | activeStartDate (long)| 起始日期时间戳(毫秒) | 否 | 0 |
