@@ -490,20 +490,20 @@ function changeCircleType(curRadio) {
 //显示-任务计划-模态框
 function showJobScheduleModal() {
 
-    var type = $("#expType").val();
-    if (type == null || type == "") {
-        type = CONST.SCHEDULE_EXP_TYPE.CRON;
+    var expType = tryToNum($("#expType").val());
+    if (expType == null || expType == "") {
+        expType = CONST.SCHEDULE_EXP_TYPE.CRON;
     }
 
     var expContent = $('#expContent').val();
-    switch (type) {
+    switch (expType) {
         case CONST.SCHEDULE_EXP_TYPE.CRON  :
             var circleType = getCircleType(expContent);
             if (circleType != CONST.SCHEDULE_CIRCLE_TYPE.NONE) {
-                $('#circleTab').addClass("active");
+                $('.nav-tabs a[href="#circleTab"]').tab('show');
                 loadCircleData(expContent, circleType);
             } else {
-                $('#cronTab').addClass("active");
+                $('.nav-tabs a[href="#cronTab"]').tab('show');
                 loadCronData(expContent);
             }
             break;
@@ -524,13 +524,13 @@ function loadCircleData(expContent, cirCleType) {
     var radio;
     if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_DAY) {
         radio = $("#circleDay");
-    } else if (cirCleType == CONST.CONTENT_TYPE.PER_HOUR) {
+    } else if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_HOUR) {
         radio = $("#circleHour");
-    } else if (cirCleType == CONST.CONTENT_TYPE.PER_MONTH) {
+    } else if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_MONTH) {
         radio = $("#circleMonth")
-    } else if (cirCleType == CONST.CONTENT_TYPE.PER_WEEK) {
+    } else if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {
         radio = $("#circleWeek")
-    } else if (cirCleType == CONST.CONTENT_TYPE.PER_YEAR) {
+    } else if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_YEAR) {
         radio = $("#circleYear")
     } else {
         return;
@@ -615,12 +615,12 @@ function validCronTab() {
 
         expContent = expContent + (expContent !="" ? ' ' :"") + $(c).val();
         if (val == null || val.trim() == '') {
-            showMsg("warning", "cron参数输入", desc + "不能为空");
+            showMsg("warning", "调度时间", desc + "不能为空");
             flg = false;
             return
         }
         if (!/^[\d\-\*\/,\?#L]+$/i.test(val)) {
-            showMsg("warning", "cron参数输入", desc + "输入字符不对,请输入 0-9数字,以及特殊字符'-,*?/#L'");
+            showMsg("warning", "调度时间", desc + "输入字符不对,请输入 0-9数字,以及特殊字符'-,*?/#L'");
             flg = false;
         }
     });
@@ -664,8 +664,9 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'星期'不能为空");
             flg = false;
+        }else{
+            expContent = val.join(',');
         }
-        expContent = val.join(',');
     } else {
         expContent = '?';
     }
@@ -675,8 +676,9 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'月'不能为空");
             flg = false;
+        }else{
+            expContent = val.join(',') + ' ' + expContent;
         }
-        expContent = val.join(',') + ' ' + expContent;
     } else {
         expContent = '*' + ' ' + expContent;
     }
@@ -686,9 +688,12 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'日'不能为空");
             flg = false;
+        }else{
+            expContent = val.join(',') + ' ' + expContent;
         }
-        expContent = val.join(',') + ' ' + expContent;
-    } else {
+    } else if(circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {
+        expContent = '?' + ' ' + expContent;
+    }else{
         expContent = '*' + ' ' + expContent;
     }
 
@@ -740,10 +745,10 @@ function validCircleTab() {
 function confirmJobSchedule() {
 
     var result;
-    if ($("#cronTab").hasClass("active")) {
-        result = validCronTab();
-    } else if ($("#circleTab").hasClass("active")) {
+    if ($('.nav-tabs a[href="#circleTab"]').attr('aria-expanded') == 'true') {
         result = validCircleTab();
+    } else if ($('.nav-tabs a[href="#cronTab"]').attr('aria-expanded') == 'true') {
+        result = validCronTab();
     }
 
     if (result.flg == false) {

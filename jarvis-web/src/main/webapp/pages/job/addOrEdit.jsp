@@ -18,7 +18,7 @@
         color: darkgrey;
     }
 
-    input.disabled{
+    input.disabled {
         background: lightgrey;
     }
 
@@ -106,7 +106,7 @@
                                     <span class="input-group-addon" style="width:35%">Worker Group
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
-                                    <select id="workerGroupId" desc="Worker Group"></select>
+                                    <select id="workerGroupId" desc="Worker Group"  data-submitType="number"></select>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">脚本名称</span>
                                     <input id="scriptTitle" class="form-control" type="text" readonly/>
-                                    <input id="scriptId" value="" type="hidden">
+                                    <input id="scriptId" value="" type="hidden" data-submitType="number">
                                 </div>
                             </div>
                             <button id="searchScriptBtn" type="button" class="btn btn-xs btn-default"
@@ -193,34 +193,33 @@
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">调度时间</span>
                                     <input id="expDesc" value="" defaultValue="" class="form-control"
-                                           onclick="showJobScheduleModal()"/>
-
-                                    <input id="expType" hidden/>
-                                    <input id="expContent" hidden/>
-
+                                           data-submitFlg="false" onclick="showJobScheduleModal()"/>
+                                    <input id="expId" hidden data-submitFlg="false"/>
+                                    <input id="expType" hidden data-submitFlg="false"/>
+                                    <input id="expContent" hidden data-submitFlg="false"/>
                                 </div>
                             </div>
                         </div>
 
                         <%--<!--表达式类型 -->--%>
                         <%--<div class="row top-buffer">--%>
-                            <%--<div class="col-md-6 col-md-offset-3">--%>
-                                <%--<div class="input-group" style="width:100%">--%>
-                                    <%--<span class="input-group-addon" style="width:35%">表达式类型</span>--%>
-                                    <%--<select id="expressionType">--%>
-                                    <%--</select>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                        <%--<div class="col-md-6 col-md-offset-3">--%>
+                        <%--<div class="input-group" style="width:100%">--%>
+                        <%--<span class="input-group-addon" style="width:35%">表达式类型</span>--%>
+                        <%--<select id="expressionType">--%>
+                        <%--</select>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
 
                         <%--<!--表达式 -->--%>
                         <%--<div class="row top-buffer">--%>
-                            <%--<div class="col-md-6 col-md-offset-3">--%>
-                                <%--<div class="input-group" style="width:100%">--%>
-                                    <%--<span class="input-group-addon" style="width:35%">表达式</span>--%>
-                                    <%--<input id="expression" class="form-control"/>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
+                        <%--<div class="col-md-6 col-md-offset-3">--%>
+                        <%--<div class="input-group" style="width:100%">--%>
+                        <%--<span class="input-group-addon" style="width:35%">表达式</span>--%>
+                        <%--<input id="expression" class="form-control"/>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
 
                         <!--优先级 -->
@@ -228,7 +227,7 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">优先级</span>
-                                    <select id="priority"></select>
+                                    <select id="priority" data-submitType="number"></select>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +274,7 @@
                                     <div class="input-group" style="width:100%">
                                         <span class="input-group-addon" style="width:35%">失败重试数</span>
                                         <input id="failedAttempts" class="form-control" value="0"
-                                               desc="失败重试数"
+                                               desc="失败重试数" data-submitType="number"
                                                placeholder="默认为0" defaultValue="0" onblur="checkNum(this)"/>
                                     </div>
                                 </div>
@@ -287,12 +286,11 @@
                                     <div class="input-group" style="width:100%">
                                         <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
                                         <input id="failedInterval" class="form-control" value="3"
-                                               desc="失败重试间隔(秒)"
+                                               desc="失败重试间隔(秒)" data-submitType="number"
                                                placeholder="默认为3" defaultValue="3" onblur="checkNum(this)"/>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
 

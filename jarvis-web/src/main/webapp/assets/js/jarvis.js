@@ -8,6 +8,16 @@ function showMsg(type, title, text) {
     });
 }
 
+function tryToNum(val){
+    if(val ==''){
+        return null;
+    }
+    if (val !=null && /^[0-9]*$/.test(val)) {
+        val = parseInt(val);
+    }
+    return val;
+}
+
 //时间选择器
 function createDatetimePickerById(tagId) {
     if (tagId == undefined || tagId == '') {
