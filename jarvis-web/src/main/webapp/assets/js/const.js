@@ -39,12 +39,12 @@ const CONST = {
     JOB_PARAMS_KEY: {   //任务参数
         JAR_URL: '_jarvis_jar_url'
     },
-    SPARK_LAUNCHER_JOB: {        //sparkLauncher任务
+    SPARK_LAUNCHER_JOB: { //sparkLauncher任务
         COMMAND: "sparkLauncher.sh",
         PARAMS_KEY: {
             taskName: 'taskName',
-            taskJar: 'taskJar',
             mainClass: 'mainClass',
+            taskJar: 'taskJar',
             applicationArguments: 'applicationArguments',
             driverCores: 'driverCores',
             driverMemory: 'driverMemory',
@@ -55,6 +55,16 @@ const CONST = {
             sparkVersion: 'sparkVersion'
         }
     },
+    JAVA_JOB: {  //java任务
+        COMMAND: "java",
+        PARAMS_KEY: {
+            mainClass: 'mainClass',
+            jar: 'jar',
+            classpath: 'classpath',
+            arguments: 'arguments',
+        }
+    },
+
     SCHEDULE_TYPE: { //计划类型
         PER_DAY: 1,
         PER_HOUR: 2,

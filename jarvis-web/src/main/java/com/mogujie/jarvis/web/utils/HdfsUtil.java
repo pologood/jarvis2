@@ -44,7 +44,6 @@ public class HdfsUtil {
 
             //上传到HDFS
             fs = initHadoopFileSystem();
-//            getAllFilePath(new Path("hdfs://mgjcluster/"),fs);
 
             String distString = getHdfsJarDir(userName);
             Path distPath = new Path(distString);
@@ -58,8 +57,12 @@ public class HdfsUtil {
             // 4. 删除本地临时文件
             localFile.delete();
             return distPath + fileName;
+        }catch(Exception ex){
+            throw  ex;
         } finally {
-            IOUtils.closeQuietly(fs);
+            if(fs != null){
+                IOUtils.closeQuietly(fs);
+            }
         }
     }
 

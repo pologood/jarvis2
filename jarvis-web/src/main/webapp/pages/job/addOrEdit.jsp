@@ -34,7 +34,7 @@
                     <li><a href="${contextPath}/">首页</a></li>
                     <li><a href="${contextPath}/job">任务管理</a></li>
                     <c:choose>
-                        <c:when test="${jobVo!=null}">
+                        <c:when test="${jobId!=null}">
                             <li class="current"><em>编辑任务</em></li>
                         </c:when>
                         <c:otherwise>
@@ -140,11 +140,8 @@
                                         <label class="radio-inline">
                                             <input name="contentType" id="contentTypeScript" value="2" type="radio"> 脚本
                                         </label>
-                                        <label class="radio-inline">
-                                            <input name="contentType" id="contentTypeJar" value="3" type="radio"> jar包
-                                        </label>
                                         <label class="radio-inline" style="display: none">
-                                            <input name="contentType" id="contentTypeEmpty" value="0" type="radio"> jar包
+                                            <input name="contentType" id="contentTypeEmpty" value="0" type="radio">
                                         </label>
                                     </div>
                                 </div>
@@ -163,17 +160,6 @@
                             <button id="searchScriptBtn" type="button" class="btn btn-xs btn-default"
                                     onclick="showSearchScriptModal()">选择脚本
                             </button>
-                        </div>
-
-                        <!-- jar包上传 -->
-                        <div id="jarItemDiv" class="row top-buffer" style="display: none">
-                            <div class="col-md-6 col-md-offset-3">
-                                <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:35%">jar包</span>
-                                    <input id="jarUrl" name="jarUrl" class="form-control" type="text" readonly/>
-                                </div>
-                            </div>
-                            <input id="uploadJarInput" type="file" class="btn btn-xs btn-default">
                         </div>
 
                         <!--任务内容 -->

@@ -6,10 +6,13 @@ var dependJobs = {};
 var dependIds = [];
 var expressionId = null;
 
-var contentTypePreviousValue = null;    //前一个_内容类型RadioButton
-var jobContentBuffer = {};              //jobContent缓冲
-
-var pageJobEdit = {curPerHour: 0};              //缓冲
+var pageJobEdit = { //页面变量
+    curPerHour: 0,
+    preJobType: null,       //先前的任务类型
+    preContentType: null,    //先前的内容类型
+    jobContentBuffer: {},   //jobContent缓存
+    jobParamsBuffer: {}       //jobPrams缓存
+};
 
 $(function () {
 
@@ -29,7 +32,6 @@ $(function () {
     //job标签页
     initJobType();              //初始化作业类型
     initContentType();          //初始化内容类型
-    initJobParams();
     initJobPriority();          //初始化优先级
     initExpressionType();       //初始化表达式类型
     initWorkerGroup();          //初始化workGroup
@@ -90,7 +92,14 @@ function initJobData() {
                 } else {
                     $("#jobContent").val(job.content);
                 }
-                jobContentBuffer[job.contentType] = $("#jobContent").val();
+
+                var paramsArray = JSON.parse(job.params);
+                $("#params").val(JSON.stringify(paramsArray));
+
+                pageJobEdit.preJobType = job.jobType;
+                pageJobEdit.preContentType = job.contentType;
+                pageJobEdit.jobContentBuffer[job.jobType + '_' + job.contentType] = $("#jobContent").val();
+                pageJobEdit.jobParamsBuffer[job.jobType + '_' + job.contentType] = $("#params").val();
 
                 $("#expression").val(job.expression);
                 $("#failedAttempts").val(job.failedAttempts);
@@ -147,34 +156,36 @@ function changeJobType() {
     var curJobType = data.id;
     var text = $("#contentTypeText");
     var script = $("#contentTypeScript");
-    var jar = ("#contentTypeJar");
 
     if (curJobType == CONST.JOB_TYPE.HIVE || curJobType == CONST.JOB_TYPE.SHELL) {
         $(text).radioEnable(true);
         $(script).radioEnable(true);
-        $(jar).radioEnable(false);
-        //if (!$(text).prop('checked') && !$(script).prop('checked')) {
         $(text).prop('checked', true).trigger("change");
-        //}
-    } else if (curJobType == CONST.JOB_TYPE.JAVA || curJobType == CONST.JOB_TYPE.MAPREDUCE) {
-        $(text).radioEnable(false);
-        $(script).radioEnable(false);
-        $(jar).radioEnable(true);
-        if (!$(jar).prop('checked')) {
-            $(jar).prop('checked', true).trigger("change");
-        }
-    } else if (curJobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+    } else {
         $(text).radioEnable(true);
         $(script).radioEnable(false);
-        $(jar).radioEnable(false);
-        //if (!$(text).prop('checked')) {
         $(text).prop('checked', true).trigger("change");
-        //}
-    } else if (curJobType == CONST.JOB_TYPE.DUMMY) {
-        $(text).radioEnable(true);
-        $(script).radioEnable(true);
-        $(jar).radioEnable(true);
     }
+
+    //老文本保存
+    if (pageJobEdit.preJobType != null) {
+        pageJobEdit.jobContentBuffer[pageJobEdit.preJobType + '_' + pageJobEdit.preContentType] = $("#jobContent").val();
+        pageJobEdit.jobParamsBuffer[pageJobEdit.preJobType + '_' + pageJobEdit.preContentType] = $("#params").val();
+    }
+
+    //新文本导出
+    var curKey = curJobType + '_' + pageJobEdit.preContentType;
+    if (curKey in pageJobEdit.jobContentBuffer) {
+        $("#jobContent").val(pageJobEdit.jobContentBuffer[curKey]);
+    } else {
+        $("#jobContent").val("");
+    }
+    if (curKey in pageJobEdit.jobParamsBuffer) {
+        $("#params").val(pageJobEdit.jobParamsBuffer[curKey]);
+    } else {
+        $("#params").val("{}");
+    }
+    pageJobEdit.preJobType = curJobType;
 
     console.log("changeJobType end !!!!!!!!!!!");
 
@@ -183,14 +194,12 @@ function changeJobType() {
 //初始化-内容类型
 function initContentType() {
     console.log("initContentType");
-    var cur = job != null ? job.contentType : 1;
+    var cur = (job != null) ? job.contentType : CONST.CONTENT_TYPE.TEXT;
     var radio;
     if (cur == CONST.CONTENT_TYPE.TEXT) {
         radio = $("#contentTypeText");
     } else if (cur == CONST.CONTENT_TYPE.SCRIPT) {
         radio = $("#contentTypeScript");
-    } else if (cur == CONST.CONTENT_TYPE.JAR) {
-        radio = $("#contentTypeJar");
     } else if (cur == CONST.CONTENT_TYPE.EMPTY) {
         radio = $("#contentTypeEmpty")
     } else {
@@ -212,59 +221,39 @@ function changeContentType(curRadio) {
     var jobType = $("#jobType").val();
     if (curValue == CONST.CONTENT_TYPE.TEXT) {    //文本
         $("#scriptItemDiv").hide();
-        $("#jarItemDiv").hide();
-        if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+        if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER || jobType == CONST.JOB_TYPE.JAVA) {
             $("#jobContent").attr("readonly", "readonly");
         } else {
             $("#jobContent").removeAttr("readonly");
         }
     } else if (curValue == CONST.CONTENT_TYPE.SCRIPT) {  //脚本
         $("#scriptItemDiv").show();
-        $("#jarItemDiv").hide();
         $("#jobContent").attr("readonly", "readonly");
-    } else if (curValue == CONST.CONTENT_TYPE.JAR) {  //jar
-        $("#scriptItemDiv").hide();
-        $("#jarItemDiv").show();
-        $("#jobContent").removeAttr("readonly");
     } else if (curValue == CONST.CONTENT_TYPE.EMPTY) {    //dummy 情况
         $("#scriptItemDiv").hide();
-        $("#jarItemDiv").hide();
         $("#jobContent").attr("readonly", "readonly");
     }
 
     //老文本保存
-    if (contentTypePreviousValue != null) {
-        jobContentBuffer[contentTypePreviousValue] = $("#jobContent").val();
+    if (pageJobEdit.preContentType != null) {
+        pageJobEdit.jobContentBuffer[pageJobEdit.preJobType + '_' + pageJobEdit.preContentType] = $("#jobContent").val();
     }
 
     //新文本导出
-    if (curValue in jobContentBuffer) {
-        $("#jobContent").val(jobContentBuffer[curValue]);
+    var curKey = pageJobEdit.preJobType + '_' + curValue;
+    if (curKey in pageJobEdit.jobContentBuffer) {
+        $("#jobContent").val(pageJobEdit.jobContentBuffer[curKey]);
     } else {
         $("#jobContent").val("");
     }
-    contentTypePreviousValue = curValue;
-    console.log("changeContentType " + curValue + "end ^^^^^^^^^^^^^^^^");
+    pageJobEdit.preContentType = curValue;
+
 }
 
 //修改textarea大小
 function changeTextArea(thisTag, rows, cols) {
     $(thisTag).prop("rows", rows);
     $(thisTag).prop("cols", cols);
-}
-
-//初始化-job参数
-function initJobParams() {
-    if (job != null) {
-        var paramsArray = JSON.parse(job.params);
-        //var key;
-        //key = CONST.JOB_PARAMS_KEY.JAR_URL;
-        //if (key in paramsArray) {
-        //    $("#jarUrl").val(paramsArray[key]);
-        //    delete paramsArray[key];
-        //}
-        $("#params").val(JSON.stringify(paramsArray));
-    }
 }
 
 //初始化-job权重
@@ -499,20 +488,17 @@ function checkContentTypeAndContent() {
             return false;
         }
     }
-    //if (contentType == CONST.CONTENT_TYPE.JAR) { //jar包类型
-    //    if ($("#uploadJarInput")[0].files.length == 0) {
-    //        showMsg('warning', '提交任务', "jar文件未选择,请选择jar文件");
-    //        return false;
-    //    }
-    //}
 
     if (contentType == CONST.CONTENT_TYPE.EMPTY) { //空
         showMsg('warning', '提交任务', "内容类型未选择,请选择");
     }
 
-    if (!checkEmptyByIds(["jobContent"])) {
-        return false;
+    if ($("#jobContent").attr("readonly") != 'readonly') {
+        if (!checkEmptyByIds(["jobContent"])) {
+            return false;
+        }
     }
+
     return true;
 }
 
@@ -537,6 +523,20 @@ function checkActiveDate() {
     }
     return flag;
 }
+
+//检查任务参数
+function checkParas() {
+    var jobType = $("#jobType").val();
+    var params = $("#params").val();
+    if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+        return validSparkLauncherParas(params);
+    } else if (jobType == CONST.JOB_TYPE.JAVA) {
+        return validJavaParas(params);
+    } else {
+        return validPara(params);
+    }
+}
+
 
 //计算表达式
 function getScheduleExpressionList() {
@@ -663,26 +663,24 @@ function saveJob() {
     //必填的参数
     var ids = ["jobName", "jobType", "workerGroupId"];
     if (!checkEmptyByIds(ids) || !checkContentTypeAndContent()
-        || !checkJobName($("#jobName")) || !checkActiveDate()) {
-        return;
-    }
-
-    if (!uploadJarFile()) {
+        || !checkJobName($("#jobName")) || !checkActiveDate()
+        || !checkParas()) {
         return;
     }
 
     var data = getJobDataFromPage();
     if (null != jobId && '' != jobId) {
         data["jobId"] = jobId;
-        var response1 = requestRemoteRestApi("/api/job/edit", "编辑任务", data, false, true);
+        var response1 = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
 
         var flag2 = true;
         if (data["scheduleExpressionList"].length > 0) {
-            var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data, false, true);
+            var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
             flag2 = response2.flag;
         }
 
         if (response1.flag && flag2) {
+            alert("任务更新成功!");
             window.setTimeout(function () {
                 window.location.reload();
             }, 500);
@@ -690,8 +688,9 @@ function saveJob() {
 
     }
     else {
-        var response = requestRemoteRestApi("/api/job/submit", "新增任务", data, false, true);
+        var response = requestRemoteRestApi("/api/job/submit", "新增任务", data);
         if (response.flag == true) {
+            alert("任务新增成功!");
             window.setTimeout(function () {
                 window.location.href = window.location.href + "?jobId=" + response.data.data.jobId;
             }, 1000);
@@ -969,7 +968,7 @@ function saveDepend() {
     data["jobId"] = jobId;
     data["dependencyList"] = dependJobData;
 
-    var response = requestRemoteRestApi("/api/job/dependency/set", "修改依赖信息", data,true,true);
+    var response = requestRemoteRestApi("/api/job/dependency/set", "修改依赖信息", data, true, true);
 }
 
 //重置依赖
@@ -1156,11 +1155,11 @@ function saveAlarm() {
             if (data.code == 1000) {
                 //代表不存在，需要新增
                 if (null == data.data.jobId) {
-                    response = requestRemoteRestApi("/api/alarm/add", "新增报警信息", alarmData,true,true);
+                    response = requestRemoteRestApi("/api/alarm/add", "新增报警信息", alarmData, true, true);
                 }
                 //修改
                 else {
-                    response = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData,true,true);
+                    response = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData, true, true);
                 }
             }
             else {
@@ -1179,13 +1178,13 @@ function saveAlarm() {
         }
     });
 }
+
 //重置报警
 function resetAlarm() {
     $("#alarm").val(null).trigger("change");
     $("#alarmType input").removeAttr("checked");
     $("#alarmStatus input[value=1]").click();
 }
-
 
 ////重置参数
 //function reset() {

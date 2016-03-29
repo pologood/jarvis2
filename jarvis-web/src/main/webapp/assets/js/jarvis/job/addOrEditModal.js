@@ -70,14 +70,13 @@ function showSearchScriptModal() {
 
 //显示-选择脚本-模态框
 function showUploadJarModal(target) {
-    $("#localFile").val("").attr("data-target",target);
+    $("#localFile").val("").attr("data-target", target);
     $("#uploadJarModal").modal("show");
 }
 
 function confirmUploadJar() {
-    var formData = new FormData();
+    var formData = new FormData();  //必须用new FromData()格式,不能直接{}定义.
     formData.append('file', $('#localFile')[0].files[0]);
-    formData.append('title', '');
     $.ajax({
         url: contextPath + '/api/file/uploadJar',
         type: 'POST',
@@ -90,13 +89,13 @@ function confirmUploadJar() {
                 var uploadUrl = json.data;
                 var target = $('#localFile').attr("data-target");
                 var targetCtl = $("#" + target);
-                if(target == 'classpath'){  //classpath是以,分开的多重文件
+                if (target == 'javaClasspath') {  //classpath是以,分开的多重文件
                     var oldValue = $(targetCtl).val();
-                    if(oldValue.indexOf(uploadUrl) < 0){
+                    if (oldValue.indexOf(uploadUrl) < 0) {
                         var separator = oldValue.length > 0 ? ',' : '';
                         $(targetCtl).val(oldValue + separator + uploadUrl);
                     }
-                }else {
+                } else {
                     $(targetCtl).val(uploadUrl)
                 }
                 $('#uploadJarModal').modal('hide');
@@ -109,21 +108,7 @@ function confirmUploadJar() {
             showMsg('warning', '上传jar包', msg);
         }
     });
-
-    //$.ajax({
-    //    url : 'upload.php',
-    //    type : 'POST',
-    //    data : formData,
-    //    processData: false,  // tell jQuery not to process the data
-    //    contentType: false,  // tell jQuery not to set contentType
-    //    success : function(data) {
-    //        console.log(data);
-    //        alert(data);
-    //    }
-    //});
-
 }
-
 
 //------------------------------ 2 任务参数  ------------------------------
 
@@ -151,39 +136,12 @@ function showCommonJobParaModal() {
         for (var key in existParas) {
             var value = existParas[key];
             var tr = $(trPattern).clone();
-            $($(tr).find("input[name=key]").first()).val(key);
-            $($(tr).find("input[name=value]").first()).val(value);
+            $(tr).find("input[name=key]").first().val(key);
+            $(tr).find("input[name=value]").first().val(value);
             $(trBody).append(tr);
         }
     }
     $("#paraModal").modal("show");
-}
-
-///确认参数选择
-function ensurePara() {
-    var trs = $("#parasTable tbody tr");
-    var paras = {};
-    var flag = true;
-    $(trs).each(function (i, c) {
-        var key = $($(c).find("input[name=key]").first()).val();
-        var value = $($(c).find("input[name=value]").first()).val();
-        if (key == '') {
-            flag = false;
-            return false;
-        }
-        if (testChinese.test(key)) {
-            flag = false;
-            return false;
-        }
-        paras[key] = value;
-    });
-
-    if (flag == false) {
-        showMsg('warning', '修改参数', "key不能为空,且不能为中文,请修改");
-        return;
-    }
-    $("#params").val(JSON.stringify(paras));
-    $("#paraModal").modal("hide");
 }
 
 //添加参数
@@ -201,6 +159,38 @@ function deletePara(thisTag) {
     $(thisTag).parent().parent().remove();
 }
 
+///确认参数选择
+function confirmPara() {
+    var paras = {}, val, key;
+    $("#parasTable tbody tr").each(function (i, c) {
+        key = $(c).find("input[name=key]").first().val().trim();
+        val = $(c).find("input[name=value]").first().val().trim();
+        if (key == null || key == '') {
+            return;
+        }
+        paras[key] = val;
+    });
+    var parasStr = JSON.stringify(paras);
+    if (!validPara(parasStr)) {
+        return;
+    }
+    $("#params").val(parasStr);
+    $("#paraModal").modal("hide");
+}
+
+function validPara(parasStr) {
+    var paras = JSON.parse(parasStr);
+    var val, flg = true;
+    for (var key in paras) {
+        val = paras[key];
+        if (testChinese.test(key)) {
+            showMsg('warning', '任务参数', "key[" + key + "]不能为中文.");
+            flg = false;
+        }
+    }
+    return flg;
+}
+
 //------------------------------ 2.2 sparkLauncher任务参数  ------------------------------
 
 //显示-SparkLauncher任务参数-模态框
@@ -216,7 +206,7 @@ function showSparkLauncherParasModal() {
         if (key in existParas) {
             $(this).val(existParas[key]);
         } else {
-            $(this).val($(this).attr("data-defaultValue"));
+            $(this).val("");
         }
     });
 
@@ -225,71 +215,86 @@ function showSparkLauncherParasModal() {
 
 ///确认参数选择
 function confirmSparkLauncherParas() {
-    var paras = {};
-    var flag = true;
+
+    var paras = {}, val, key;
     $("#sparkLauncherParasModalBody input, #sparkLauncherParasModalBody textarea").each(function (i, c) {
-        var key = $(this).attr("name");
-        var val = $(this).val();
-        var required = $(this).hasClass("required");
-        var desc = $(this).attr("data-desc");
-        //参数验证检查
-        if (!validSparkLauncherParas(key, val, desc, required)) {
-            flag = false;
+        key = $(this).attr("name");
+        val = $(this).val().trim();
+        if (val == null || val == "") {
+            return;
         }
         paras[key] = val;
+
     });
 
-    if (flag == false) {
+    var parasStr = JSON.stringify(paras);
+    if (!validSparkLauncherParas(parasStr)) {
         return;
     }
-
-    var paramsStr = JSON.stringify(paras);
-    $("#params").val(paramsStr);
-    $("#jobContent").val(CONST.SPARK_LAUNCHER_JOB.COMMAND + " " + paramsStr);
+    $("#params").val(parasStr);
+    $("#jobContent").val(CONST.SPARK_LAUNCHER_JOB.COMMAND + " " + parasStr);
     $("#sparkLauncherParasModal").modal("hide");
 }
 
-function validSparkLauncherParas(key, val, desc, required) {
 
-    //为空检查
-    if (required && (val == null || val.trim() == "")) {
-        showMsg('warning', 'sparkLauncher参数', desc + "不能为空");
-        return false;
-    }
+function validSparkLauncherParas(parasStr) {
 
-    switch (key) {
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverCores:    //driver核数
-            if (!$.isNumeric(val) || val < 1 || val > 4) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverMemory :  //driver内存
-            if (!/^\d?g$/i.test(val)) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorCores:  //executor核数
-            if (!$.isNumeric(val) || val < 1 || val > 4) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorMemory :    //executor内存
-            if (!/^\d?g$/i.test(val)) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.")
-                return false;
-            }
-            break;
-        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorNum:    //executor数目
-            if (!$.isNumeric(val) || val < 0) {
-                showMsg('warning', 'sparkLauncher参数', desc + "不对,请大于0的数字.")
-                return false;
-            }
-            break;
+    var paras = JSON.parse(parasStr);
+
+    var val, flg = true;
+    for (var key in CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY) {
+        val = paras[key];
+        switch (key) {
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.mainClass:    //mainClass
+                if (val == null || val == "") {
+                    showMsg('warning', 'sparkLauncher参数', "'mainClass'不能为空");
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.taskJar:    //taskJar
+                if (val == null || val == "") {
+                    showMsg('warning', '任务参数', "'jar文件'不能为空");
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverCores:    //driver核数
+                if (val == null || val == "") break;
+                if (!$.isNumeric(val) || val < 1 || val > 4) {
+                    showMsg('warning', '任务参数', "'driver核数'不对,请输入1-4之间数字.");
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverMemory :  //driver内存
+                if (val == null || val == "") break;
+                if (!/^\d?g$/i.test(val)) {
+                    showMsg('warning', '任务参数', "'driver内存'不对,请输入'数字+G',比如'4G'.");
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorCores:  //executor核数
+                if (val == null || val == "") break;
+                if (!$.isNumeric(val) || val < 1 || val > 4) {
+                    showMsg('warning', '任务参数', "'executor核数'不对,请输入1-4之间数字.");
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorMemory :    //executor内存
+                if (val == null || val == "") break;
+                if (!/^\d?g$/i.test(val)) {
+                    showMsg('warning', '任务参数', "'executor内存'不对,请输入'数字+G',比如'4G'.")
+                    flg = false;
+                }
+                break;
+            case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorNum:    //executor数目
+                if (val == null || val == "") break;
+                if (!$.isNumeric(val) || val < 0) {
+                    showMsg('warning', '任务参数', "'executor数目'不对,请大于0的数字.")
+                    flg = false;
+                }
+                break;
+        }
     }
-    return true;
+    return flg;
 }
 
 
@@ -307,7 +312,7 @@ function showJavaParasModal() {
         if (key in existParas) {
             $(this).val(existParas[key]);
         } else {
-            $(this).val($(this).attr("data-defaultValue"));
+            $(this).val("");
         }
     });
 
@@ -316,38 +321,47 @@ function showJavaParasModal() {
 
 ///确认参数选择
 function confirmJavaParas() {
-    var paras = {};
-    var flag = true;
+    var paras = {}, val, key;
     $("#javaParasModalBody input, #javaParasModalBody textarea").each(function (i, c) {
-        var key = $(this).attr("name");
-        var val = $(this).val();
-        var required = $(this).hasClass("required");
-        var desc = $(this).attr("data-desc");
-        //参数验证检查
-        if (!validJavaParas(key, val, desc, required)) {
-            flag = false;
+        key = $(this).attr("name");
+        val = $(this).val().trim();
+        if (val == null || val == "") {
+            return;
         }
         paras[key] = val;
     });
-
-    if (flag == false) {
+    var paramsStr = JSON.stringify(paras);
+    if (!validJavaParas(paramsStr)) {
         return;
     }
-
-    var paramsStr = JSON.stringify(paras);
     $("#params").val(paramsStr);
-    $("#jobContent").val("java");
+    var content = CONST.JAVA_JOB.COMMAND + " -cp " + $("#javaJar").val() + " "
+        + $("#javaClasspath").val() + " " + $("#javaMainClass").val() + " " + $("#javaArguments").val();
+    $("#jobContent").val(content);
     $("#javaParasModal").modal("hide");
 }
 
-function validJavaParas(key, val, desc, required) {
-
-    //为空检查
-    if (required && (val == null || val.trim() == "")) {
-        showMsg('warning', 'java参数', desc + "不能为空");
-        return false;
+function validJavaParas(parasStr) {
+    var paras = JSON.parse(parasStr);
+    var val, flg = true;
+    for (var key in CONST.JAVA_JOB.PARAMS_KEY) {
+        val = paras[key];
+        switch (key) {
+            case CONST.JAVA_JOB.PARAMS_KEY.mainClass:    //mainClass
+                if (val == null || val == "") {
+                    showMsg('warning', '任务参数', "'mainClass'不能为空");
+                    flg = false;
+                }
+                break;
+            case CONST.JAVA_JOB.PARAMS_KEY.jar:    //jar
+                if (val == null || val == "") {
+                    showMsg('warning', '任务参数', "'jar文件'不能为空");
+                    flg = false;
+                }
+                break;
+        }
     }
-    return true;
+    return flg;
 }
 
 
@@ -469,7 +483,6 @@ function changeScheduleType(curRadio) {
 function showJobScheduleModal() {
     $("#jobScheduleModal").modal("show");
 }
-
 
 //高级参数-显示或隐藏
 function toggleCronHelpDiv(thisTag) {

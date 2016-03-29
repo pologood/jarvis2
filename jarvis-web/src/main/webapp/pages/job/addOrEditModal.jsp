@@ -100,7 +100,7 @@
                    onclick="addPara(null)"></a>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="ensurePara()">确定</button>
+                <button type="button" class="btn btn-primary" onclick="confirmPara()">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -136,9 +136,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">文件路径
+                            <span class="input-group-addon" style="width:30%">jar文件
                             <span class="text-danger" style="vertical-align: middle">*</span></span>
-                            <textarea name="taskJar" class="form-control required" data-desc="文件路径"
+                            <textarea name="taskJar" class="form-control required" data-desc="jar文件"
                                       rows="3" placeholder=""></textarea>
                         </div>
                     </div>
@@ -156,10 +156,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">driver核数
-                            <span class="text-danger" style="vertical-align: middle">*</span></span>
+                            <span class="input-group-addon" style="width:30%">driver核数</span>
                             <input name="driverCores" class="form-control required" data-defaultValue="1"
-                                   data-desc="driver核数" placeholder=""/>
+                                   data-desc="driver核数" placeholder="不填代表 1"/>
                         </div>
                     </div>
                 </div>
@@ -167,10 +166,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">driver内存
-                            <span class="text-danger" style="vertical-align: middle">*</span></span>
+                            <span class="input-group-addon" style="width:30%">driver内存</span>
                             <input name="driverMemory" class="form-control required" data-defaultValue="4g"
-                                   data-desc="driver内存" placeholder=""/>
+                                   data-desc="driver内存" placeholder="不填代表 4g"/>
                         </div>
                     </div>
                 </div>
@@ -178,10 +176,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">executor核数
-                            <span class="text-danger" style="vertical-align: middle">*</span></span>
+                            <span class="input-group-addon" style="width:30%">executor核数</span>
                             <input name="executorCores" class="form-control required" data-defaultValue="1"
-                                   data-desc="executor核数" placeholder=""/>
+                                   data-desc="executor核数" placeholder="不填代表 1"/>
                         </div>
                     </div>
                 </div>
@@ -189,10 +186,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">executor内存
-                            <span class="text-danger" style="vertical-align: middle">*</span></span>
+                            <span class="input-group-addon" style="width:30%">executor内存</span>
                             <input name="executorMemory" class="form-control required" data-defaultValue="4g"
-                                   data-desc="executor内存" placeholder=""/>
+                                   data-desc="executor内存" placeholder="不填代表 4g"/>
                         </div>
                     </div>
                 </div>
@@ -200,10 +196,9 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">executor数目
-                            <span class="text-danger" style="vertical-align: middle">*</span></span>
+                            <span class="input-group-addon" style="width:30%">executor数目</span>
                             <input name="executorNum" class="form-control required" data-defaultValue="6"
-                                   data-desc="executor数目" placeholder=""/>
+                                   data-desc="executor数目" placeholder="不填代表 6"/>
                         </div>
                     </div>
                 </div>
@@ -222,7 +217,7 @@
                         <div class="input-group" style="width:100%">
                             <span class="input-group-addon" style="width:30%">spark版本</span>
                             <input name="sparkVersion" class="form-control"
-                                   data-defaultValue="spark-1.6.0" data-desc="spark版本" placeholder=""/>
+                                   data-defaultValue="spark-1.6.0" data-desc="spark版本" placeholder="不填代表 spark-1.6.0"/>
                         </div>
                     </div>
                 </div>
@@ -255,7 +250,7 @@
                         <div class="input-group" style="width:100%">
                             <span class="input-group-addon" style="width:30%">main函数
                             <span class="text-danger" style="vertical-align: middle">*</span></span>
-                            <input name="mainClass" class="form-control required" data-desc="main函数" placeholder=""/>
+                            <input id="javaMainClass" name="mainClass" class="form-control required" data-desc="main函数" placeholder=""/>
                         </div>
                     </div>
                 </div>
@@ -263,24 +258,24 @@
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-0">
                         <div class="input-group" style="width:100%">
-                            <span class="input-group-addon" style="width:30%">jar
+                            <span class="input-group-addon" style="width:30%">jar文件
                             <span class="text-danger" style="vertical-align: middle">*</span></span>
-                            <textarea id="jar" name="jar" class="form-control required" data-desc="jar"
+                            <textarea id="javaJar" name="jar" class="form-control required" data-desc="jar"
                                       rows="3" placeholder="请输入jar文件HDFS路径"></textarea>
                         </div>
                     </div>
-                    <button type="button" style="float:right;margin-right: 15px;"  class="btn btn-default" onclick="showUploadJarModal('jar')">上传</button>
+                    <button type="button" style="float:right;margin-right: 15px;"  class="btn btn-default" onclick="showUploadJarModal('javaJar')">上传</button>
                 </div>
                 <!-- classpath -->
                 <div class="row top-buffer">
                     <div class="col-md-10 col-md-offset-0">
                         <div class="input-group" style="width:100%">
                             <span class="input-group-addon" style="width:30%">classpath</span>
-                            <textarea id="classpath" name="classpath" class="form-control" data-desc="classpath"
+                            <textarea id="javaClasspath" name="classpath" class="form-control" data-desc="classpath"
                                       rows="3" placeholder="请输入依赖文件的HDFS路径,多个依赖用逗号','隔开"></textarea>
                         </div>
                     </div>
-                    <button type="button" style="float:right;margin-right: 15px;" class="btn btn-default" onclick="showUploadJarModal('classpath')">上传</button>
+                    <button type="button" style="float:right;margin-right: 15px;" class="btn btn-default" onclick="showUploadJarModal('javaClasspath')">上传</button>
                 </div>
 
                 <!-- 执行参数 -->
@@ -288,7 +283,7 @@
                     <div class="col-md-10 col-md-offset-0">
                         <div class="input-group" style="width:100%">
                             <span class="input-group-addon" style="width:30%">执行参数</span>
-                            <textarea name="arguments" class="form-control" data-desc="执行参数"
+                            <textarea id="javaArguments" name="arguments" class="form-control" data-desc="执行参数"
                                       rows="3" placeholder=""></textarea>
                         </div>
                     </div>

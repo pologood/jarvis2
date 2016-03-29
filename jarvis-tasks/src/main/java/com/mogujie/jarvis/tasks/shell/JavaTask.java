@@ -54,7 +54,7 @@ public class JavaTask extends ShellTask {
 
         Map<String, Object> parameters = taskDetail.getParameters();
         mainClass = parameters.get("mainClass").toString();
-        args = parameters.get("args").toString();
+        args = parameters.get("arguments").toString();
         jar = parameters.get("jar").toString();
         classpath = parameters.get("classpath").toString();
     }
@@ -64,7 +64,8 @@ public class JavaTask extends ShellTask {
         FileSystem fs = FileSystem.get(conf);
 
         File localFile = new File(localDir + "/" + filename);
-        Path p1 = new Path("hdfs://" + hdfsDir + "/" + filename);
+//        Path p1 = new Path("hdfs://" + hdfsDir + "/" + filename);
+        Path p1 = new Path(filename);
         Path p2 = new Path("file://" + localFile.getAbsolutePath());
 
         if (!fs.exists(p1)) {

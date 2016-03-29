@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.api;
 
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.passport.user.UserContextHolder;
+import com.mogujie.jarvis.core.exception.JarvisException;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.web.utils.HdfsUtil;
 import com.mogujie.jarvis.web.utils.MessageStatus;
@@ -41,7 +42,7 @@ public class FileAPIController{
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             MultipartFile jarFile = multipartRequest.getFile("file");
             if (jarFile == null) {
-                throw new IllegalArgumentException("上传文件不能为空");
+                throw new JarvisException("上传文件不能为空");
             }
             String fileName =  ((CommonsMultipartFile) jarFile).getFileItem().getName();
             if (title != null && !title.trim().isEmpty()) {
@@ -52,9 +53,9 @@ public class FileAPIController{
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", url);
         } catch (Exception e) {
-//            if (!(e instanceof IllegalArgumentException)) {
+            if (!(e instanceof JarvisException)) {
                 logger.error("上传jar文件出错", e);
-//            }
+            }
             map.put("code", MessageStatus.FAILED.getValue());
             map.put("msg", ExceptionUtil.getErrMsg(e));
         }
