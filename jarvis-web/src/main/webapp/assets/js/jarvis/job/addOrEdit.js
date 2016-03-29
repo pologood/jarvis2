@@ -221,7 +221,9 @@ function changeContentType(curRadio) {
     var jobType = $("#jobType").val();
     if (curValue == CONST.CONTENT_TYPE.TEXT) {    //文本
         $("#scriptItemDiv").hide();
-        if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER || jobType == CONST.JOB_TYPE.JAVA) {
+        if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER
+            || jobType == CONST.JOB_TYPE.JAVA
+            || jobType == CONST.JOB_TYPE.MAPREDUCE) {
             $("#jobContent").attr("readonly", "readonly");
         } else {
             $("#jobContent").removeAttr("readonly");
@@ -530,7 +532,7 @@ function checkParas() {
     var params = $("#params").val();
     if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
         return validSparkLauncherParas(params);
-    } else if (jobType == CONST.JOB_TYPE.JAVA) {
+    } else if (jobType == CONST.JOB_TYPE.JAVA  || jobType == CONST.JOB_TYPE.MAPREDUCE) {
         return validJavaParas(params);
     } else {
         return validPara(params);
