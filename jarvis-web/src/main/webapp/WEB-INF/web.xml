@@ -21,7 +21,7 @@
         </init-param>
         <init-param>
             <param-name>ignorePattern</param-name>
-            <param-value>^/assets/.*$|^/rest/.*$|^/api/.*$|^.*\.ico$</param-value>
+            <param-value>^/assets/.*$|^/rest/.*$|^.*\.ico$</param-value>
         </init-param>
         <init-param>
             <param-name>targetFilterLifecycle</param-name>
