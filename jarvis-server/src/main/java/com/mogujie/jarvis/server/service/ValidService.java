@@ -7,6 +7,8 @@
 
 package com.mogujie.jarvis.server.service;
 
+import com.mogujie.jarvis.dto.generate.Department;
+import com.mogujie.jarvis.dto.generate.DepartmentBizMap;
 import java.util.Date;
 import java.util.List;
 
@@ -72,6 +74,8 @@ public class ValidService {
     private AppWorkerGroupService appWorkerGroupService;
     @Inject
     private BizGroupService bizGroupService;
+    @Inject
+    private DepartmentService departmentService;
 
     //--------------------------------------- job ---------------------------------
 
@@ -271,6 +275,41 @@ public class ValidService {
             Preconditions.checkArgument(mode != OperationMode.ADD || appWorkerGroup == null
                     , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
         }
+    }
+
+  /**
+   * 检查部门
+   */
+    public void checkDepartment(CheckMode mode, Department department) {
+        Integer id = department.getId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+            || (id != null && id != 0), "id is empty。 id:" + id);
+
+        String name = department.getName();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
+        if (name != null) {
+            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
+            departmentService.checkDuplicateName(name, department.getId());
+
+        }
+    }
+
+  /**
+   * 检查部门和产品线的映射关系
+   */
+    public void checkDepartmentBizMap(CheckMode mode, DepartmentBizMap departmentBizMap) {
+        Integer bizId = departmentBizMap.getBizId();
+        Integer departmentId = departmentBizMap.getDepartmentId();
+
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+            || (bizId != null && bizId != 0), "bizId is empty。 bizId:" + bizId);
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+            || (departmentId != null && departmentId != 0), "departmentId is empty。 departmentId:" + departmentId);
+
+        if(mode.isIn(CheckMode.ADD)) {
+            departmentService.checkDuplicateMap(bizId, departmentId);
+        }
+
     }
 
 }

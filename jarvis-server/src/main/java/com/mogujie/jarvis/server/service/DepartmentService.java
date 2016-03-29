@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.service;
 
+import com.mogujie.jarvis.dto.generate.DepartmentExample;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class DepartmentService {
 
     @Inject
     private DepartmentBizMapMapper mapMapper;
+
+    @Inject
+    private DepartmentBizMapMapper departmentBizMapper;
 
     public Department get(int id) {
         return departmentMapper.selectByPrimaryKey(id);
@@ -75,4 +79,38 @@ public class DepartmentService {
         }
         return bizIds;
     }
+
+    public void checkDuplicateName(String name, Integer ignoreId) throws IllegalArgumentException {
+        DepartmentExample example = new DepartmentExample();
+        example.createCriteria().andNameEqualTo(name);
+        List<Department> list = departmentMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            if (ignoreId != null && list.size() == 1 && list.get(0).getId().equals(ignoreId)) {
+                return;
+            }
+            throw new IllegalArgumentException("department 名称重复了. name:" + name);
+        }
+    }
+
+    public void checkDuplicateMap(Integer bizId, Integer departmentId) throws IllegalArgumentException {
+        DepartmentBizMapExample example = new DepartmentBizMapExample();
+        example.createCriteria().andBizIdEqualTo(bizId).andDepartmentIdEqualTo(departmentId);
+        List<DepartmentBizMap> list = this.departmentBizMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            throw new IllegalArgumentException(String.format("department_biz_map 复合主键重复. bizId:%s;departmentId:%s", bizId, departmentId));
+        }
+    }
+
+    public void deleteMapByDepartmentId(Integer departmentId) {
+        DepartmentBizMapExample example = new DepartmentBizMapExample();
+        example.createCriteria().andDepartmentIdEqualTo(departmentId);
+        this.departmentBizMapper.deleteByExample(example);
+    }
+
+    public void deleteMapByBizGroupId(Integer bizGroupId) {
+        DepartmentBizMapExample example = new DepartmentBizMapExample();
+        example.createCriteria().andBizIdEqualTo(bizGroupId);
+        this.departmentBizMapper.deleteByExample(example);
+    }
 }
+

@@ -8,7 +8,9 @@ function search() {
 function reset() {
     $("#startOperDate").val("");
     $("#endOperDate").val("");
-    $("#operateName").val("");
+    $("#title").val("all").trigger("change");
+    $("#operator").val("").trigger("change");
+    $("#operationType").val("").trigger("change");
 }
 
 //时间选择器
@@ -32,27 +34,6 @@ $(function () {
 
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
-
-    glFuncs.initJobType("jobType",false);
-
-    glFuncs.initJobStatus("jobStatus",false);
-
-
-    $.ajax({
-        url: contextPath + "/assets/json/jobPriority.json",
-        async: false,
-        success: function (data) {
-            $("#jobPriority").select2({
-                data: data,
-                width: '100%'
-            });
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化任务优先级', msg);
-        }
-    })
-
 
     $("#title").select2({
         ajax: {

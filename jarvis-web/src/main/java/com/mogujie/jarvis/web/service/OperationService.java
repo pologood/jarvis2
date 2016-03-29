@@ -4,6 +4,7 @@ import com.mogujie.jarvis.core.domain.OperationInfo;
 import com.mogujie.jarvis.web.entity.qo.OperationQo;
 import com.mogujie.jarvis.web.entity.vo.OperationVo;
 import com.mogujie.jarvis.web.mapper.OperationMapper;
+import com.mogujie.jarvis.web.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,20 +52,9 @@ public class OperationService {
   }
 
   public Map<String, Object> getSimilarOperationTitle(String title) {
-    Map<String, Object> result = new HashMap<String, Object>();
     List<String> titles = this.operationMapper.getSimilarOperationTitle(title);
-    List<Map> list = new ArrayList<>();
-    for(int i=0; i<titles.size(); i++) {
-      Map<String, Object> item = new HashMap<String, Object>();
-      item.put("id", titles.get(i));
-      item.put("text", titles.get(i));
-      list.add(item);
-    }
 
-    result.put("total", titles.size());
-    result.put("items", list);
-
-    return result;
+    return CommonUtils.getSimilarMsg(titles);
   }
 
   public List<String> getAllOperators() {
