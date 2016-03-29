@@ -27,7 +27,7 @@ public class DepartmentController {
   @Autowired
   private DepartmentMapper departmentMapper;
   @RequestMapping
-//  @Passport(JarvisAuthType.operation)
+  @Passport(JarvisAuthType.department)
   public String index(ModelMap modelMap) {
     return "department/index";
   }
