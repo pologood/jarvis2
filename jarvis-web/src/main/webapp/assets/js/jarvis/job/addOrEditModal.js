@@ -247,7 +247,7 @@ function validSparkLauncherParas(parasStr) {
         switch (key) {
             case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.mainClass:    //mainClass
                 if (val == null || val == "") {
-                    showMsg('warning', 'sparkLauncher参数', "'mainClass'不能为空");
+                    showMsg('warning', '任务参数', "'mainClass'不能为空");
                     flg = false;
                 }
                 break;
@@ -391,8 +391,8 @@ function initJobScheduleModal() {
         }
     });
 
-    $("input[name='scheduleType']").change(function (e) {
-        changeScheduleType($(this));
+    $("input[name='circleType']").change(function (e) {
+        changeCircleType($(this));
     });
 
     $('#cronSecond').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/']);
@@ -400,7 +400,7 @@ function initJobScheduleModal() {
     $('#cronHour').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/']);
     $('#cronDay').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
     $('#cronMonth').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/']);
-    $('#cronWeek').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
+    $('#cronWeekDay').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
 
 }
 
@@ -416,7 +416,6 @@ function initPerMonthSelect() {
         width: '100%'
     });
 }
-
 
 //初始化-perDay
 function initPerDaySelect() {
@@ -435,7 +434,7 @@ function initPerDaySelect() {
 function initPerWeekSelect() {
     var newData = [{id: 1, text: "星期一"}, {id: 2, text: "星期二"}, {id: 3, text: "星期三"}
         , {id: 4, text: "星期四"}, {id: 5, text: "星期五"}, {id: 6, text: "星期六"}, {id: 7, text: "星期天"}];
-    var selector = $("#perWeek");
+    var selector = $("#perWeekDay");
     $(selector).select2({
         data: newData,
         width: '100%'
@@ -457,30 +456,30 @@ function initPerWeekSelect() {
 })(jQuery);
 
 //改变-计划类型
-function changeScheduleType(curRadio) {
+function changeCircleType(curRadio) {
 
     var curValue = $(curRadio).val();
-    if (curValue == CONST.SCHEDULE_TYPE.PER_DAY) {    //每天
+    if (curValue == CONST.SCHEDULE_CIRCLE_TYPE.PER_DAY) {    //每天
         $("#perHour").hourEnable(true);
         $("#perMonthDiv").hide();
         $("#perDayDiv").hide();
         $("#perWeekDiv").hide();
-    } else if (curValue == CONST.SCHEDULE_TYPE.PER_HOUR) {  //每小时
+    } else if (curValue == CONST.SCHEDULE_CIRCLE_TYPE.PER_HOUR) {  //每小时
         $("#perHour").hourEnable(false);
         $("#perMonthDiv").hide();
         $("#perDayDiv").hide();
         $("#perWeekDiv").hide();
-    } else if (curValue == CONST.SCHEDULE_TYPE.PER_WEEK) {  //每周
+    } else if (curValue == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {  //每周
         $("#perHour").hourEnable(true);
         $("#perMonthDiv").hide();
         $("#perDayDiv").hide();
         $("#perWeekDiv").show();
-    } else if (curValue == CONST.SCHEDULE_TYPE.PER_MONTH) {  //每月
+    } else if (curValue == CONST.SCHEDULE_CIRCLE_TYPE.PER_MONTH) {  //每月
         $("#perHour").hourEnable(true);
         $("#perMonthDiv").hide();
         $("#perDayDiv").show();
         $("#perWeekDiv").hide();
-    } else if (curValue == CONST.SCHEDULE_TYPE.PER_YEAR) {  //每年
+    } else if (curValue == CONST.SCHEDULE_CIRCLE_TYPE.PER_YEAR) {  //每年
         $("#perHour").hourEnable(true);
         $("#perMonthDiv").show();
         $("#perDayDiv").show();
@@ -490,8 +489,99 @@ function changeScheduleType(curRadio) {
 
 //显示-任务计划-模态框
 function showJobScheduleModal() {
+
+    var type = $("#expType").val();
+    if (type == null || type == "") {
+        type = CONST.SCHEDULE_EXP_TYPE.CRON;
+    }
+
+    var expContent = $('#expContent').val();
+    switch (type) {
+        case CONST.SCHEDULE_EXP_TYPE.CRON  :
+            var circleType = getCircleType(expContent);
+            if (circleType != CONST.SCHEDULE_CIRCLE_TYPE.NONE) {
+                $('#circleTab').addClass("active");
+                loadCircleData(expContent, circleType);
+            } else {
+                $('#cronTab').addClass("active");
+                loadCronData(expContent);
+            }
+            break;
+        //case CONST.SCHEDULE_EXP_TYPE.FIXED_DELAY  :
+        //    $('#fixedDelayTab').addClass("active");
+        //    break;
+        //case CONST.SCHEDULE_EXP_TYPE.FIXED_RATE  :
+        //    $('#fixedRateTab').addClass("active");
+        //    break;
+        //case CONST.SCHEDULE_EXP_TYPE.ISO8601  :
+        //    $('#iso8601Tab').addClass("active");
+        //    break;
+    }
     $("#jobScheduleModal").modal("show");
 }
+
+function loadCircleData(expContent, cirCleType) {
+    var radio;
+    if (cirCleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_DAY) {
+        radio = $("#circleDay");
+    } else if (cirCleType == CONST.CONTENT_TYPE.PER_HOUR) {
+        radio = $("#circleHour");
+    } else if (cirCleType == CONST.CONTENT_TYPE.PER_MONTH) {
+        radio = $("#circleMonth")
+    } else if (cirCleType == CONST.CONTENT_TYPE.PER_WEEK) {
+        radio = $("#circleWeek")
+    } else if (cirCleType == CONST.CONTENT_TYPE.PER_YEAR) {
+        radio = $("#circleYear")
+    } else {
+        return;
+    }
+
+    radio.prop('checked', true).trigger("change");
+
+    var fields = expContent.replace(/(\s)+/g, ' ').split(' ');
+    var second = (fields[0] == undefined ? '' : fields[0]),        // seconds
+        minute = (fields[1] == undefined ? '' : fields[1]),        // minutes
+        hour = (fields[2] == undefined ? '' : fields[2]),          // hours
+        day = (fields[3] == undefined ? '' : fields[3]),           // day of month
+        month = (fields[4] == undefined ? '' : fields[4]),         // month
+        weekDay = (fields[5] == undefined ? '' : fields[5]),       // day of week
+        year = (fields[6] == undefined ? '' : fields[6]);          // year
+
+    $('#perSecond').val(second);
+    $('#perMinute').val(minute);
+    if (cirCleType != CONST.CONTENT_TYPE.PER_HOUR) {
+        $('#perHour').val(hour);
+    }
+    if (isNumberStr(day)) {
+        $("#perDay").val(day.split(",")).trigger("change");
+    }
+    if (isNumberStr(month)) {
+        $("#perMonth").val(month.split(",")).trigger("change");
+    }
+    if (isNumberStr(weekDay)) {
+        $("#perWeekDay").val(weekDay.split(",")).trigger("change");
+    }
+}
+
+function loadCronData(expContent) {
+    var fields = expContent.replace(/(\s)+/g, ' ').split(' ');
+    var second = (fields[0] == undefined ? '' : fields[0]),        // seconds
+        minute = (fields[1] == undefined ? '' : fields[1]),        // minutes
+        hour = (fields[2] == undefined ? '' : fields[2]),          // hours
+        day = (fields[3] == undefined ? '' : fields[3]),           // day of month
+        month = (fields[4] == undefined ? '' : fields[4]),         // month
+        weekDay = (fields[5] == undefined ? '' : fields[5]),       // day of week
+        year = (fields[6] == undefined ? '' : fields[6]);          // year
+
+    $('#cronSecond').val(second);
+    $('#cronMinute').val(minute);
+    $('#cronHour').val(hour);
+    $('#cronDay').val(day);
+    $('#cronMonth').val(month);
+    $('#cronWeekDay').val(weekDay);
+    $('#cronYear').val(year);
+}
+
 
 //高级参数-显示或隐藏
 function toggleCronHelpDiv(thisTag) {
@@ -516,71 +606,154 @@ $.fn.restrict = function (chars) {
 
 function validCronTab() {
 
-    var cronExp = "";
-    var flag = true;
+    var expContent = "", flg = true;
 
     $('#cronTable .cronInput').each(function (i, c) {
 
         var val = $(c).val();
         var desc = $(c).attr("data-desc");
 
-        cronExp = cronExp + $(c).val();
+        expContent = expContent + (expContent !="" ? ' ' :"") + $(c).val();
         if (val == null || val.trim() == '') {
             showMsg("warning", "cron参数输入", desc + "不能为空");
-            flag = false;
+            flg = false;
             return
         }
         if (!/^[\d\-\*\/,\?#L]+$/i.test(val)) {
             showMsg("warning", "cron参数输入", desc + "输入字符不对,请输入 0-9数字,以及特殊字符'-,*?/#L'");
-            flag = false;
+            flg = false;
         }
     });
 
-    if (flag == false) {
-        return flag;
+    //if (flg) {
+    //    $.ajax({
+    //        url: contextPath + '/remote/',
+    //        type: 'POST',
+    //        async: false,
+    //        data: {cronExp: cronExp},
+    //        success: function (data) {
+    //            if (data.code == 0) {
+    //            } else {
+    //                flg = false;
+    //                showMsg('warning', title, (data.msg == null || data.msg == '') ? '操作失败' : data.msg);
+    //            }
+    //        },
+    //        error: function (jqXHR, exception) {
+    //            flg = false;
+    //            var msg = getMsg4ajaxError(jqXHR, exception);
+    //            showMsg('warning', title, msg);
+    //        }
+    //    });
+    //}
+
+    return {
+        flg: flg,
+        expType: CONST.SCHEDULE_EXP_TYPE.CRON,
+        expContent: expContent,
+        circleType: CONST.SCHEDULE_CIRCLE_TYPE.NONE
+    };
+
+}
+
+function validCircleTab() {
+    var val, flg, expContent = "";
+    var circleType = $("input[name='circleType']:checked").val();
+
+    if (circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {
+        val = $('#perWeekDay').val();
+        if (val == null) {
+            showMsg('warning', '调度时间', "'星期'不能为空");
+            flg = false;
+        }
+        expContent = val.join(',');
+    } else {
+        expContent = '?';
     }
 
-    //$.ajax({
-    //    url: contextPath + '/remote/',
-    //    type: 'POST',
-    //    async: false,
-    //    data: {cronExp: cronExp},
-    //    success: function (data) {
-    //        if (data.code == 0) {
-    //            flag = true;
-    //        } else {
-    //            flag = false;
-    //            showMsg('warning', title, (data.msg == null || data.msg == '') ? '操作失败' : data.msg);
-    //        }
-    //    },
-    //    error: function (jqXHR, exception) {
-    //        flag = false;
-    //        var msg = getMsg4ajaxError(jqXHR, exception);
-    //        showMsg('warning', title, msg);
-    //    }
-    //});
+    if (circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_YEAR) {
+        val = $('#perMonth').val();
+        if (val == null) {
+            showMsg('warning', '调度时间', "'月'不能为空");
+            flg = false;
+        }
+        expContent = val.join(',') + ' ' + expContent;
+    } else {
+        expContent = '*' + ' ' + expContent;
+    }
 
-    return flag;
+    if (circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_YEAR || circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_MONTH) {
+        val = $('#perDay').val();
+        if (val == null) {
+            showMsg('warning', '调度时间', "'日'不能为空");
+            flg = false;
+        }
+        expContent = val.join(',') + ' ' + expContent;
+    } else {
+        expContent = '*' + ' ' + expContent;
+    }
+
+    if (circleType != CONST.SCHEDULE_CIRCLE_TYPE.PER_HOUR) {
+        val = $('#perHour').val();
+        if (val == null || val == "") {
+            showMsg('warning', '调度时间', "'小时'不能为空");
+            flg = false;
+        } else if (!$.isNumeric(val) || val < 0 || val > 23) {
+            showMsg('warning', '调度时间', "'小时'不对,请输入0-23之间数字.");
+            flg = false;
+        }
+        expContent = val + ' ' + expContent;
+    } else {
+        expContent = '*' + ' ' + expContent;
+    }
+
+    val = $('#perMinute').val();
+    if (val == null || val == "") {
+        showMsg('warning', '调度时间', "'分钟'不能为空");
+        flg = false;
+    } else if (!$.isNumeric(val) || val < 0 || val > 59) {
+        showMsg('warning', '调度时间', "'分钟'不对,请输入0-59之间数字.");
+        flg = false;
+    }
+    expContent = val + ' ' + expContent;
+
+    val = $('#perSecond').val();
+    if (val == null || val == "") {
+        showMsg('warning', '调度时间', "'秒'不能为空");
+        flg = false;
+    } else if (!$.isNumeric(val) || val < 0 || val > 59) {
+        showMsg('warning', '调度时间', "'秒'不对,请输入0-59之间数字.");
+        flg = false;
+    }
+    expContent = val + ' ' + expContent;
+
+    return {
+        flg: flg,
+        expType: CONST.SCHEDULE_EXP_TYPE.CRON,
+        expContent: expContent,
+        circleType: circleType
+    };
 
 }
 
-
-function cronExpression2desc(expression) {
-    var a = later.parse.cron("1 2 3 4 5 6 7", true);
-}
 
 ///确认任务计划
 function confirmJobSchedule() {
 
+    var result;
     if ($("#cronTab").hasClass("active")) {
-        if (!validCronTab()) return;
-
+        result = validCronTab();
+    } else if ($("#circleTab").hasClass("active")) {
+        result = validCircleTab();
     }
 
-    $("#expression").val();
-    $("#expressionType").val();
-    $("#jobSchedule").val();
+    if (result.flg == false) {
+        return;
+    }
+    var expDesc = getExpDesc(result.expType, result.expContent, result.circleType);
 
+    $("#expType").val(result.expType);
+    $("#expContent").val(result.expContent);
+    $("#expDesc").val(expDesc);
     $("#jobScheduleModal").modal("hide");
 }
 

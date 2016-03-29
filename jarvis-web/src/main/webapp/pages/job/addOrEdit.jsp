@@ -46,7 +46,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-12">
             <!-- Nav tabs -->
@@ -192,12 +191,12 @@
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:35%">任务计划</span>
-                                    <input id="jobSchedule" value="" defaultValue="" class="form-control"
+                                    <span class="input-group-addon" style="width:35%">调度时间</span>
+                                    <input id="expDesc" value="" defaultValue="" class="form-control"
                                            onclick="showJobScheduleModal()"/>
 
-                                    <input id="expressionType" hidden/>
-                                    <input id="expression" hidden/>
+                                    <input id="expType" hidden/>
+                                    <input id="expContent" hidden/>
 
                                 </div>
                             </div>

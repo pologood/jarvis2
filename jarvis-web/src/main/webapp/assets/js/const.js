@@ -60,14 +60,15 @@ const CONST = {
     },
     MAPREDUCE_JOB: {  //java任务
     },
-    SCHEDULE_TYPE: { //计划类型
-        PER_DAY: 1,
-        PER_HOUR: 2,
-        PER_WEEK: 3,
-        PER_MONTH: 4,
-        PER_YEAR: 5
+    SCHEDULE_CIRCLE_TYPE: { //计划类型
+        NONE: 0,        //未知
+        PER_DAY: 1,     //每天
+        PER_HOUR: 2,    //每小时
+        PER_WEEK: 3,    //每周
+        PER_MONTH: 4,   //每月
+        PER_YEAR: 5     //每年
     },
-    SCHEDULE_EXPRESSION_TYPE: { //表达式类型
+    SCHEDULE_EXP_TYPE: { //表达式类型
         CRON: 1,            //Cron表达式
         FIXED_RATE: 2,      //固定频率
         FIXED_DELAY: 3,     //固定时延

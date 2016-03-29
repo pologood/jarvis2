@@ -56,7 +56,7 @@ public class HdfsUtil {
 
             // 4. 删除本地临时文件
             localFile.delete();
-            return distPath + fileName;
+            return distString + fileName;
         }catch(Exception ex){
             throw  ex;
         } finally {
