@@ -228,6 +228,8 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+<script type="text/javascript" src="${contextPath}/assets/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>
+
 <script type="text/javascript">
     var taskVoList =${taskVoList};
     var taskId = '${taskVo.taskId}';

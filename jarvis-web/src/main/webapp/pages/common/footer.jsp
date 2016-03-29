@@ -38,10 +38,10 @@
 <script type="text/javascript" src="${contextPath}/assets/plugins/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/select2/4.0.1/js/i18n/zh-CN.js"></script>
 
-<script type="text/javascript" src="${contextPath}/assets/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
+<%--<script type="text/javascript" src="${contextPath}/assets/plugins/form/jquery.form.min.js" charset="UTF-8"></script>--%>
 <script type="text/javascript" src="${contextPath}/assets/plugins/qtip2/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="${contextPath}/assets/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>
+<%--<script type="text/javascript" src="${contextPath}/assets/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>--%>
 <script type="text/javascript" src="${contextPath}/assets/plugins/bootstrap-table/bootstrap-table.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js" charset="UTF-8"></script>

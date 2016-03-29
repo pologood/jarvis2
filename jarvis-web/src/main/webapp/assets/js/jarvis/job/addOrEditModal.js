@@ -118,7 +118,7 @@ function showParaModal() {
     var jobType = $("#jobType").val();
     if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
         showSparkLauncherParasModal();
-    } else if (jobType == CONST.JOB_TYPE.JAVA) {
+    } else if (jobType == CONST.JOB_TYPE.JAVA || jobType == CONST.JOB_TYPE.MAPREDUCE) {
         showJavaParasModal();
     } else {
         showCommonJobParaModal()
@@ -232,7 +232,7 @@ function confirmSparkLauncherParas() {
         return;
     }
     $("#params").val(parasStr);
-    $("#jobContent").val(CONST.SPARK_LAUNCHER_JOB.COMMAND + " " + parasStr);
+    $("#jobContent").val("sparkLauncher.sh " + parasStr);
     $("#sparkLauncherParasModal").modal("hide");
 }
 
@@ -335,8 +335,17 @@ function confirmJavaParas() {
         return;
     }
     $("#params").val(paramsStr);
-    var content = CONST.JAVA_JOB.COMMAND + " -cp " + $("#javaJar").val() + " "
-        + $("#javaClasspath").val() + " " + $("#javaMainClass").val() + " " + $("#javaArguments").val();
+
+    var content, jobType = $('#jobType').val();
+    if (jobType == CONST.JOB_TYPE.JAVA) {
+        content = "java -cp ";
+    } else if (jobType == CONST.JOB_TYPE.MAPREDUCE) {
+        content = "yarn jar ";
+    }
+
+    content = content + $("#javaJar").val() + " " + $("#javaClasspath").val() + " "
+        + $("#javaMainClass").val() + " " + $("#javaArguments").val();
+
     $("#jobContent").val(content);
     $("#javaParasModal").modal("hide");
 }

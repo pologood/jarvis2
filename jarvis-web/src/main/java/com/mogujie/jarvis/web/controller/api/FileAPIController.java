@@ -36,7 +36,7 @@ public class FileAPIController{
     @ResponseBody
     public Object uploadJar(String title, HttpServletRequest request) {
         User user = UserContextHolder.getUser();
-        String userName = (user != null) ? user.getUname() : "muming";
+        String userName = (user != null) ? user.getUname() : "unknown";
         Map<String, Object> map = new HashMap<>();
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
