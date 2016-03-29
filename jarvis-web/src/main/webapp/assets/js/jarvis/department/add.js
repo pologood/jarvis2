@@ -41,7 +41,9 @@ function saveBzGroup() {
     window.setTimeout(function () {
       showMsg('info', '产品线', '保存成功');
     }, 1000);
-    window.location.reload();
+    window.setTimeout(function () {
+      window.location.reload();
+    }, 1000)
     $("#departmentInfoDiv").removeClass("active");
     $("#bizGroupInfoDiv").removeClass("active");
     $("#ralationInfoDiv").addClass("active");
