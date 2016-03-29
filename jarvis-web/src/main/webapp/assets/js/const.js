@@ -35,12 +35,7 @@ const CONST = {
         MIN_DATE: 0,
         MAX_DATE: 253370764800000
     },
-
-    JOB_PARAMS_KEY: {   //任务参数
-        JAR_URL: '_jarvis_jar_url'
-    },
     SPARK_LAUNCHER_JOB: { //sparkLauncher任务
-        COMMAND: "sparkLauncher.sh",
         PARAMS_KEY: {
             taskName: 'taskName',
             mainClass: 'mainClass',
@@ -56,7 +51,6 @@ const CONST = {
         }
     },
     JAVA_JOB: {  //java任务
-        COMMAND: "java",
         PARAMS_KEY: {
             mainClass: 'mainClass',
             jar: 'jar',
@@ -64,7 +58,8 @@ const CONST = {
             arguments: 'arguments',
         }
     },
-
+    MAPREDUCE_JOB: {  //java任务
+    },
     SCHEDULE_TYPE: { //计划类型
         PER_DAY: 1,
         PER_HOUR: 2,

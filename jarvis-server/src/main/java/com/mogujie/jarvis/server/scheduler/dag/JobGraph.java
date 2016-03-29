@@ -270,18 +270,19 @@ public enum JobGraph {
             if (dagJob != null) {
                 removeJob(dagJob);
                 LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
-            }
-        }
 
-        if (children != null) {
-            // submit job if pass dependency check
-            for (DAGJob child : children) {
-                DateTime now = DateTime.now();
-                DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, now);
-                if (scheduleDateTime != null) {
-                    submitJobWithCheck(child, scheduleDateTime);
-                } else {
-                    LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
+                // 删除job的时候重新触发后续子任务
+                if (children != null) {
+                    // submit job if pass dependency check
+                    for (DAGJob child : children) {
+                        DateTime now = DateTime.now();
+                        DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                        if (scheduleDateTime != null) {
+                            submitJobWithCheck(child, scheduleDateTime);
+                        } else {
+                            LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
+                        }
+                    }
                 }
             }
         }
