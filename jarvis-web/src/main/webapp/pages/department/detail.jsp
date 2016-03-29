@@ -100,7 +100,7 @@
                   <select id="bizGroupNameR" multiple desc="产品线名称">
                   </select>
                 </div>
-              </div>m
+              </div>
             </div>
           </div>
 
