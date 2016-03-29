@@ -183,15 +183,16 @@ public class ManageController {
     @RequestMapping(value = "/bizGroup")
     @Passport(JarvisAuthType.manage_biz)
     public String bizGroup(){
-
         return "manage/bizGroup";
     }
     //单个业务类型详情
     @RequestMapping(value = "bizDetail")
     @Passport(JarvisAuthType.manage_biz)
     public String bizDetail(ModelMap modelMap,Integer id){
-
         modelMap.put("id",id);
         return "manage/bizDetail";
     }
+
+
+
 }

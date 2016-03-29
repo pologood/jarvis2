@@ -21,7 +21,6 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/api/**"/>
             <bean class="com.mogu.bigdata.admin.passport.interceptor.RequestInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

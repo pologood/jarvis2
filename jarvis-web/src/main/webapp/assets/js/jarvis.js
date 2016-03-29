@@ -123,7 +123,7 @@ function formatTimeInterval(timeInterval) {
         result += totalHour + "小时";
     }
     if (totalMinute > 0) {
-        result += totalMinute + "分钟";
+        result += totalMinute + "分";
     }
     if (totalSecond > 0) {
         result += totalSecond + "秒";
