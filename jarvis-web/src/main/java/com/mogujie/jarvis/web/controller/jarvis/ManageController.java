@@ -193,6 +193,4 @@ public class ManageController {
         return "manage/bizDetail";
     }
 
-
-
 }

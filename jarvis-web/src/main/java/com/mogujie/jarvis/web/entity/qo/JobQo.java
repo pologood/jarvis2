@@ -22,6 +22,7 @@ public class JobQo {
     private List<String> workerGroupIdList;
 
 
+
     private Integer offset;
     private Integer limit;
     private String order;

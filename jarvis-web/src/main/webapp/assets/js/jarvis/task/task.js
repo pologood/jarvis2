@@ -1,4 +1,4 @@
-var taskStatusJson = null;
+var taskStatus = null;
 var taskStatusColor = null;
 var taskOperation = null;
 var taskDetailUrl = contextPath + "/task/detail?taskId=";
@@ -21,6 +21,7 @@ $(function () {
 
     initBatchOperation();
 
+    glFuncs.initTaskId("taskId");
 
     glFuncs.initJobId("jobId");
 
@@ -37,7 +38,7 @@ function initTaskStatus() {
         url: contextPath + "/api/task/getTaskStatus",
         async: false,
         success: function (data) {
-            taskStatusJson = data;
+            taskStatus = data;
 
             var newData = new Array();
             var all = {};
@@ -125,7 +126,7 @@ function initBatchOperation() {
     for (var key in taskOperation) {
         var arr = taskOperation[key];
         arr.forEach(function (e) {
-            if(e.url!='/api/task/retry'){
+            if (e.url != '/api/task/retry') {
                 if (result[e.url]) {
                     item = result[e.url];
                     item.allowStatus.push(key);
@@ -238,10 +239,7 @@ function reset() {
 function getQueryPara() {
     var queryPara = {};
 
-    var scheduleDate = $("#scheduleDate").val();
-    var executeDate = $("#executeDate").val();
-    var startDate = $("#startDate").val();
-    var endDate = $("#endDate").val();
+    var taskIdList = $("#taskId").val();
     var jobIdList = $("#jobId").val();
     var jobNameList = $("#jobName").val();
     var jobTypeList = $("#jobType").val();
@@ -257,24 +255,37 @@ function getQueryPara() {
         taskStatus.push(value);
     });
 
-    jobIdList = jobIdList == "all" ? undefined : jobIdList;
+    var isTempInputs = $("#isTemp").find("input:checked");
+    var isTemp = [];
+    $(isTempInputs).each(function (i, c) {
+        isTemp.push($(c).val());
+    });
+
+    var scheduleDate = $("#scheduleDate").val();
+    var executeDate = $("#executeDate").val();
+    var startDate = $("#startDate").val();
+    var endDate = $("#endDate").val();
+
+
+    taskIdList = taskIdList == null ? undefined : taskIdList;
     jobIdList = jobIdList == null ? undefined : jobIdList;
-    jobNameList = jobNameList == 'all' ? undefined : jobNameList;
     jobNameList = jobNameList == null ? undefined : jobNameList;
     jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
     jobTypeList = jobTypeList == null ? undefined : jobTypeList;
     executeUserList = executeUserList == "all" ? undefined : executeUserList;
     executeUserList = executeUserList == null ? undefined : executeUserList;
 
-    queryPara["scheduleDate"] = scheduleDate;
-    queryPara["executeDate"] = executeDate;
-    queryPara["startDate"] = startDate;
-    queryPara["endDate"] = endDate;
+    queryPara["taskIdList"] = JSON.stringify(taskIdList);
     queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["taskStatusArrStr"] = JSON.stringify(taskStatus);
+    queryPara["isTemp"] = JSON.stringify(isTemp);
+    queryPara["scheduleDate"] = scheduleDate;
+    queryPara["executeDate"] = executeDate;
+    queryPara["startDate"] = startDate;
+    queryPara["endDate"] = endDate;
 
     return queryPara;
 }
@@ -496,9 +507,40 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             var data = {};
             data["jobId"] = jobId;
             data["taskId"] = taskId;
+            data["taskIds"] = [taskId];
             data["attemptId"] = attemptId;
             requestRemoteRestApi(url, text, data, true, true);
         }).on('pnotify.cancel', function () {
+
+        });
+}
+
+function modifyStatus(taskId, status, text) {
+    var url = '/api/task/modify/status';
+
+    (new PNotify({
+        title: '任务操作',
+        text: '确定' + text + "?",
+        icon: 'glyphicon glyphicon-question-sign',
+        hide: false,
+        confirm: {
+            confirm: true
+        },
+        buttons: {
+            closer: false,
+            sticker: false
+        },
+        history: {
+            history: false
+        }
+    })).get().on('pnotify.confirm', function () {
+            var data = {};
+            data["taskId"] = taskId;
+            data["status"] = status;
+            var result = requestRemoteRestApi(url, text, data, false, true);
+
+        }).on('pnotify.cancel', function () {
+
         });
 }
 
@@ -513,15 +555,36 @@ function operateFormatter(value, row, index) {
         operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
     });
 
-    var result = [
-        '<div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
-        '<ul class="dropdown-menu">',
-        operationStr,
-        '</ul>',
-        '</div>'
-    ].join('');
+    var result='';
+    if(operations.length>0){
+        result = [
+            '<div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+            '<ul class="dropdown-menu">',
+            operationStr,
+            '</ul>',
+            '</div>'
+        ].join('');
+    }
 
-    result = "<div style='white-space: nowrap'>" + result + "</div";
+
+    var statusResult='';
+    var modifyStatus = generateModifyStatus(status);
+    if (modifyStatus.length > 0) {
+        var modifyTaskStatusOperation = '';
+        $(modifyStatus).each(function (i, c) {
+            modifyTaskStatusOperation += '<li><a href="javascript:void(0)" onclick="modifyStatus(\'' + taskId + '\',\'' + c.status + '\',\'' + '标为' + c.name + '\')">' + '标为' + c.name + '</a></li>';
+        });
+
+        statusResult = [
+            ' <div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>',
+            '<ul class="dropdown-menu">',
+            modifyTaskStatusOperation,
+            '</ul>',
+            '</div>'
+        ].join('');
+    }
+
+    result = "<div style='white-space: nowrap'>" + result + statusResult + "</div";
 
     return result;
 }
@@ -564,5 +627,25 @@ function appNameFormatter(value, row, index) {
 
     var result = "<div style='white-space: nowrap'>" + value + "</div>";
 
+    return result;
+}
+
+function generateModifyStatus(status) {
+    var result = [];
+    if (status == 4) {
+        return result;
+    }
+    if (typeof taskStatus != 'undefined') {
+        for (var i = 0; i < taskStatus.length; i++) {
+            var item = taskStatus[i];
+            if (item.id == 0 ||item.id == 1 ||item.id == 2 ||item.id == 3 || item.id == 6 || item.id == 99 || item.id == status) {
+                continue;
+            }
+            var object = {};
+            object.status = item.id;
+            object.name = item.text;
+            result.push(object);
+        }
+    }
     return result;
 }

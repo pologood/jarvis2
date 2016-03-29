@@ -15,12 +15,15 @@ public class TaskQo {
     private String executeDate;
     private String startDate;
     private String endDate;
+    private List<String> taskIdList;
     private List<String> jobIdList;
     private List<String> jobNameList;
     private List<String> jobTypeList;
     private List<String> executeUserList;
     private String taskStatusArrStr;
     private List<Integer> taskStatus;
+
+    private List<String> isTemp;
     private String order;
     private Integer offset;
     private Integer limit;
@@ -59,6 +62,32 @@ public class TaskQo {
         this.endDate = endDate;
     }
 
+    public List<String> getIsTemp() {
+        return isTemp;
+    }
+
+    public void setIsTemp(String isTemp) {
+        if (StringUtils.isNotBlank(isTemp)) {
+            List<String> list = JsonHelper.fromJson(isTemp, List.class);
+            if (list.size() > 0) {
+                this.isTemp = list;
+            }
+        }
+    }
+
+    public List<String> getTaskIdList() {
+        return taskIdList;
+    }
+
+    public void setTaskIdList(String taskIdList) {
+        if (StringUtils.isNotBlank(taskIdList)) {
+            List<String> list = JsonHelper.fromJson(taskIdList, List.class);
+            if (list.size() > 0) {
+                this.taskIdList = list;
+            }
+        }
+    }
+
     public List<String> getJobIdList() {
         return jobIdList;
     }
@@ -71,8 +100,6 @@ public class TaskQo {
             }
         }
     }
-
-
 
     public List<String> getJobNameList() {
         return jobNameList;

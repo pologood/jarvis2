@@ -26,6 +26,74 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">执行Id</span>
+
+                        <select id="taskId" multiple>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">任务Id</span>
+
+                        <select id="jobId" multiple>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">任务名称</span>
+                        <select id="jobName" multiple>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">任务类型</span>
+                        <select id="jobType" multiple></select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row top-buffer">
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">执行人</span>
+                        <select id="executeUser" multiple>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:23.5%">状态</span>
+
+                        <div class="form-control" id="taskStatus">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:50%">是否临时任务</span>
+
+                        <div class="form-control" id="isTemp">
+                            <input type="checkbox" value="1"> 是
+                            &nbsp;<input type="checkbox" value="0"> 否
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:50%">调度日期</span>
                         <input id="scheduleDate" class="form-control"/>
                     </div>
@@ -49,54 +117,13 @@
                         <input id="endDate" class="form-control"/>
                     </div>
                 </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:50%">任务ID</span>
-
-                        <select id="jobId" multiple>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:50%">任务名称</span>
-                        <select id="jobName" multiple>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:50%">任务类型</span>
-                        <select id="jobType" multiple></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:50%">执行用户</span>
-                        <select id="executeUser" multiple>
-                        </select>
-                    </div>
-                </div>
 
             </div>
 
+
+
             <div class="row top-buffer">
-
-                <div class="col-md-6">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:23.5%">状态</span>
-
-                        <div class="form-control" id="taskStatus">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-md-offset-3">
+                <div class="col-md-3 pull-right">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-6">
                             <div class="input-group pull-right">

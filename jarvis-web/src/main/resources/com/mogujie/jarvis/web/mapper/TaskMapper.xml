@@ -5,7 +5,13 @@
 
     <sql id="condition">
         <where>
-            <if test="jobIdList!=null">
+            <if test="taskIdList!=null and taskIdList.size()>0">
+                task.taskId IN
+                <foreach collection="taskIdList" item="taskId" open="(" close=")" separator=",">
+                    #{taskId}
+                </foreach>
+            </if>
+            <if test="jobIdList!=null and jobIdList.size()>0">
                 job.jobId IN
                 <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
                     #{jobId}
@@ -15,6 +21,12 @@
                 AND
                 <foreach collection="jobNameList" item="jobName" open="(" close=")" separator="OR">
                     job.jobName LIKE concat('%',#{jobName},'%')
+                </foreach>
+            </if>
+            <if test="isTemp!=null and isTemp.size()>0">
+                AND
+                <foreach collection="isTemp" item="item" index="index" open="(" close=")" separator="OR">
+                    (job.isTemp=#{item})
                 </foreach>
             </if>
             <if test="jobTypeList!=null">
@@ -54,6 +66,7 @@
                     (task.status=#{status})
                 </foreach>
             </if>
+
         </where>
     </sql>
 

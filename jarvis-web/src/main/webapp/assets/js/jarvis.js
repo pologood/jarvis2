@@ -242,12 +242,19 @@ var glFuncs = {
         })
     },
 
+    initTaskId: function (id) {
+        $("#" + id).select2({
+            width: '100%',
+            tags: true
+        });
+    },
+
 
     initJobId: function (id) {
 
         $("#" + id).select2({
             width: '100%',
-            tags: true,
+            tags: true
         });
     },
 
