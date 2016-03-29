@@ -45,7 +45,8 @@ function saveBzGroup() {
     window.location.reload();
     window.setTimeout(function () {
       console.log("reload..")
-    }, 1000)
+      $("#bizGroupInfoDiv").trigger('click');
+    }, 2000)
     $("#departmentInfoDiv").removeClass("active");
     $("#bizGroupInfoDiv").removeClass("active");
     $("#ralationInfoDiv").addClass("active");
