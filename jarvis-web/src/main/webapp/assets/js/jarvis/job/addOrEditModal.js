@@ -745,9 +745,9 @@ function validCircleTab() {
 function confirmJobSchedule() {
 
     var result;
-    if ($('.nav-tabs a[href="#circleTab"]').attr('aria-expanded') == 'true') {
+    if ($('#circleTab').hasClass('active')) {
         result = validCircleTab();
-    } else if ($('.nav-tabs a[href="#cronTab"]').attr('aria-expanded') == 'true') {
+    } else if ($('#cronTab').hasClass('active')) {
         result = validCronTab();
     }
 
