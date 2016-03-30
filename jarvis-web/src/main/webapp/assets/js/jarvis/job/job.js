@@ -1,5 +1,6 @@
 var jobPriority = {};
 var bizGroup = {};
+var isTemp=[0];  //查询参数，是否临时任务，0为周期任务，1为临时任务
 
 $(function () {
 
@@ -222,6 +223,7 @@ function getQueryPara() {
     queryPara["submitUserList"] = JSON.stringify(submitUserList);
     queryPara["appIdList"] = JSON.stringify(appIdList);
     queryPara["workerGroupIdList"] = JSON.stringify(workerGroupIdList);
+    queryPara["isTempList"] = JSON.stringify(isTemp);
 
     return queryPara;
 }
