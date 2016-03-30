@@ -168,11 +168,11 @@ function formatResultSelection(result) {
 }
 
 function operationFormatter(value, row, index) {
-  var result = '<a href="' + contextPath + '/department/departmentDetail?id=' + row["id"] + '" target="_blank" title="编辑部门"><i class="glyphicon glyphicon-pencil"></i></a>';
+  var result = '<a href="' + contextPath + '/department/departmentDetail?id=' + row["id"] + '" target="_blank" title="编辑部门"><i class="glyphicon glyphicon-pencil">编辑部门</i></a>';
 
-  result += '<a href="' + contextPath + '/manage/bizGroup' + '"target="_blank" title="编辑产品线"><i class="glyphicon glyphicon-edit"></i></a>';
+  result += '<a href="' + contextPath + '/manage/bizGroup' + '"target="_blank" title="编辑产品线"><i class="glyphicon glyphicon-edit">编辑产品线</i></a>';
 
-  result += ' <a href="javascript:void(0)" onclick="deleteDepartment(' + row["id"] + ')" title="删除部门"><i class="glyphicon glyphicon-remove text-danger"></i></a>';
+  result += ' <a href="javascript:void(0)" onclick="deleteDepartment(' + row["id"] + ')" title="删除部门"><i class="glyphicon glyphicon-remove text-danger">删除部门</i></a>';
 
   return result;
 }

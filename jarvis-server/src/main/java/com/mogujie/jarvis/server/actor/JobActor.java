@@ -47,6 +47,7 @@ import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.BizGroup;
+import com.mogujie.jarvis.dto.generate.Department;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -71,6 +72,7 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchDepartmentIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobInfoByScriptTitileRequest;
@@ -78,7 +80,8 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobLikeNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
-import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNameResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchDepartmentIdByNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse;
@@ -98,6 +101,7 @@ import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.BizGroupService;
+import com.mogujie.jarvis.server.service.DepartmentService;
 import com.mogujie.jarvis.server.service.JobActorLogService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
@@ -121,6 +125,7 @@ public class JobActor extends UntypedActor {
     private PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
+    private DepartmentService departmentService = Injectors.getInjector().getInstance(DepartmentService.class);
     private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
     private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
@@ -150,7 +155,8 @@ public class JobActor extends UntypedActor {
         list.add(new ActorEntry(RestSearchPreJobInfoRequest.class, ServerSearchPreJobInfoResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchAllJobsRequest.class, ServerSearchAllJobsResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchScriptTypeRequest.class, ServerSearchScriptTypeResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestSearchBizIdByNameRequest.class, ServerSearchBizIdByNamResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchBizIdByNameRequest.class, ServerSearchBizIdByNameResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchDepartmentIdByNameRequest.class, ServerSearchDepartmentIdByNameResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchJobInfoByScriptTitileRequest.class, ServerSearchJobInfoByScriptTitileResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchJobLikeNameRequest.class, ServerSearchJobLikeNameResponse.class, MessageType.GENERAL));
         //---------
@@ -195,6 +201,9 @@ public class JobActor extends UntypedActor {
             } else if (obj instanceof RestSearchScriptTypeRequest) {
                 RestSearchScriptTypeRequest msg = (RestSearchScriptTypeRequest) obj;
                 searchScriptType(msg);
+            } else if (obj instanceof RestSearchDepartmentIdByNameRequest) {
+                RestSearchDepartmentIdByNameRequest msg = (RestSearchDepartmentIdByNameRequest) obj;
+                searchDepartmentIdByName(msg);
             } else if (obj instanceof RestSearchBizIdByNameRequest) {
                 RestSearchBizIdByNameRequest msg = (RestSearchBizIdByNameRequest) obj;
                 searchBizIdByName(msg);
@@ -583,7 +592,7 @@ public class JobActor extends UntypedActor {
         job.setStatus(msg.getStatus());
         job.setJobType(msg.getJobType());
         job.setWorkerGroupId(msg.getWorkerGroupId());
-        job.setDepartment(msg.getDepartment());
+        job.setDepartmentId(msg.getDepartmentId());
         job.setBizGroups(msg.getBizGroups());
         if (msg.hasActiveStartDate() && msg.getActiveStartDate() != 0) {
             job.setActiveStartDate(new Date(msg.getActiveStartDate()));
@@ -637,8 +646,8 @@ public class JobActor extends UntypedActor {
         if (msg.hasWorkerGroupId()) {
             job.setWorkerGroupId(msg.getWorkerGroupId());
         }
-        if (msg.hasDepartment()) {
-            job.setDepartment(msg.getDepartment());
+        if (msg.hasDepartmentId()) {
+            job.setDepartmentId(msg.getDepartmentId());
         }
         if (msg.hasBizGroups()) {
             job.setBizGroups(msg.getBizGroups());
@@ -878,6 +887,36 @@ public class JobActor extends UntypedActor {
 
     /**
      * 兼容老系统API
+     * 根据部门名称查找部门ID
+     *
+     * @param msg
+     * @throws IOException
+     */
+    private void searchDepartmentIdByName(RestSearchDepartmentIdByNameRequest msg) throws Exception {
+        ServerSearchDepartmentIdByNameResponse response;
+        try {
+            Department department = departmentService.getByName(msg.getDepartmentName());
+            if (department != null) {
+                response = ServerSearchDepartmentIdByNameResponse.newBuilder()
+                        .setSuccess(true).setDepartmentId(department.getId()).build();
+            } else {
+                response = ServerSearchDepartmentIdByNameResponse.newBuilder()
+                        .setSuccess(false).setMessage("can't find department by name=" + msg.getDepartmentName()).build();
+            }
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchDepartmentIdByNameResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(ExceptionUtil.getErrMsg(e))
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 兼容老系统API
      * 根据bizName查找biz id
      *
      * @param msg
@@ -885,14 +924,14 @@ public class JobActor extends UntypedActor {
      */
     private void searchBizIdByName(RestSearchBizIdByNameRequest msg) throws Exception {
         String bizName = msg.getBizName();
-        ServerSearchBizIdByNamResponse response;
+        ServerSearchBizIdByNameResponse response;
         try {
             int bizId = bizService.queryByName(bizName).getId();
-            response = ServerSearchBizIdByNamResponse.newBuilder()
+            response = ServerSearchBizIdByNameResponse.newBuilder()
                     .setSuccess(true).setBizId(bizId).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerSearchBizIdByNamResponse.newBuilder()
+            response = ServerSearchBizIdByNameResponse.newBuilder()
                     .setSuccess(false)
                     .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
@@ -909,6 +948,10 @@ public class JobActor extends UntypedActor {
         String recevier = "";
         if (alarmService.getAlarmByJobId(jobId) != null) {
             recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
+        }
+        String department = "";
+        if (departmentService.get(job.getDepartmentId()) != null) {
+            department = departmentService.get(job.getDepartmentId()).getName();
         }
         List<Integer> bizIds = BizUtils.getBizIds(job.getBizGroups());
         List<String> bizNames = new ArrayList<String>();
@@ -929,7 +972,7 @@ public class JobActor extends UntypedActor {
                 .setPriority(job.getPriority())
                 .setStatus(job.getStatus())
                 .setReceiver(recevier)
-                .setDepartment(job.getDepartment())
+                .setDepartment(department)
                 .setBizName(StringUtils.join(bizNames, BizUtils.SEPARATOR))
                 .setCreateTime(job.getCreateTime().getTime())
                 .setUpdateTime(job.getUpdateTime().getTime())

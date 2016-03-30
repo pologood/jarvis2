@@ -475,7 +475,7 @@ function checkActiveDate() {
     return flag;
 }
 
-//检查任务参数
+//检查-任务参数
 function checkParas() {
     var jobType = $("#jobType").val();
     var params = $("#params").val();
@@ -487,6 +487,19 @@ function checkParas() {
         return validPara(params);
     }
 }
+
+//检查-调度时间
+function checkScheduleExpression() {
+    var expType = $("#expType").val();
+    var expContent = $("#expContent").val();
+    if (expType == CONST.SCHEDULE_EXP_TYPE.CRON && expContent !=null && expContent !="" ) {
+        return validCronByStr(expContent);
+    }else{
+        return true;
+    }
+}
+
+
 
 
 //计算表达式
@@ -615,7 +628,7 @@ function saveJob() {
     var ids = ["jobName", "jobType", "workerGroupId"];
     if (!checkEmptyByIds(ids) || !checkContentTypeAndContent()
         || !checkJobName($("#jobName")) || !checkActiveDate()
-        || !checkParas()) {
+        || !checkParas() || !checkScheduleExpression() ) {
         return;
     }
 

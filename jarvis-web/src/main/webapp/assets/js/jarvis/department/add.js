@@ -1,9 +1,26 @@
 var testNum = /^[0-9]*$/;
+var bizGroup = null;
 
 $(function () {
   initData(contextPath + "/api/bizGroup/getAllByCondition", "bizGroupNameR");
   initData(contextPath + "/api/department/getAllNames", "departmentNameR");
+  initUsers();
 });
+
+function resetMap() {
+  $("#departmentNameR").val("all").trigger("change");
+  $("#bizGroupNameR").val("all").trigger("change");
+}
+
+function resetBizGroup() {
+  $("#bizGroupName").val("");
+  $("#owner").val("all").trigger("change");
+  $("#status").val("all").trigger("change");
+}
+
+function resetDepartment() {
+  $("#departmentName").val("");
+}
 
 //保存department
 function saveDepartment() {
@@ -43,10 +60,10 @@ function saveBzGroup() {
     }, 1000);
 
     window.location.reload();
-    //window.setTimeout(function () {
-    //  console.log("reload..")
-    //  $("#bizGroupInfoDiv").trigger('click');
-    //}, 2000)
+    window.setTimeout(function () {
+      console.log("reload..")
+      $("#ralationInfoDiv").trigger('click');
+    }, 1000)
     $("#bizGroupInfoDiv").trigger('click');
     $("#departmentInfoDiv").removeClass("active");
     $("#bizGroupInfoDiv").removeClass("active");
@@ -157,8 +174,9 @@ function getDepartDataFromPage() {
 
 function initData(url, id) {
   $.ajax({
-    //url:contextPath + "/api/bizGroup/getAllByCondition",
-    url: url, data: {status: 1}, success: function (data) {
+    url: url,
+    data: {status: 1},
+    success: function (data) {
       if (data.code == 1000) {
         var newData = new Array();
         $(data.data).each(function (i, c) {
@@ -192,3 +210,46 @@ function formatResultSelection(result) {
   return result.id;
 }
 
+//初始化内网用户
+function initUsers() {
+  $.ajax({
+    url:contextPath + "/api/common/getAllUser",
+    success:function(data){
+      if (1000 == data.code) {
+        var users = data.rows;
+        var newData = new Array();
+
+        $(users).each(function (i, c) {
+          var item = {};
+          item["id"] = c.uname;
+          item["text"] = c.nick;
+          newData.push(item);
+        });
+
+        $("#owner").select2({
+          data: newData,
+          width: '100%'
+        });
+        if (null != bizGroup) {
+          var owner = bizGroup.owner;
+          var arr = owner.trim().split(",");
+          $("#owner").val(arr).trigger("change");
+        }
+      }
+      else {
+        new PNotify({
+          title: '获取内网用户信息',
+          text: data.msg,
+          type: 'error',
+          icon: true,
+          styling: 'bootstrap3'
+        });
+      }
+    },
+    error: function (jqXHR, exception) {
+      var msg = getMsg4ajaxError(jqXHR, exception);
+      showMsg('warning', '初始化用户列表', msg);
+    }
+  })
+
+}

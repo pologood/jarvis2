@@ -374,7 +374,18 @@ function validJavaParas(parasStr) {
 }
 
 
-//------------------------------ 3 执行计划  ------------------------------
+//------------------------------ 3 调度时间  ------------------------------
+$.fn.restrict = function (chars) {
+    return this.keypress(function (e) {
+        var found = false, i = -1;
+        while (chars[++i] != null && !found) {
+            found = chars[i] == String.fromCharCode(e.keyCode).toLowerCase() ||
+                chars[i] == e.which;
+        }
+        found || e.preventDefault();
+    });
+};
+
 function initJobScheduleModal() {
     initPerMonthSelect();
     initPerDaySelect();
@@ -401,6 +412,7 @@ function initJobScheduleModal() {
     $('#cronDay').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
     $('#cronMonth').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/']);
     $('#cronWeekDay').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
+    $('#cronYear').restrict(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', ',', '*', '/', '?']);
 
 }
 
@@ -593,68 +605,7 @@ function toggleCronHelpDiv(thisTag) {
     $("#cronHelpDiv").toggle();
 }
 
-$.fn.restrict = function (chars) {
-    return this.keypress(function (e) {
-        var found = false, i = -1;
-        while (chars[++i] != null && !found) {
-            found = chars[i] == String.fromCharCode(e.keyCode).toLowerCase() ||
-                chars[i] == e.which;
-        }
-        found || e.preventDefault();
-    });
-};
-
-function validCronTab() {
-
-    var expContent = "", flg = true;
-
-    $('#cronTable .cronInput').each(function (i, c) {
-
-        var val = $(c).val();
-        var desc = $(c).attr("data-desc");
-
-        expContent = expContent + (expContent !="" ? ' ' :"") + $(c).val();
-        if (val == null || val.trim() == '') {
-            showMsg("warning", "调度时间", desc + "不能为空");
-            flg = false;
-            return
-        }
-        if (!/^[\d\-\*\/,\?#L]+$/i.test(val)) {
-            showMsg("warning", "调度时间", desc + "输入字符不对,请输入 0-9数字,以及特殊字符'-,*?/#L'");
-            flg = false;
-        }
-    });
-
-    //if (flg) {
-    //    $.ajax({
-    //        url: contextPath + '/remote/',
-    //        type: 'POST',
-    //        async: false,
-    //        data: {cronExp: cronExp},
-    //        success: function (data) {
-    //            if (data.code == 0) {
-    //            } else {
-    //                flg = false;
-    //                showMsg('warning', title, (data.msg == null || data.msg == '') ? '操作失败' : data.msg);
-    //            }
-    //        },
-    //        error: function (jqXHR, exception) {
-    //            flg = false;
-    //            var msg = getMsg4ajaxError(jqXHR, exception);
-    //            showMsg('warning', title, msg);
-    //        }
-    //    });
-    //}
-
-    return {
-        flg: flg,
-        expType: CONST.SCHEDULE_EXP_TYPE.CRON,
-        expContent: expContent,
-        circleType: CONST.SCHEDULE_CIRCLE_TYPE.NONE
-    };
-
-}
-
+//检查-简单设定
 function validCircleTab() {
     var val, flg, expContent = "";
     var circleType = $("input[name='circleType']:checked").val();
@@ -664,7 +615,7 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'星期'不能为空");
             flg = false;
-        }else{
+        } else {
             expContent = val.join(',');
         }
     } else {
@@ -676,7 +627,7 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'月'不能为空");
             flg = false;
-        }else{
+        } else {
             expContent = val.join(',') + ' ' + expContent;
         }
     } else {
@@ -688,12 +639,12 @@ function validCircleTab() {
         if (val == null) {
             showMsg('warning', '调度时间', "'日'不能为空");
             flg = false;
-        }else{
+        } else {
             expContent = val.join(',') + ' ' + expContent;
         }
-    } else if(circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {
+    } else if (circleType == CONST.SCHEDULE_CIRCLE_TYPE.PER_WEEK) {
         expContent = '?' + ' ' + expContent;
-    }else{
+    } else {
         expContent = '*' + ' ' + expContent;
     }
 
@@ -740,6 +691,28 @@ function validCircleTab() {
 
 }
 
+//检查高级设定
+function validCronTab() {
+    var flg, expArray = [];
+    $('#cronTable .cronInput').each(function (i, c) {
+        var val = $(c).val();
+        expArray.push(val);
+    });
+
+    //如果year为空,则移除
+    if (expArray[6] == null || expArray == "") {
+        expArray.a.splice(6, 1);
+    }
+    var expContent = expArray.join(' ');
+
+    flg = validCronByArray(expArray);
+    return {
+        flg: flg,
+        expType: CONST.SCHEDULE_EXP_TYPE.CRON,
+        expContent: expContent,
+        circleType: CONST.SCHEDULE_CIRCLE_TYPE.NONE
+    };
+}
 
 ///确认任务计划
 function confirmJobSchedule() {
@@ -754,7 +727,7 @@ function confirmJobSchedule() {
     if (result.flg == false) {
         return;
     }
-    var expDesc = getExpDesc(result.expType, result.expContent, result.circleType);
+    var expDesc = getExpDesc(result.expType, result.expContent);
 
     $("#expType").val(result.expType);
     $("#expContent").val(result.expContent);

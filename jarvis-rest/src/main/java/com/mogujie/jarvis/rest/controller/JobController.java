@@ -280,7 +280,7 @@ public class JobController extends AbstractController {
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
                 .setWorkerGroupId(vo.getWorkerGroupId())
-                .setDepartment(vo.getDepartment(""))
+                .setDepartmentId(vo.getDepartmentId(0))
                 .setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1))
                 .setIsTemp(vo.isTemp())
@@ -339,8 +339,8 @@ public class JobController extends AbstractController {
         if (vo.getBizGroups() != null) {
             builder.setBizGroups(vo.getBizGroups());
         }
-        if (vo.getDepartment() != null) {
-            builder.setDepartment(vo.getDepartment());
+        if (vo.getDepartmentId() != null) {
+            builder.setDepartmentId(vo.getDepartmentId());
         }
         if (vo.getActiveStartDate() != null) {
             builder.setActiveStartDate(vo.getActiveStartDate());

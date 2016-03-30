@@ -326,26 +326,6 @@ public class TaskScheduler extends Scheduler {
                 int attemptId = dagTask.getAttemptId();
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
-                Task updateTask = new Task();
-                updateTask.setTaskId(taskId);
-                updateTask.setAttemptId(attemptId);
-                updateTask.setUpdateTime(DateTime.now().toDate());
-                Job job = jobService.get(dagTask.getJobId()).getJob();
-                String content = "";
-                if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
-                    int scriptId = Integer.valueOf(job.getContent());
-                    if (scriptService.getContentById(scriptId) != null) {
-                        content = scriptService.getContentById(scriptId);
-                    } else {
-                        LOGGER.error("cant't find content from scriptId={}", scriptId);
-                    }
-                } else {
-                    content = job.getContent();
-                }
-                updateTask.setContent(content);
-                updateTask.setExecuteUser(user);
-                taskService.updateSelective(updateTask);
-                LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
                 submitTask(dagTask);
             }
         }
@@ -374,6 +354,7 @@ public class TaskScheduler extends Scheduler {
         // update content if contentType is script
         Task task = new Task();
         task.setTaskId(dagTask.getTaskId());
+        task.setAttemptId(dagTask.getAttemptId());
         task.setStatus(TaskStatus.READY.getValue());
         task.setUpdateTime(DateTime.now().toDate());
         Job job = jobService.get(dagTask.getJobId()).getJob();
@@ -383,7 +364,10 @@ public class TaskScheduler extends Scheduler {
                 String content = scriptService.getContentById(scriptId);
                 task.setContent(content);
             } else {
-                LOGGER.error("cant't find content from scriptId={}", scriptId);
+                String errMsg = "couldn't get content with scriptId=" + scriptId;
+                LOGGER.error(errMsg);
+                getSchedulerController().notify(new FailedEvent(dagTask.getTaskId(), errMsg));
+                return;
             }
         }
         taskService.updateSelective(task);
@@ -440,7 +424,10 @@ public class TaskScheduler extends Scheduler {
                 if (scriptService.getContentById(scriptId) != null) {
                     content = scriptService.getContentById(scriptId);
                 } else {
-                    LOGGER.error("couldn't get content by scriptId={}", scriptId);
+                    String errMsg = "couldn't get content with scriptId=" + scriptId;
+                    LOGGER.error(errMsg);
+                    getSchedulerController().notify(new FailedEvent(dagTask.getTaskId(), errMsg));
+                    return null;
                 }
             } else {
                 content = job.getContent();

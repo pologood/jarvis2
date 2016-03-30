@@ -49,7 +49,6 @@
         FROM department LEFT JOIN department_biz_map ON department.id = department_biz_map.departmentId
         LEFT JOIN biz_group ON department_biz_map.bizId = biz_group.id
         <include refid="departmentCondition"/>
---         GROUP BY department.name
         <include refid="pager"/>
     </select>
 

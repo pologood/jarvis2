@@ -335,6 +335,15 @@
         text-align-last: center;
     }
 
+    #jobScheduleModal .tab-pane {
+        width: 600px;
+        height: 400px;
+    }
+
+    #jobScheduleModal .modal-dialog{
+        width: 600px;
+    }
+
 </style>
 
 <!-- 计划表达式-弹出框 -->
@@ -370,7 +379,7 @@
 
                 <div class="tab-content">
 
-                    <div id="circleTab" class="tab-pane active" style="width: 600px;height: 400px">
+                    <div id="circleTab" class="tab-pane active">
 
                         <div class="row top-buffer">
                             <div class="col-md-10 col-md-offset-1">
@@ -462,7 +471,7 @@
                         </div>
                     </div>
 
-                    <div id="cronTab" class="tab-pane" style="width: 600px;height: 400px;">
+                    <div id="cronTab" class="tab-pane">
 
                         <%--<span class="input-group-addon" style="width:25%">cron表达式--%>
                         <%--<span class="text-danger" style="vertical-align: middle">*</span>--%>
@@ -475,17 +484,17 @@
                                         <table id="cronTable">
                                             <tbody>
                                             <tr>
-                                                <td>秒</td>
+                                                <td>秒<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
-                                                <td>分</td>
+                                                <td>分<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
-                                                <td>时</td>
+                                                <td>时<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
-                                                <td>日</td>
+                                                <td>日<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
-                                                <td>月</td>
+                                                <td>月<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
-                                                <td>星期</td>
+                                                <td>星期<span class="text-danger">*</span></td>
                                                 <td class="separator">&nbsp</td>
                                                 <td>年份</td>
                                             </tr>
@@ -496,7 +505,7 @@
                                                 <td><input id="cronMinute" type="text" class="cronInput" data-desc="分钟">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
-                                                <td><input id=cronHour" type="text" class="cronInput" data-desc="小时">
+                                                <td><input id="cronHour" type="text" class="cronInput" data-desc="小时">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
                                                 <td><input id="cronDay" type="text" class="cronInput" data-desc="日期">
@@ -584,13 +593,13 @@
                         </div>
                     </div>
 
-                    <%--<div id="fixedDelayTab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--<div id="fixedDelayTab" class="tab-pane" >--%>
                     <%--</div>--%>
 
-                    <%--<div id="fixedRateTab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--<div id="fixedRateTab" class="tab-pane" >--%>
                     <%--</div>--%>
 
-                    <%--<div id="iso8601Tab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--<div id="iso8601Tab" class="tab-pane">--%>
                     <%--</div>--%>
 
                 </div>
