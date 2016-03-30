@@ -7,6 +7,11 @@
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
 
+<style>
+    .fixed-table-body{
+        padding-bottom: 80px;
+    }
+</style>
 
 <div class="container">
 

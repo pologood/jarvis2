@@ -310,42 +310,20 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">依赖任务</span>
-                                    <select id="dependJobIds" multiple>
+                                    <select id="dependJobIds" >
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        <div id="commonStrategyPattern" style="display: none;">
+                            <select name="commonStrategy">
+
+                            </select>
+                        </div>
                         <div class="row top-buffer">
-                            <div class="col-md-5 col-md-offset-4">
-                                <div id="strategyPattern" style="display: none">
+                            <table id="dependList">
 
-                                    <div class="col-md-9" style="margin-bottom: 2px">
-                                        <div class="input-group commonStrategy" style="width:100%">
-                                            <span name="dependJob" class="input-group-addon"
-                                                  style="width:50%;background-color:#d9edf7"></span>
-                                            <span class="input-group-addon" style="width:10%">通用</span>
-                                            <select name="commonStrategy" class="form-control"></select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3" style="margin-bottom: 2px">
-                                        <div class="input-group offsetStrategy"
-                                             style="margin-left:-25px;margin-right: -15px"
-                                             style="width:100%">
-                                            <span class="input-group-addon" style="width:30%;">偏移</span>
-                                            <input name="offsetStrategy" class="form-control" value="cd"
-                                                   placeholder="默认:cd(当天)"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <dl id="strategyList"></dl>
-                            </div>
-                            <span>
-                                <i class="fa fa-question text-info fa-2x"
-                                   style="cursor: pointer;position: relative;position: absolute;margin-left:10px;"
-                                   onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>
-                            </span>
+                            </table>
                         </div>
 
                         <div class="row top-buffer">

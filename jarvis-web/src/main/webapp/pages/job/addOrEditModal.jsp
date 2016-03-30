@@ -604,6 +604,59 @@
     </div>
 </div>
 
+<style>
+    #offsetStrategy .select2-container--default .select2-selection--single{
+        border: 1px solid #ccc;
+        border-bottom-left-radius:4px;
+        border-top-left-radius:4px;
+    }
+</style>
+
+<div id="offsetStrategy" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">设置偏移策略</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select name="offset">
+                            <option value="c">当前</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="time">
+                            <option value="d">天</option>
+                            <option value="w">周</option>
+                            <option value="M">月</option>
+                            <option value="m">分钟</option>
+                            <option value="h">小时</option>
+                            <option value="y">年</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4" name="text" style="display: none;margin-left: -15px;padding:3px;">
+                        <span class="text-info " style="font-size: 18px;">
+                            内
+                        </span>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" onclick="hideOffsetStrategy()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

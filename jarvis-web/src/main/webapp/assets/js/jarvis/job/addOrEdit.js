@@ -3,7 +3,9 @@ var testChinese = /[\u4E00-\u9FA5]/;
 var job = null;
 var existAlarmList = undefined;
 var dependJobs = {};
-var dependIds = [];
+var dependIds = [];    //当前job的依赖信息
+var targetOffsetStrategy = null;
+
 
 var pageJobEdit = { //页面变量
     curPerHour: 0,
@@ -136,7 +138,7 @@ function initJobType() {
     var cur = job != null ? job.jobType : 'hive';
     $(jobTypeSelector).val(cur).trigger("change");
 
-    console.log("initJobType end......");
+    //console.log("initJobType end......");
 
 }
 
@@ -153,7 +155,7 @@ function initJobType() {
 
 //改变-job类型
 function changeJobType() {
-    console.log("changeJobType");
+    //console.log("changeJobType");
 
     var data = $("#jobType").select2('data')[0];
     var curJobType = data.id;
@@ -190,13 +192,13 @@ function changeJobType() {
     }
     pageJobEdit.preJobType = curJobType;
 
-    console.log("changeJobType end !!!!!!!!!!!");
+    //console.log("changeJobType end !!!!!!!!!!!");
 
 }
 
 //初始化-内容类型
 function initContentType() {
-    console.log("initContentType");
+    //console.log("initContentType");
     var cur = (job != null) ? job.contentType : CONST.CONTENT_TYPE.TEXT;
     var radio;
     if (cur == CONST.CONTENT_TYPE.TEXT) {
@@ -211,14 +213,14 @@ function initContentType() {
 
     radio.prop('checked', true).trigger("change");
 
-    console.log("initContentType end **************");
+    //console.log("initContentType end **************");
 
 }
 
 
 //改变-内容类型
 function changeContentType(curRadio) {
-    console.log("changeContentType " + curRadio.val());
+    //console.log("changeContentType " + curRadio.val());
 
     var curValue = $(curRadio).val();
     var jobType = $("#jobType").val();
@@ -733,49 +735,214 @@ function generateStrategy() {
     });
 }
 
+var dependColumns = [{
+    field: 'jobName',
+    title: '任务名称',
+    sortable: true,
+    switchable: true,
+    formatter: jobNameFormatter
+}, {
+    field: 'offsetStrategy',
+    title: '偏移策略(点击可修改)',
+    sortable: true,
+    switchable: true,
+    formatter: offsetStrategyFormatter
+}, {
+    field: 'commonStrategy',
+    title: '通用策略',
+    sortable: true,
+    switchable: true,
+    formatter: commonStrategyFormatter
+}, {
+    field: 'operation',
+    title: '操作',
+    switchable: true,
+    formatter: operationFormatter
+}];
+
 //初始化依赖任务，如果是编辑则初始化已经依赖job
 function initDependJobs() {
+    glFuncs.initJobName("dependJobIds", false);
+    $("#offsetStrategy select[name=time]").select2({
+        width: '100%'
+    });
+    $("#offsetStrategy select[name=offset]").select2({
+        width: '100%',
+        tags: true
+    }).on('select2:select', function (e) {
+        var value = $(e.target).val();
+
+        if (value == 'c') {
+            $("#offsetStrategy div[name=text]").hide();
+        }
+        else {
+            var flag = testNum.test(value);
+            if (flag == false) {
+                showMsg("info", "设置偏移长度", "只能为数字");
+            }
+            $("#offsetStrategy div[name=text]").show();
+        }
+    });
+
+    $("#dependJobIds").on("select2:select", function (e) {
+        var value = $(e.target).val();
+        $.ajax({
+            url: contextPath + '/api/job/getByName',
+            data: {jobName: value},
+            success: function (data) {
+                if (data.code == 1000) {
+                    var tableData = $("#dependList").bootstrapTable("getData");
+                    var flag = true;
+                    for (var i = 0; i < tableData.length; i++) {
+                        if (tableData[i].jobId == data.data.jobId) {
+                            flag = false;
+                            showMsg('info', '添加依赖', '已经存在相同的任务依赖:' + data.data.jobName + ",不能重复添加");
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        $("#dependList").bootstrapTable("append", data.data);
+                    }
+                    $("#dependJobIds").val(null).trigger("change");
+                }
+                else {
+                    showMsg('error', '获取任务信息', '请求接口失败');
+                }
+            }
+        })
+    });
+
     $.ajax({
-        url: contextPath + "/api/job/getAllJobIdAndName",
+        url: contextPath + '/api/job/getCommonStrategy',
         success: function (data) {
-            var newData = new Array();
-            $(data).each(function (i, c) {
-                var item = {};
-                item["id"] = c.jobId;
-                item["text"] = c.jobName;
-                newData.push(item);
-            });
-            $("#dependJobIds").select2({
-                data: newData,
-                width: '100%'
-            });
-            if (null != jobId && '' != jobId) {
-                $.ajax({
-                    url: contextPath + "/api/job/getParentsById",
-                    async: false,
-                    data: {jobId: jobId},
-                    success: function (data) {
-                        var newData = new Array();
-                        $(data.data).each(function (i, c) {
-                            dependJobs[c.jobId] = c;
-                            newData.push(c.jobId);
+            for (var i = 0; i < data.length; i++) {
+                var option = '<option value="' + data[i].id + '">' + data[i].text + '</option>';
+                $("#commonStrategyPattern select").append(option);
+            }
+
+            $("#dependList").bootstrapTable({
+                columns: dependColumns,
+                pagination: false,
+                sidePagination: 'server',
+                search: false,
+                idField: 'jobId',
+                url: contextPath + '/api/job/getParentsById',
+                queryParams: function (params) {
+                    params["jobId"] = jobId;
+                    params["all"] = true;
+                    return params;
+                },
+                responseHandler: function (res) {
+                    if (res.status) {
+                        showMsg("error", "初始化依赖列表", res.status.msg);
+                        return res;
+                    }
+                    else {
+                        res.rows = res.data;
+
+                        $(res.data).each(function (i, c) {
                             dependIds.push(c.jobId);
                         });
 
-                        $("#dependJobIds").val(newData).trigger("change");
-                    },
-                    error: function (jqXHR, exception) {
-                        var msg = getMsg4ajaxError(jqXHR, exception);
-                        showMsg('warning', '获取父任务', msg);
+                        return res;
                     }
-                })
-            }
+                },
+                showColumns: false,
+                showHeader: true,
+                showToggle: true,
+                sortable: true,
+                pageSize: 20,
+                pageList: [10, 20, 50, 100, 200, 500, 1000],
+                paginationFirstText: '首页',
+                paginationPreText: '上一页',
+                paginationNextText: '下一页',
+                paginationLastText: '末页',
+                showExport: false,
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+                exportDataType: 'basic'
+            });
         },
         error: function (jqXHR, exception) {
             var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化依赖', msg);
+            showMsg('warning', '获取通用策略', msg);
         }
-    });
+    })
+}
+
+function jobNameFormatter(value, row, index) {
+    var result = '<a name="jobName" jobId="' + row['jobId'] + '" target="_blank" href="' + contextPath + '/job/detail?jobId=' + row['jobId'] + '">' + value + '</a>';
+    return result;
+}
+
+function commonStrategyFormatter(value, row, index) {
+    var pattern = $("#commonStrategyPattern select").clone();
+    $(pattern).find("option[value=" + value + "]").attr("selected", 'selected');
+    return pattern.get(0).outerHTML;
+}
+
+function offsetStrategyFormatter(value, row, index) {
+    if (value == undefined) {
+        value = "cd";
+    }
+    var result = '<a name="offsetStrategy" href="javascript:void(0)" value="' + value + '" onclick="showOffsetStrategy(this)">' + value + '</a>';
+    return result;
+}
+
+function showOffsetStrategy(tag) {
+    targetOffsetStrategy = tag;
+    var value = $(tag).attr("value").toString();
+
+    if (value != '未设置') {
+        if (value.indexOf("c") >= 0) {
+            var offset = 'c';
+            var time = value.substr(value.indexOf("c") + 1);
+        }
+        else {
+            var time = value.substr(0, value.indexOf("("));
+            var offset = Math.abs(parseInt(value.substr(value.indexOf("(") + 1, value.indexOf(")"))));
+            var data = $("#offsetStrategy select[name=offset]").select2("data");
+            data.push({id: offset, text: offset});
+            $("#offsetStrategy select[name=offset]").select2("data", data, true);
+            $("#offsetStrategy div[name=text]").show();
+        }
+
+        $("#offsetStrategy select[name=offset]").val(offset).trigger("change");
+        $("#offsetStrategy select[name=time]").val(time).trigger("change");
+    }
+    $("#offsetStrategy").modal("show");
+}
+
+function hideOffsetStrategy() {
+    var offset = $("#offsetStrategy select[name=offset]").val();
+    var time = $("#offsetStrategy select[name=time]").val();
+
+    var strategy = "";
+    if (offset == 'c') {
+        strategy = offset + time;
+    }
+    else {
+        var flag = testNum.test(offset);
+        if (!flag) {
+            showMsg("warning", "设置偏移长度", "只能为数字,请修改");
+            return;
+        }
+        strategy = time + "(-" + offset + ")";
+    }
+    $(targetOffsetStrategy).attr("value", strategy);
+    $(targetOffsetStrategy).text(strategy);
+    $("#offsetStrategy").modal("hide");
+    targetOffsetStrategy = null;
+
+    $("#offsetStrategy select[name=offset]").val("c").trigger("change");
+    $("#offsetStrategy div[name=text]").hide();
+    $("#offsetStrategy select[name=time]").val("d").trigger("change");
+}
+
+function operationFormatter(value, row, index) {
+    var value = row["jobId"];
+    var result = '<a href="javascript:void(0)" onclick="bootstrapTableRemoveRow(\'dependList\',\'jobId\',' + value + ')"><i class="glyphicon glyphicon-remove"></i>删除</i>';
+
+    return result;
 }
 
 //显示说明
@@ -813,22 +980,22 @@ function hideDescription(thisTag) {
 //根据原始依赖与新依赖确定操作类型
 function calculateOperator(source, afterChange) {
     var dependencyList = new Array();
-    var myDependIds = {};
+    var myDepends = {};
     if (source != null) {
         if (afterChange == null) {
             for (var i = 0; i < source.length; i++) {
-                myDependIds[source[i]] = "delete";
+                myDepends[source[i]] = "delete";
             }
         }
         else {
             for (var i = 0; i < source.length; i++) {
-                myDependIds[source[i]] = "";
+                myDepends[source[i]] = {preJobId: source[i]};
             }
             for (var i = 0; i < afterChange.length; i++) {
-                myDependIds[afterChange[i]] = "";
+                myDepends[afterChange[i].preJobId] = afterChange[i];
             }
 
-            for (var key in myDependIds) {
+            for (var key in myDepends) {
                 var operator = 1;
                 var source_flag = false;
                 var afterChange_flag = false;
@@ -839,7 +1006,7 @@ function calculateOperator(source, afterChange) {
                     }
                 }
                 for (var i = 0; i < afterChange.length; i++) {
-                    if (afterChange[i] == key) {
+                    if (afterChange[i].preJobId == key) {
                         afterChange_flag = true;
                         break;
                     }
@@ -854,31 +1021,19 @@ function calculateOperator(source, afterChange) {
                     operator = 1;
                 }
 
-                var dependency = {};
-                dependency["preJobId"] = key;
-                dependency["operatorMode"] = operator;
-                dependency["commonStrategy"] = $("#strategyList dd[value=" + key + "]").find("select[name=commonStrategy]").val();
-                dependency["offsetStrategy"] = $("#strategyList dd[value=" + key + "]").find("input[name=offsetStrategy]").val();
+                var item = myDepends[key];
 
-                dependencyList.push(dependency);
+                item["operatorMode"] = operator;
+
+                dependencyList.push(item);
             }
         }
     }
     else {
-        var dds = $("#strategyList dd");
-        $(dds).each(function (i, c) {
-            var preJobId = $(c).attr("value");
-            var commonStrategy = $(c).find("select[name=commonStrategy]").val();
-            var offsetStrategy = $(c).find("input[name=offsetStrategy]").val();
+        $(afterChange).each(function (i, c) {
             var operatorMode = 1;
-
-            var dependency = {};
-            dependency["preJobId"] = preJobId;
-            dependency["operatorMode"] = operatorMode;
-            dependency["commonStrategy"] = commonStrategy;
-            dependency["offsetStrategy"] = offsetStrategy;
-
-            dependencyList.push(dependency);
+            c["operatorMode"] = operatorMode;
+            dependencyList.push(c);
         });
     }
     return dependencyList;
@@ -899,10 +1054,24 @@ function getDependData() {
 
 
     //前置任务信息，after代表用户修改后的
-    var afterDependIds = $("#dependJobIds").val();
-    afterDependIds = afterDependIds == undefined ? [] : afterDependIds;
+    var afterDepends = [];
+    var trs = $("#dependList tbody tr");
+    $(trs).each(function (i, c) {
+        var preJobId = $(c).find("a[name=jobName]").attr("jobid");
+        var commonStrategy = $(c).find("select[name=commonStrategy]").val();
+        var offsetStrategy = $(c).find("a[name=offsetStrategy]").attr("value");
 
-    var dependencyList = calculateOperator(dependIds, afterDependIds);
+        if(preJobId!=undefined){
+            var item = {};
+            item["preJobId"] = preJobId;
+            item["commonStrategy"] = commonStrategy;
+            item["offsetStrategy"] = offsetStrategy;
+
+            afterDepends.push(item);
+        }
+    });
+
+    var dependencyList = calculateOperator(dependIds, afterDepends);
 
     return dependencyList;
 }
@@ -922,7 +1091,7 @@ function saveDepend() {
 
 //重置依赖
 function resetDepend() {
-    $("#dependJobIds").val(null).trigger("change");
+    $("#dependList").bootstrapTable("refresh");
 }
 
 

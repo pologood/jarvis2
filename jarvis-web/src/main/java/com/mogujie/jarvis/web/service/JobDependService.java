@@ -33,14 +33,10 @@ public class JobDependService {
     /**
      * 获取最近父节点
      */
-    public List<JobDependVo> getParentById(Long jobId) {
+    public List<JobDependVo> getParentById(Long jobId,List<Integer> statusList) {
         JobDependQo query= new JobDependQo();
         query.setJobId(jobId);
-        List<Integer> statusList = new ArrayList<>();
-        statusList.add(1);
-        statusList.add(2);
-        statusList.add(3);
-        statusList.add(5);
+
         query.setStatusList(statusList);
 
         return jobDependMapper.getParentById(query);

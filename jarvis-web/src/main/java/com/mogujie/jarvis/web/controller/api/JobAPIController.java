@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.google.gson.JsonObject;
 import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.web.entity.vo.JSTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,11 +64,40 @@ public class JobAPIController {
     }
 
     /*
+    * 根据id获取job的详细信息
+    * */
+    @RequestMapping("getByName")
+    @ResponseBody
+    public Object getByName(String jobName) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (null == jobName) {
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", "jobId必须传入");
+            return map;
+        }
+        try {
+            JobVo jobVo = jobService.getJobByName(jobName);
+            if (jobVo == null) {
+                throw new NotFoundException("job不存在. jobName:" + jobName);
+            }
+            map.put("code", MessageStatus.SUCCESS.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+            map.put("data", jobVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", e.getMessage());
+        }
+        return map;
+    }
+
+
+    /*
     * 根据id获取job的父任务
     * */
     @RequestMapping("getParentsById")
     @ResponseBody
-    public Object getParentsById(JobQo jobQo) {
+    public Object getParentsById(JobQo jobQo, Boolean all) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (null == jobQo.getJobId()) {
             map.put("code", MessageStatus.FAILED.getValue());
@@ -77,7 +105,15 @@ public class JobAPIController {
             return map;
         }
         try {
-            List<JobDependVo> list = jobDependService.getParentById(jobQo.getJobId());
+            List<Integer> statusList = new ArrayList<>();
+            statusList.add(1);
+            statusList.add(2);
+            statusList.add(3);
+            statusList.add(5);
+            if (all != null && all) {
+                statusList.add(4);
+            }
+            List<JobDependVo> list = jobDependService.getParentById(jobQo.getJobId(), statusList);
             map.put("code", MessageStatus.SUCCESS.getValue());
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", list);

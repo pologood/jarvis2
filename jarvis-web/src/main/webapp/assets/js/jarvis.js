@@ -8,11 +8,11 @@ function showMsg(type, title, text) {
     });
 }
 
-function tryToNum(val){
-    if(val ==''){
+function tryToNum(val) {
+    if (val == '') {
         return null;
     }
-    if (val !=null && /^[0-9]*$/.test(val)) {
+    if (val != null && /^[0-9]*$/.test(val)) {
         val = parseInt(val);
     }
     return val;
@@ -268,7 +268,10 @@ var glFuncs = {
         });
     },
 
-    initJobName: function (id) {
+    initJobName: function (id, tags) {
+        if (typeof tags == 'undefined') {
+            tags = true;
+        }
 
         $("#" + id).select2({
             ajax: {
@@ -303,7 +306,7 @@ var glFuncs = {
             templateResult: formatResult,
             templateSelection: formatResultSelection,
             width: '100%',
-            tags: true
+            tags: tags
         });
     },
     //获取被选中的执行信息
@@ -313,4 +316,22 @@ var glFuncs = {
         });
     }
 
+}
+
+//格式化结果
+function formatResult(result) {
+    return result.text;
+}
+//格式化选择框
+function formatResultSelection(result) {
+    return result.id;
+}
+
+function removeTr(tag){
+    $(tag).closest("tr").remove();
+}
+
+function bootstrapTableRemoveRow(tableId,field,value){
+    var value=[value];
+    $("#"+tableId).bootstrapTable('remove', {field: field, values: value});
 }
