@@ -106,6 +106,7 @@
         job.submitUser,
         job.priority,
         job.workerGroupId,
+        job.isTemp,
         app.appName,
         worker.ip,
         time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime

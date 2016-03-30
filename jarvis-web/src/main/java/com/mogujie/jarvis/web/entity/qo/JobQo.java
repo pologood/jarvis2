@@ -21,7 +21,7 @@ public class JobQo {
     private List<String> appIdList;
     private List<String> workerGroupIdList;
 
-
+    private List<String> isTempList;
 
     private Integer offset;
     private Integer limit;
@@ -132,6 +132,19 @@ public class JobQo {
         }
     }
 
+    public List<String> getIsTempList() {
+        return isTempList;
+    }
+
+    public void setIsTempList(String isTempList) {
+        if (StringUtils.isNotBlank(isTempList)) {
+            List<String> list = JsonHelper.fromJson(isTempList, List.class);
+            if (list.size() > 0) {
+                this.isTempList = list;
+            }
+        }
+    }
+
     public Integer getOffset() {
         return offset;
     }
@@ -171,4 +184,5 @@ public class JobQo {
     public void setSort(String sort) {
         this.sort = sort;
     }
+
 }

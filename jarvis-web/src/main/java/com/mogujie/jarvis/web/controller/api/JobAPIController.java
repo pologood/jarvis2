@@ -93,6 +93,7 @@ public class JobAPIController {
     @RequestMapping("/getJobs")
     @ResponseBody
     public Object getJobs(JobQo jobQo) {
+
         Map<String, Object> map = jobService.getJobs(jobQo);
         return map;
     }
