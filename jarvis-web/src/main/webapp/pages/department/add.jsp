@@ -70,7 +70,7 @@
           <div class="row top-buffer">
             <div class="col-md-6 col-md-offset-3 text-center">
               <button type="button" class="btn btn-primary" onclick="saveDepartment()">保存</button>
-              <button type="button" class="btn btn-primary" onclick="">重置</button>
+              <button type="button" class="btn btn-primary" onclick="resetDepartment()">重置</button>
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@
                     <span class="input-group-addon" style="width:35%">产品线管理员
                       <span class="text-danger" style="vertical-align: middle">*</span>
                     </span>
-                  <input id="owner" class="form-control" desc="产品线管理员"/>
+                  <select id="owner" multiple></select>
                 </div>
               </div>
             </div>
@@ -126,7 +126,7 @@
           <div class="row top-buffer">
             <div class="col-md-6 col-md-offset-3 text-center">
               <button type="button" class="btn btn-primary" onclick="saveBzGroup()">保存</button>
-              <button type="button" class="btn btn-primary" onclick="">重置</button>
+              <button type="button" class="btn btn-primary" onclick="resetBizGroup()">重置</button>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@
           <div class="row top-buffer">
             <div class="col-md-6 col-md-offset-3 text-center">
               <button type="button" class="btn btn-primary" onclick="saveDepartBizMap()">保存</button>
-              <button type="button" class="btn btn-primary" onclick="">重置</button>
+              <button type="button" class="btn btn-primary" onclick="resetMap()">重置</button>
             </div>
           </div>
         </div>
