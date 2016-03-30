@@ -174,8 +174,9 @@ function getDepartDataFromPage() {
 
 function initData(url, id) {
   $.ajax({
-    //url:contextPath + "/api/bizGroup/getAllByCondition",
-    url: url, data: {status: 1}, success: function (data) {
+    url: url,
+    data: {status: 1},
+    success: function (data) {
       if (data.code == 1000) {
         var newData = new Array();
         $(data.data).each(function (i, c) {
