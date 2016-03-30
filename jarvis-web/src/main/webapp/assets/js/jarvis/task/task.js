@@ -515,7 +515,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
         });
 }
 
-function modifyStatus(taskId, status, text) {
+function modifyStatus(taskId, status, text,tag) {
     var url = '/api/task/modify/status';
 
     (new PNotify({
@@ -538,7 +538,18 @@ function modifyStatus(taskId, status, text) {
             data["taskId"] = taskId;
             data["status"] = status;
             var result = requestRemoteRestApi(url, text, data, false, true);
-
+            if(result.flag&&result.data.code==0){
+                var color='';
+                var desc='';
+                for(var key in taskStatusColor){
+                    if(key == status){
+                        color=taskStatusColor[key].color;
+                        desc=taskStatusColor[key].text;
+                    }
+                }
+                $(tag).closest("tr").find("div[name=status] i").css("color",color);
+                $(tag).closest("tr").find("div[name=status] span").text(desc);
+            }
         }).on('pnotify.cancel', function () {
 
         });
@@ -552,7 +563,10 @@ function operateFormatter(value, row, index) {
     var operations = taskOperation[status];
     var operationStr = "";
     $(operations).each(function (i, c) {
-        operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
+        if(row["isTemp"]==0||(row["isTemp"]==1&& c.url!='/api/task/retry')){
+            operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
+        }
+
     });
 
     var result='';
@@ -572,7 +586,7 @@ function operateFormatter(value, row, index) {
     if (modifyStatus.length > 0) {
         var modifyTaskStatusOperation = '';
         $(modifyStatus).each(function (i, c) {
-            modifyTaskStatusOperation += '<li><a href="javascript:void(0)" onclick="modifyStatus(\'' + taskId + '\',\'' + c.status + '\',\'' + '标为' + c.name + '\')">' + '标为' + c.name + '</a></li>';
+            modifyTaskStatusOperation += '<li><a href="javascript:void(0)" onclick="modifyStatus(\'' + taskId + '\',\'' + c.status + '\',\'' + '标为' + c.name + '\',this)">' + '标为' + c.name + '</a></li>';
         });
 
         statusResult = [
@@ -600,9 +614,9 @@ function jobNameFormatter(value, row, index) {
 function taskStatusFormatter(value, row, index) {
     var color = taskStatusColor[value].color;
     var text = taskStatusColor[value].text;
-    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
+    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' +'<span>' +text+'</span>';
 
-    result = "<div style='white-space:nowrap;'>" + result + "</div?";
+    result = "<div name='status' style='white-space:nowrap;'>" + result + "</div?";
 
     return result;
 }

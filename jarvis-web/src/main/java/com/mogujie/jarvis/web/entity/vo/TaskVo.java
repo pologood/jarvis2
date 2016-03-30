@@ -18,6 +18,8 @@ public class TaskVo extends Task {
     private String workerGroupName;
     private String ip;
 
+    private Integer isTemp;
+
     private Long executeTime;
     private Long avgExecuteTime;
 
@@ -100,5 +102,13 @@ public class TaskVo extends Task {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public Integer getIsTemp() {
+        return isTemp;
+    }
+
+    public void setIsTemp(Integer isTemp) {
+        this.isTemp = isTemp;
     }
 }

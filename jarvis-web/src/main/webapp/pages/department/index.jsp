@@ -14,7 +14,7 @@
       <nav>
         <ol class="cd-breadcrumb triangle">
           <li><a href="${contextPath}/">首页</a></li>
-          <li class="current"><em>操作记录</em></li>
+          <li class="current"><em>部门管理</em></li>
         </ol>
       </nav>
     </div>
@@ -74,15 +74,19 @@
         </div>
       </div>
 
+
     </div>
+
   </div>
 
   <hr>
 
-  <div class="top-buffer">
+  <div class="row top-buffer">
     <div class="col-md-12">
-      <a class="btn btn-primary" href="${contextPath}/department/add" target="_blank">新增任务</a>
-      <table id="content" data-toolbar="#toolBar">
+      <div id="toolbar">
+        <a class="btn btn-primary" href="${contextPath}/department/add" target="_blank">新增部门</a>
+      </div>
+      <table id="content" data-toolbar="#toolbar">
 
       </table>
     </div>
