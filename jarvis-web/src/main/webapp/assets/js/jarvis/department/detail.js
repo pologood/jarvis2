@@ -66,6 +66,7 @@ function editDepartment() {
   }
 }
 
+// 映射关系
 function editDepartmentBizMap() {
   var ids = ["departmentNameR", "bizGroupNameR"];
   if (!checkSelectIsEmpty(ids, "编辑部门产品线映射关系")) {

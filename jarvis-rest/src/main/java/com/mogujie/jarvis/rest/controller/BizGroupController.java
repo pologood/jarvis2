@@ -130,7 +130,7 @@ public class BizGroupController extends AbstractController {
                         .setBizId(vo.getId()).build();
                 DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse response1 =
                     (DepartmentProtos.ServerDeleteDepartmentBizMapByBizGroupIdResponse) callActor(AkkaType.SERVER,
-                        request);
+                        request1);
 
                 return response1.getSuccess() ? successResult() : errorResult(response1.getMessage());
             } else {

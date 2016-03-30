@@ -32,7 +32,15 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 public class TestJobRest {
     private String baseUrl = "http://127.0.0.1:8080";
 
+    @Test
     public void testMy() {
+
+        String a = "{\"jobName\":\"hive6\",\"department\":\"\",\"scriptTitle\":\"\",\"scriptId\":\"\",\"content\":\"hiive6\",\"params\":\"{}\",\"expDesc\":\"每小时 15分15秒\",\"expId\":\"\",\"expType\":1,\"expContent\":\"15 15 * * * ?\",\"activeStartDate\":0,\"activeEndDate\":0,\"failedAttempts\":0,\"failedInterval\":3,\"bizGroups\":\",,\",\"workerGroupId\":1,\"jobType\":\"hive\",\"priority\":0,\"contentType\":\"1\"" +
+                ",\"scheduleExpressionList\":[{\"operatorMode\":1,\"expressionId\":null,\"expressionType\":1,\"expression\":\"15 15 * * * ?\"}]" +
+                "}";
+        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
+        int i = 3;
+
         //        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[]}";
         //        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
         //        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}]}";
@@ -52,7 +60,7 @@ public class TestJobRest {
         jobScheduleExpSet(jobId);
     }
 
-//    @Test
+    //    @Test
     public void testJobDependencySet() throws UnirestException {
         Long jobId = jobSubmit();
         jobDependencySet(jobId);
@@ -234,7 +242,7 @@ public class TestJobRest {
 
     }
 
-//    @Test
+    //    @Test
     public void testXmenJobSubmit() throws UnirestException {
         JobVo job = new JobVo();
         job.setAppName("xmen");
@@ -272,7 +280,7 @@ public class TestJobRest {
         String paramsJson = JsonHelper.toJson(job, JobVo.class);
 
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "xmen").field("appToken", "54fba65aae584ac6b6806045ea7dab5e")
-            .field("user", "qingyuan").field("parameters", paramsJson).asString();
+                .field("user", "qingyuan").field("parameters", paramsJson).asString();
 
         Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();

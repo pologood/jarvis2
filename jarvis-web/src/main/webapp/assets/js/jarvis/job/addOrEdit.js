@@ -4,7 +4,6 @@ var job = null;
 var existAlarmList = undefined;
 var dependJobs = {};
 var dependIds = [];
-var expressionId = null;
 
 var pageJobEdit = { //页面变量
     curPerHour: 0,
@@ -33,7 +32,6 @@ $(function () {
     initJobType();              //初始化作业类型
     initContentType();          //初始化内容类型
     initJobPriority();          //初始化优先级
-    initExpressionType();       //初始化表达式类型
     initWorkerGroup();          //初始化workGroup
     initBizGroupName();         //初始化业务标签
 
@@ -101,7 +99,12 @@ function initJobData() {
                 pageJobEdit.jobContentBuffer[job.jobType + '_' + job.contentType] = $("#jobContent").val();
                 pageJobEdit.jobParamsBuffer[job.jobType + '_' + job.contentType] = $("#params").val();
 
-                $("#expression").val(job.expression);
+                var expDesc = getExpDesc(job.expressionType, job.expression);
+                $("#expId").val(job.expressionId);
+                $("#expType").val(job.expressionType);
+                $("#expContent").val(job.expression);
+                $("#expDesc").val(expDesc);
+
                 $("#failedAttempts").val(job.failedAttempts);
                 $("#failedInterval").val(job.failedInterval);
             },
@@ -285,56 +288,6 @@ function initJobPriority() {
 
 }
 
-//初始化-表达式类型
-function initExpressionType() {
-    $.ajax({
-        url: contextPath + "/api/job/getExpressionType",
-        success: function (data) {
-            var newData = new Array();
-            var no = {};
-            no["id"] = "no";
-            no["text"] = "无";
-            newData.push(no);
-
-            $(data).each(function (i, c) {
-                newData.push(c);
-            });
-
-            $("#expressionType").select2({
-                data: newData,
-                width: '100%'
-            });
-
-            $("#expressionType").on("select2:select", function (e) {
-                if ("no" == $("#expressionType").val()) {
-                    $("#expression").val("");
-                    $("#expression").attr("disabled", "disabled");
-                }
-                else {
-                    $("#expression").removeAttr("disabled");
-                    $("#expression").val("");
-                }
-            })
-            if (job != null) {
-                expressionId = job.expressionId;
-                if (expressionId == null) {
-                    $("#expressionType").val("no").trigger("change");
-                    //$("#expression").attr("disabled", "disabled");
-                }
-                else {
-                    $("#expressionType").val(job.expressionType).trigger("change");
-                }
-            }
-        },
-        error: function (jqXHR, exception) {
-            var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '初始化表达式类型', msg);
-        }
-    })
-
-}
-
-
 //初始化-业务类型
 function initBizGroupName() {
     $.ajax({
@@ -438,13 +391,7 @@ function checkNum(thisTag) {
     }
     var flag = testNum.test($(thisTag).val());
     if (flag == false) {
-        new PNotify({
-            title: '提交任务',
-            text: $(thisTag).attr("desc") + "必须为数字,请修改！！！",
-            type: 'warning',
-            icon: true,
-            styling: 'bootstrap3'
-        });
+        showMsg('warning', '提交任务', $(thisTag).attr("desc") + "必须为数字,请修改！！！");
         $(thisTag).focus();
     }
 }
@@ -532,7 +479,7 @@ function checkParas() {
     var params = $("#params").val();
     if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
         return validSparkLauncherParas(params);
-    } else if (jobType == CONST.JOB_TYPE.JAVA  || jobType == CONST.JOB_TYPE.MAPREDUCE) {
+    } else if (jobType == CONST.JOB_TYPE.JAVA || jobType == CONST.JOB_TYPE.MAPREDUCE) {
         return validJavaParas(params);
     } else {
         return validPara(params);
@@ -544,26 +491,28 @@ function checkParas() {
 function getScheduleExpressionList() {
     var scheduleExpressionList = [];
     var operatorMode = null;
-    var newExpressionType = $("#expressionType").val();
-    newExpressionType = (newExpressionType == "no") ? null : newExpressionType;
-    var newExpression = $("#expression").val();
-    if (expressionId == null) {
-        if (newExpressionType != null && newExpression != '') {
+
+    var expId = tryToNum($("#expId").val());
+    var expType = tryToNum($("#expType").val());
+    var expContent = $("#expContent").val();
+
+    if (expId == null || expId == "") {
+        if (expType != null && expType != '' && expContent != null && expContent != "") {
             operatorMode = CONST.OPERATE_MODE.ADD;
         }
     } else {
-        if (newExpressionType == null || newExpression == '') {
+        if (expContent == null || expContent == '') {
             operatorMode = CONST.OPERATE_MODE.DELETE;
-        } else if (job.expressionType != newExpressionType || job.expression != newExpression) {
+        } else if (job.expressionType != expType || job.expression != expContent) {
             operatorMode = CONST.OPERATE_MODE.EDIT;
         }
     }
     if (operatorMode != null) {
         var entry = {
             "operatorMode": operatorMode,
-            "expressionId": expressionId,
-            "expressionType": newExpressionType,
-            "expression": newExpression
+            "expressionId": expId,
+            "expressionType": expType,
+            "expression": expContent
         };
         scheduleExpressionList.push(entry);
     }
@@ -577,7 +526,7 @@ function getJobDataFromPage() {
     var inputs = $("#baseInfo .input-group>input,#baseInfo .input-group>textarea");
     var selects = $("#baseInfo .input-group>select");
     $(inputs).each(function (i, c) {
-        if ($(c).prop("name") == 'contentType') {
+        if ($(c).prop("name") == 'contentType' || $(c).attr("data-submitFlg") == 'false') {
             return;
         }
         var id = $(c).prop("id");
@@ -589,10 +538,13 @@ function getJobDataFromPage() {
             value = value.trim();
         }
 
-        if (value != '' && testNum.test(value)) {
-            value = parseInt(value);
+        if ($(c).attr("data-submitType") == 'number') {
+            value = tryToNum(value);
         }
 
+        //if (value != '' && testNum.test(value)) {
+        //    value = parseInt(value);
+        //}
         if (id == 'activeStartDate') {
             if (value != '') {
                 value = (new Date(value + " 00:00:00")).getTime();
@@ -611,7 +563,6 @@ function getJobDataFromPage() {
             }
         }
 
-
         //jobContent的名称转换.
         if (id == 'jobContent') {
             id = 'content';
@@ -619,6 +570,7 @@ function getJobDataFromPage() {
         result[id] = value;
 
     });
+
     $(selects).each(function (i, c) {
         if ($(c).attr("id") == 'dependJobIds' || $(c).attr("id") == 'alarm' || $(c).attr("name") == 'commonStrategy') {
             return;
@@ -626,27 +578,22 @@ function getJobDataFromPage() {
 
         var id = $(c).prop("id");
         var value = $(c).val();
+        if ($(c).attr("data-submitType") == 'number') {
+            value = tryToNum(value);
+        }
 
         if ($(this).prop("multiple")) { //多选框
             result[id] = value == null ? "" : value.join(",");
-            if (id == "bizGroups") {
+            if (id == "bizGroups") {    //bizGroups要前后加逗号','特殊处理
                 result[id] = result[id] != "" ? result[id] : "," + result[id] + ",";
             }
         } else {
-            if (value != '' && testNum.test(value)) {
-                value = parseInt(value);
-            }
             result[id] = value;
         }
     });
 
     var contentType = $("input[name='contentType']:checked").val();
     result['contentType'] = contentType;
-    //if (contentType == CONST.CONTENT_TYPE.JAR) {
-    //    var paramsArray = JSON.parse(result['params']);
-    //    paramsArray[CONST.JOB_PARAMS_KEY.JAR_URL] = $('#jarUrl').val();
-    //    result['params'] = JSON.stringify(paramsArray);
-    //}
 
     if (contentType == CONST.CONTENT_TYPE.SCRIPT) {
         result['content'] = result['scriptId'];

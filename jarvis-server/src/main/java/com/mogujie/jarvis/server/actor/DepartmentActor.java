@@ -199,7 +199,7 @@ public class DepartmentActor extends UntypedActor {
     private void deleteMapByDepartId(RestDeleteDepartmentBizMapByDepartmentIdRequest request) {
         ServerDeleteDepartmentBizMapByDepartmentIdResponse response;
         try {
-            this.departmentService.deleteMapByBizGroupId(request.getDepartmentId());
+            this.departmentService.deleteMapByDepartmentId(request.getDepartmentId());
             response = ServerDeleteDepartmentBizMapByDepartmentIdResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -214,7 +214,7 @@ public class DepartmentActor extends UntypedActor {
     private void deleteMapByBizGroupId(RestDeleteDepartmentBizMapByBizGroupIdRequest request) {
         ServerDeleteDepartmentBizMapByBizGroupIdResponse response;
         try {
-            this.departmentService.deleteMapByDepartmentId(request.getBizId());
+            this.departmentService.deleteMapByBizGroupId(request.getBizId());
             response = ServerDeleteDepartmentBizMapByBizGroupIdResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {

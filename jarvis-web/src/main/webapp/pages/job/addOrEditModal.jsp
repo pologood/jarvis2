@@ -41,7 +41,8 @@
                 <div class="row top-buffer">
                     <div class="col-md-6 col-md-offset-3">
                         <div class="input-group" style="width:100%">
-                            <input id="localFile" type="file"  accept=".jar" class="btn btn-xs btn-default" data-target="">
+                            <input id="localFile" type="file" accept=".jar" class="btn btn-xs btn-default"
+                                   data-target="">
                         </div>
                     </div>
                 </div>
@@ -250,7 +251,8 @@
                         <div class="input-group" style="width:100%">
                             <span class="input-group-addon" style="width:30%">main函数
                             <span class="text-danger" style="vertical-align: middle">*</span></span>
-                            <input id="javaMainClass" name="mainClass" class="form-control required" data-desc="main函数" placeholder=""/>
+                            <input id="javaMainClass" name="mainClass" class="form-control required" data-desc="main函数"
+                                   placeholder=""/>
                         </div>
                     </div>
                 </div>
@@ -264,7 +266,9 @@
                                       rows="3" placeholder="请输入jar文件HDFS路径"></textarea>
                         </div>
                     </div>
-                    <button type="button" style="float:right;margin-right: 15px;"  class="btn btn-default" onclick="showUploadJarModal('javaJar')">上传</button>
+                    <button type="button" style="float:right;margin-right: 15px;" class="btn btn-default"
+                            onclick="showUploadJarModal('javaJar')">上传
+                    </button>
                 </div>
                 <!-- classpath -->
                 <div class="row top-buffer">
@@ -275,7 +279,9 @@
                                       rows="3" placeholder="请输入依赖文件的HDFS路径,多个依赖用逗号','隔开"></textarea>
                         </div>
                     </div>
-                    <button type="button" style="float:right;margin-right: 15px;" class="btn btn-default" onclick="showUploadJarModal('javaClasspath')">上传</button>
+                    <button type="button" style="float:right;margin-right: 15px;" class="btn btn-default"
+                            onclick="showUploadJarModal('javaClasspath')">上传
+                    </button>
                 </div>
 
                 <!-- 执行参数 -->
@@ -322,7 +328,11 @@
     }
 
     .cronInput {
-        width: 80px;
+        width: 70px;
+    }
+
+    #cronTable tr td {
+        text-align-last: center;
     }
 
 </style>
@@ -335,26 +345,26 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">执行计划</h4>
+                <h4 class="modal-title">调度时间</h4>
             </div>
             <div class="modal-body">
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
-                        <a href="#circleTab" data-toggle="tab">周期任务</a>
+                        <a href="#circleTab" data-toggle="tab">简单设定</a>
                     </li>
                     <li role="presentation">
-                        <a href="#cronTab" data-toggle="tab">cron配置</a>
+                        <a href="#cronTab" data-toggle="tab">高级设定</a>
                     </li>
-                    <li role="presentation">
-                        <a href="#cronTab" data-toggle="tab">固定延迟</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#cronTab" data-toggle="tab">固定频率</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#cronTab" data-toggle="tab">ISO8601</a>
-                    </li>
+                    <%--<li role="presentation">--%>
+                    <%--<a href="#fixedDelayTab" data-toggle="tab">固定延迟</a>--%>
+                    <%--</li>--%>
+                    <%--<li role="presentation">--%>
+                    <%--<a href="#fixedRateTab" data-toggle="tab">固定频率</a>--%>
+                    <%--</li>--%>
+                    <%--<li role="presentation">--%>
+                    <%--<a href="#iso8601Tab" data-toggle="tab">ISO8601</a>--%>
+                    <%--</li>--%>
 
                 </ul>
 
@@ -365,26 +375,25 @@
                         <div class="row top-buffer">
                             <div class="col-md-10 col-md-offset-1">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:25%">周期
+                                    <span class="input-group-addon" style="width:25%">周期类型
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
 
                                     <div class="form-control">
                                         <label class="radio-inline">
-                                            <input name="scheduleType" id="scheduleDay" value="1" type="radio" checked>
-                                            每天
+                                            <input name="circleType" id="circleDay" value="1" type="radio">每天
                                         </label>
                                         <label class="radio-inline">
-                                            <input name="scheduleType" id="scheduleHour" value="2" type="radio"> 每小时
+                                            <input name="circleType" id="circleHour" value="2" type="radio"> 每小时
                                         </label>
                                         <label class="radio-inline">
-                                            <input name="scheduleType" id="scheduleWeek" value="3" type="radio"> 每周
+                                            <input name="circleType" id="circleWeek" value="3" type="radio"> 每周
                                         </label>
                                         <label class="radio-inline">
-                                            <input name="scheduleType" id="scheduleMonth" value="4" type="radio"> 每月
+                                            <input name="circleType" id="circleMonth" value="4" type="radio"> 每月
                                         </label>
                                         <label class="radio-inline">
-                                            <input name="scheduleType" id="scheduleYear" value="5" type="radio"> 每年
+                                            <input name="circleType" id="circleYear" value="5" type="radio"> 每年
                                         </label>
                                     </div>
                                 </div>
@@ -394,7 +403,7 @@
                         <div class="row top-buffer" id="perMonthDiv">
                             <div class="col-md-10 col-md-offset-1">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:25%">月份
+                                    <span class="input-group-addon" style="width:25%">月
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
                                     <select id="perMonth" desc="" multiple="multiple"></select>
@@ -406,7 +415,7 @@
                         <div class="row top-buffer" id="perDayDiv">
                             <div class="col-md-10 col-md-offset-1">
                                 <div class="input-group" style="width:100%">
-                                <span class="input-group-addon" style="width:25%">日期
+                                <span class="input-group-addon" style="width:25%">日
                                     <span class="text-danger" style="vertical-align: middle">*</span>
                                 </span>
                                     <select id="perDay" desc="" multiple="multiple"></select>
@@ -421,7 +430,7 @@
                                     <span class="input-group-addon" style="width:25%">星期
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
-                                    <select id="perWeek" desc="" multiple="multiple"></select>
+                                    <select id="perWeekDay" desc="" multiple="multiple"></select>
                                     <span class="input-group-addon">可多选</span>
                                 </div>
                             </div>
@@ -430,7 +439,7 @@
                         <div class="row top-buffer" id="perTimeDiv">
                             <div class="col-md-10 col-md-offset-1">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:25%">启动时间
+                                    <span class="input-group-addon" style="width:25%">时刻
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
 
@@ -453,7 +462,7 @@
                         </div>
                     </div>
 
-                    <div id="cronTab" class="tab-pane active" style="width: 600px;height: 400px;">
+                    <div id="cronTab" class="tab-pane" style="width: 600px;height: 400px;">
 
                         <%--<span class="input-group-addon" style="width:25%">cron表达式--%>
                         <%--<span class="text-danger" style="vertical-align: middle">*</span>--%>
@@ -496,7 +505,8 @@
                                                 <td><input id="cronMonth" type="text" class="cronInput" data-desc="月份">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
-                                                <td><input id="cronWeek" type="text" class="cronInput" data-desc="星期">
+                                                <td><input id="cronWeekDay" type="text" class="cronInput"
+                                                           data-desc="星期">
                                                 </td>
                                                 <td class="separator">&nbsp</td>
                                                 <td><input id="cronYear" type="text" class="cronInput" data-desc="年份">
@@ -514,9 +524,11 @@
                             <div class="col-md-11 col-md-offset-0">
                                 <a href="javascript:void(0)" onclick="toggleCronHelpDiv(this)">
                                     <i class="pull-right text-primary glyphicon glyphicon-chevron-down"
-                                       data-state="down"></i></a>
-                                <span class="pull-right text-info" style="margin-right:20px">输入帮助</span>
+                                       data-state="down"></i>
+                                    <span class="pull-right text-info" style="margin-right:20px">更多帮助</span>
+                                </a>
                             </div>
+
                         </div>
 
 
@@ -571,6 +583,16 @@
                             <%--<div>0-5 14 * * ?:每天14点到14点5分，每分钟执行一次</div>--%>
                         </div>
                     </div>
+
+                    <%--<div id="fixedDelayTab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--</div>--%>
+
+                    <%--<div id="fixedRateTab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--</div>--%>
+
+                    <%--<div id="iso8601Tab" class="tab-pane" style="width: 600px;height: 400px;">--%>
+                    <%--</div>--%>
+
                 </div>
 
             </div>

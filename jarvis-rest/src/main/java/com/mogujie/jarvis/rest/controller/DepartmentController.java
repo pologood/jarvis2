@@ -177,7 +177,6 @@ public class DepartmentController extends AbstractController {
   public RestResult deleteDepartmentAndMap(@FormParam("user") String user, @FormParam("appName") String appName,
       @FormParam("appToken") String appToken, @FormParam("parameters") String parameters) {
     try {
-      // 1. delete map
       AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
       JsonParameters para = new JsonParameters(parameters);
 
