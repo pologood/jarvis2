@@ -99,9 +99,23 @@ message RestSearchBizIdByNameRequest {
 	required string biz_name = 3;
 }
 
-message ServerSearchBizIdByNamResponse {
+message ServerSearchBizIdByNameResponse {
 	required bool success = 1;
     optional int32 biz_id = 2;
+    optional string message = 3 [default = ""];
+}
+
+
+//search departmentId by name
+message RestSearchDepartmentIdByNameRequest {
+	required AppAuth app_auth = 1;
+	required string user = 2;
+	required string department_name = 3;
+}
+
+message ServerSearchDepartmentIdByNameResponse {
+	required bool success = 1;
+    optional int32 department_id = 2;
     optional string message = 3 [default = ""];
 }
 
@@ -132,3 +146,4 @@ message ServerSearchJobLikeNameResponse {
     repeated JobInfoEntry job_info = 2;
     optional string message = 3 [default = ""];
 }
+

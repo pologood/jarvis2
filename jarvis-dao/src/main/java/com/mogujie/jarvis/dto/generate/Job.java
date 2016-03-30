@@ -27,7 +27,7 @@ public class Job {
 
     private Integer workerGroupId;
 
-    private String department;
+    private Integer departmentId;
 
     private String bizGroups;
 
@@ -145,12 +145,12 @@ public class Job {
         this.workerGroupId = workerGroupId;
     }
 
-    public String getDepartment() {
-        return department;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getBizGroups() {

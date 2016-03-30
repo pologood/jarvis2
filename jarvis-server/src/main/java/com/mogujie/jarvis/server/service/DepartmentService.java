@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.dto.generate.DepartmentExample;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,7 @@ import com.mogujie.jarvis.dto.generate.Department;
 import com.mogujie.jarvis.dto.generate.DepartmentBizMap;
 import com.mogujie.jarvis.dto.generate.DepartmentBizMapExample;
 import com.mogujie.jarvis.dto.generate.DepartmentBizMapKey;
+import com.mogujie.jarvis.dto.generate.DepartmentExample;
 
 /**
  * @author guangming
@@ -39,6 +39,17 @@ public class DepartmentService {
 
     public Department get(int id) {
         return departmentMapper.selectByPrimaryKey(id);
+    }
+
+    public Department getByName(String name) {
+        DepartmentExample example = new DepartmentExample();
+        example.createCriteria().andNameEqualTo(name);
+        List<Department> departments = departmentMapper.selectByExample(example);
+        if (departments != null && !departments.isEmpty()) {
+            return departments.get(0);
+        } else {
+            return null;
+        }
     }
 
     public void insert(Department record) {

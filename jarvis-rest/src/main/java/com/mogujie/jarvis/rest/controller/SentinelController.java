@@ -416,7 +416,7 @@ public class SentinelController extends AbstractController {
         RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(vo.getJobName())
                 .setJobType(vo.getJobType()).setStatus(vo.getStatus(JobStatus.ENABLE.getValue())).setContentType(vo.getContentType())
                 .setContent(vo.getContent()).setParameters(vo.getParams("{}")).setAppName(vo.getAppName(appAuth.getName()))
-                .setWorkerGroupId(vo.getWorkerGroupId()).setDepartment(vo.getDepartment("")).setBizGroups(vo.getBizGroups(""))
+                .setWorkerGroupId(vo.getWorkerGroupId()).setDepartmentId(vo.getDepartmentId(0)).setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1)).setIsTemp(vo.isTemp()).setActiveStartDate(vo.getActiveStartDate(0L))
                 .setActiveEndDate(vo.getActiveEndDate(0L)).setExpiredTime(vo.getExpiredTime(60 * 10)) //临时任务默认十分钟
                 .setFailedAttempts(vo.getFailedAttempts(0)).setFailedInterval(vo.getFailedInterval(3));

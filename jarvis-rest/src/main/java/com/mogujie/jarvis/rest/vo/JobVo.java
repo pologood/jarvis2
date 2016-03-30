@@ -20,7 +20,7 @@ public class JobVo extends AbstractVo {
     private String params;
     private String appName;
     private Integer workerGroupId;
-    private String department;
+    private Integer departmentId;
     private String bizGroups;
     private Integer priority;
     private boolean isTemp;
@@ -104,12 +104,12 @@ public class JobVo extends AbstractVo {
         this.workerGroupId = workerGroupId;
     }
 
-    public String getDepartment() {
-        return department;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getBizGroups() {
@@ -230,8 +230,8 @@ public class JobVo extends AbstractVo {
         return (failedInterval != null) ? failedInterval : defaultValue;
     }
 
-    public String getDepartment(String defaultValue) {
-        return (department != null) ? department : defaultValue;
+    public Integer getDepartmentId(Integer defaultValue) {
+        return (departmentId != null) ? departmentId : defaultValue;
     }
 
     public String getBizGroups(String defaultValue) {

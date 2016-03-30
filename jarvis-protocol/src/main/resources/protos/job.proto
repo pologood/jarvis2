@@ -20,7 +20,7 @@ message RestSubmitJobRequest {
     optional string parameters = 8 [default = ""];
     optional string app_name = 9 ;
     required int32 worker_group_id = 10;
-    optional string department = 11 [default = ""];
+    optional int32 departmentId = 11;
     optional string biz_groups = 12 [default = ""];
     optional int32 priority = 13 [default = 1];
     optional bool isTemp = 14 [default = false];
@@ -52,7 +52,7 @@ message RestModifyJobRequest {
     optional string parameters = 8;
     optional string app_name = 9;
     optional int32 worker_group_id = 10;
-    optional string department = 11;
+    optional int32 departmentId = 11;
     optional string biz_groups = 12;
     optional int32 priority = 13;
     optional bool isTemp = 14;

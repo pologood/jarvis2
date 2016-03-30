@@ -293,9 +293,9 @@ public class OperationLogInterceptor implements MethodInterceptor {
             preJobBuilder.append("worker组ID:").append(preJob.getWorkerGroupId()).append("\t");
             afterJobBuilder.append("worker组ID:").append(afterJob.getWorkerGroupId()).append("\t");
         }
-        if (!preJob.getDepartment().equals(afterJob.getDepartment())) {
-            preJobBuilder.append("部门名称:").append(preJob.getDepartment()).append("\t");
-            afterJobBuilder.append("部门名称:").append(afterJob.getDepartment()).append("\t");
+        if (!preJob.getDepartmentId().equals(afterJob.getDepartmentId())) {
+            preJobBuilder.append("部门ID:").append(preJob.getDepartmentId()).append("\t");
+            afterJobBuilder.append("部门ID:").append(afterJob.getDepartmentId()).append("\t");
         }
         if (!preJob.getBizGroups().equals(afterJob.getBizGroups())) {
             preJobBuilder.append("业务组名称:").append(preJob.getBizGroups());

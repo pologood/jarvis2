@@ -60,13 +60,15 @@ import com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathRe
 import com.mogujie.jarvis.protocol.SearchJobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchDepartmentIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobLikeNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
-import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNameResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchDepartmentIdByNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobLikeNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
@@ -275,12 +277,23 @@ public class JarvisController extends AbstractController {
                     jobType = "shell";
                 }
 
-                // 2. 获取bizGroupId
+                // 2. 获取部门Id
+                RestSearchDepartmentIdByNameRequest searchDepartmentIdRequest = RestSearchDepartmentIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setDepartmentName(department).build();
+                ServerSearchDepartmentIdByNameResponse searchDepartmentIdResponse = (ServerSearchDepartmentIdByNameResponse) callActor(AkkaType.SERVER, searchDepartmentIdRequest);
+                if (!searchDepartmentIdResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("通过部门名称=" + department + "获取部门ID失败:" + searchDepartmentIdResponse.getMessage());
+                    return result;
+                }
+                int departmentId = searchDepartmentIdResponse.getDepartmentId();
+
+                // 3. 获取bizGroupId
                 List<Integer> bizIds = new ArrayList<Integer>();
                 if (pline != null && !pline.isEmpty()) {
                     RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
                             .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
-                    ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                    ServerSearchBizIdByNameResponse searchBizIdResponse = (ServerSearchBizIdByNameResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
                     if (searchBizIdResponse.getSuccess()) {
                         bizIds.add(searchBizIdResponse.getBizId());
                     } else {
@@ -303,7 +316,7 @@ public class JarvisController extends AbstractController {
                         .setContent(String.valueOf(scriptId))
                         .setParameters("{}")
                         .setAppName(APP_IRONMAN_NAME)
-                        .setDepartment(department)
+                        .setDepartmentId(departmentId)
                         .setBizGroups(bizGroups)
                         .setWorkerGroupId(1) //默认MR集群
                         .setPriority(priority)
@@ -318,7 +331,7 @@ public class JarvisController extends AbstractController {
                     builder.setActiveEndDate(new DateTime(endDate).getMillis());
                 }
 
-                // 3.调度表达式
+                // 4.调度表达式
                 ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
                         .setExpressionId(0)
                         .setExpressionType(ScheduleExpressionType.CRON.getValue())
@@ -326,7 +339,7 @@ public class JarvisController extends AbstractController {
                         .build();
                 builder.addExpressionEntry(scheduleExpressionEntry);
 
-                // 4.依赖关系
+                // 5.依赖关系
                 if (preTaskIds != null && !preTaskIds.isEmpty()) {
                     String[] preJobIds = preTaskIds.trim().split(" ");
                     for (String preJobIdStr : preJobIds) {
@@ -341,7 +354,7 @@ public class JarvisController extends AbstractController {
                     }
                 }
 
-                // 5. 提交job
+                // 6. 提交job
                 RestSubmitJobRequest submitJobRequest = builder.build();
                 ServerSubmitJobResponse submitJobResponse = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, submitJobRequest);
                 if (!submitJobResponse.getSuccess()) {
@@ -351,7 +364,7 @@ public class JarvisController extends AbstractController {
                 }
                 jobId = submitJobResponse.getJobId();
 
-                // 6. 增加报警
+                // 7. 增加报警
                 RestCreateAlarmRequest alarmRequest = RestCreateAlarmRequest.newBuilder()
                         .setAppAuth(appAuth)
                         .setUser(globalUser)
@@ -388,12 +401,23 @@ public class JarvisController extends AbstractController {
 //                    }
 //                }
 
-                // 1. 获取bizGroupId
+                // 1. 获取部门ID
+                RestSearchDepartmentIdByNameRequest searchDepartmentIdRequest = RestSearchDepartmentIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setDepartmentName(department).build();
+                ServerSearchDepartmentIdByNameResponse searchDepartmentIdResponse = (ServerSearchDepartmentIdByNameResponse) callActor(AkkaType.SERVER, searchDepartmentIdRequest);
+                if (!searchDepartmentIdResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("通过部门名称=" + department + "获取部门ID失败:" + searchDepartmentIdResponse.getMessage());
+                    return result;
+                }
+                int departmentId = searchDepartmentIdResponse.getDepartmentId();
+
+                // 2. 获取bizGroupId
                 List<Integer> bizIds = new ArrayList<Integer>();
                 if (pline != null && !pline.isEmpty()) {
                     RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
                             .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
-                    ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                    ServerSearchBizIdByNameResponse searchBizIdResponse = (ServerSearchBizIdByNameResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
                     if (searchBizIdResponse.getSuccess()) {
                         bizIds.add(searchBizIdResponse.getBizId());
                     } else {
@@ -412,7 +436,7 @@ public class JarvisController extends AbstractController {
                         .setAppAuth(appAuth).setUser(globalUser)
                         .setJobId(jobId)
                         .setAppName(APP_IRONMAN_NAME)
-                        .setDepartment(department)
+                        .setDepartmentId(departmentId)
                         .setBizGroups(bizGroups)
                         .setPriority(priority);
                 if (startDate != null && !startDate.isEmpty()) {
@@ -429,7 +453,7 @@ public class JarvisController extends AbstractController {
                     return result;
                 }
 
-                // 2. 修改依赖表达式
+                // 3. 修改依赖表达式
                 ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.EDIT.getValue())
                         .setExpressionId(0)
                         .setExpressionType(ScheduleExpressionType.CRON.getValue())
@@ -447,7 +471,7 @@ public class JarvisController extends AbstractController {
                     return result;
                 }
 
-                // 3.修改依赖关系
+                // 4.修改依赖关系
                 Set<Long> newPreJobIds = Sets.newHashSet();
                 if (preTaskIds != null && !preTaskIds.isEmpty()) {
                     String[] preJobIds = preTaskIds.trim().split(" ");
@@ -496,7 +520,7 @@ public class JarvisController extends AbstractController {
                     return result;
                 }
 
-                //4.修改报警人
+                //5.修改报警人
                 RestModifyAlarmRequest alarmRequest = RestModifyAlarmRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser).setJobId(jobId)
                         .setReciever(receiver).build();
