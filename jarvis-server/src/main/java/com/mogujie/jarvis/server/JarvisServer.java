@@ -107,12 +107,12 @@ public class JarvisServer {
     }
 
     public static void init() throws Exception {
-        LOGGER.info("start init Scheduler...");
-        initScheduler();
         LOGGER.info("start init TimerTask...");
         initTimerTask();
         LOGGER.info("start init plan table, please wait for several minutes...");
         initPlan();
+        LOGGER.info("start init Scheduler...");
+        initScheduler();
     }
 
     private static void initScheduler() throws JobScheduleException, CycleFoundException {
