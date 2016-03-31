@@ -492,14 +492,12 @@ function checkParas() {
 function checkScheduleExpression() {
     var expType = $("#expType").val();
     var expContent = $("#expContent").val();
-    if (expType == CONST.SCHEDULE_EXP_TYPE.CRON && expContent !=null && expContent !="" ) {
+    if (expType == CONST.SCHEDULE_EXP_TYPE.CRON && expContent != null && expContent != "") {
         return validCronByStr(expContent);
-    }else{
+    } else {
         return true;
     }
 }
-
-
 
 
 //计算表达式
@@ -628,7 +626,7 @@ function saveJob() {
     var ids = ["jobName", "jobType", "workerGroupId"];
     if (!checkEmptyByIds(ids) || !checkContentTypeAndContent()
         || !checkJobName($("#jobName")) || !checkActiveDate()
-        || !checkParas() || !checkScheduleExpression() ) {
+        || !checkParas() || !checkScheduleExpression()) {
         return;
     }
 
@@ -756,13 +754,13 @@ var dependColumns = [{
     formatter: jobNameFormatter
 }, {
     field: 'offsetStrategy',
-    title: '偏移策略(点击可修改)',
+    title: '依赖有效期(点击可修改)',
     sortable: true,
     switchable: true,
     formatter: offsetStrategyFormatter
 }, {
     field: 'commonStrategy',
-    title: '通用策略',
+    title: '依赖策略',
     sortable: true,
     switchable: true,
     formatter: commonStrategyFormatter
@@ -897,7 +895,8 @@ function offsetStrategyFormatter(value, row, index) {
     if (value == undefined) {
         value = "cd";
     }
-    var result = '<a name="offsetStrategy" href="javascript:void(0)" value="' + value + '" onclick="showOffsetStrategy(this)">' + value + '</a>';
+    var text = decodeOffsetStrategy(value).text;
+    var result = '<a name="offsetStrategy" href="javascript:void(0)" value="' + value + '" onclick="showOffsetStrategy(this)">' + text + '</a>';
     return result;
 }
 
@@ -905,44 +904,71 @@ function showOffsetStrategy(tag) {
     targetOffsetStrategy = tag;
     var value = $(tag).attr("value").toString();
 
-    if (value != '未设置') {
-        if (value.indexOf("c") >= 0) {
-            var offset = 'c';
-            var time = value.substr(value.indexOf("c") + 1);
-        }
-        else {
-            var time = value.substr(0, value.indexOf("("));
-            var offset = Math.abs(parseInt(value.substr(value.indexOf("(") + 1, value.indexOf(")"))));
-            var data = $("#offsetStrategy select[name=offset]").select2("data");
-            data.push({id: offset, text: offset});
-            $("#offsetStrategy select[name=offset]").select2("data", data, true);
-            $("#offsetStrategy div[name=text]").show();
-        }
+    var result = decodeOffsetStrategy(value);
+    $("#offsetStrategy select[name=offset]").val(result.offset).trigger("change");
+    $("#offsetStrategy select[name=time]").val(result.time).trigger("change");
 
-        $("#offsetStrategy select[name=offset]").val(offset).trigger("change");
-        $("#offsetStrategy select[name=time]").val(time).trigger("change");
-    }
     $("#offsetStrategy").modal("show");
 }
 
-function hideOffsetStrategy() {
-    var offset = $("#offsetStrategy select[name=offset]").val();
-    var time = $("#offsetStrategy select[name=time]").val();
 
+function encodeOffsetStrategy(offsetObject, timeObject) {
+    var result = {};
     var strategy = "";
-    if (offset == 'c') {
-        strategy = offset + time;
+    var text = "";
+    if (offsetObject.id == 'c') {
+        strategy = offsetObject.id + timeObject.id;
+        text = "当" + timeObject.text;
     }
     else {
-        var flag = testNum.test(offset);
+        var flag = testNum.test(offsetObject.id);
         if (!flag) {
             showMsg("warning", "设置偏移长度", "只能为数字,请修改");
             return;
         }
-        strategy = time + "(-" + offset + ")";
+        strategy = timeObject.id + "(-" + offsetObject.id + ")";
+        text = "过去" + offsetObject.id + timeObject.text + '内';
     }
-    $(targetOffsetStrategy).attr("value", strategy);
-    $(targetOffsetStrategy).text(strategy);
+    result["value"] = strategy;
+    result["text"] = text;
+    return result;
+}
+function decodeOffsetStrategy(value) {
+    var result = {};
+    var offset = "";
+    var time = "";
+    var text="";
+    if (value.indexOf("c") >= 0) {
+        offset = 'c';
+        time = value.substr(value.indexOf("c") + 1);
+        var desc=$("#offsetStrategy select[name=time] option[value="+time+"]").text();
+        text="当"+desc;
+    }
+    else {
+        time = value.substr(0, value.indexOf("("));
+        offset = Math.abs(parseInt(value.substr(value.indexOf("(") + 1, value.indexOf(")"))));
+        var data = $("#offsetStrategy select[name=offset]").select2("data");
+        data.push({id: offset, text: offset});
+        $("#offsetStrategy select[name=offset]").select2("data", data, true);
+        $("#offsetStrategy div[name=text]").show();
+
+        var desc=$("#offsetStrategy select[name=time] option[value="+time+"]").text();
+        text="过去"+offset+desc+"内";
+    }
+    result["offset"] = offset;
+    result["time"] = time;
+    result["text"] = text;
+    return result;
+}
+
+function hideOffsetStrategy() {
+    var offsetObject = $("#offsetStrategy select[name=offset]").select2("data")[0];
+    var timeObject = $("#offsetStrategy select[name=time]").select2("data")[0];
+
+    var result = encodeOffsetStrategy(offsetObject, timeObject);
+
+    $(targetOffsetStrategy).attr("value", result.value);
+    $(targetOffsetStrategy).text(result.text);
     $("#offsetStrategy").modal("hide");
     targetOffsetStrategy = null;
 
@@ -1074,7 +1100,7 @@ function getDependData() {
         var commonStrategy = $(c).find("select[name=commonStrategy]").val();
         var offsetStrategy = $(c).find("a[name=offsetStrategy]").attr("value");
 
-        if(preJobId!=undefined){
+        if (preJobId != undefined) {
             var item = {};
             item["preJobId"] = preJobId;
             item["commonStrategy"] = commonStrategy;
