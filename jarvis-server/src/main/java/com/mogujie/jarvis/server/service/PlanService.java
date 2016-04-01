@@ -74,4 +74,10 @@ public class PlanService {
             nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
         }
     }
+
+    public void removePlan(long jobId) {
+        PlanExample example = new PlanExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        planMapper.deleteByExample(example);
+    }
 }

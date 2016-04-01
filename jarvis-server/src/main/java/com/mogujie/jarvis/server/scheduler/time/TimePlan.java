@@ -17,10 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
@@ -43,7 +45,7 @@ public enum TimePlan {
 
     // 优先级队列，通过调度时间由小到大排序
     private Queue<TimePlanEntry> plan = new PriorityBlockingQueue<>(100, comparator);
-
+    private PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
     private static Logger LOGGER = LogManager.getLogger();
 
     /**
@@ -136,6 +138,9 @@ public enum TimePlan {
         if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)
                 || newStatus.equals(JobStatus.PAUSE)) {
             removeJob(jobId);
+            if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)) {
+                planService.removePlan(jobId);
+            }
         } else if (newStatus.equals(JobStatus.ENABLE)) {
             if (oldStatus.equals(JobStatus.PAUSE)) {
                 //如果从暂停状态恢复过来，要把之前的没跑过的都恢复回来
@@ -143,6 +148,9 @@ public enum TimePlan {
             } else if (oldStatus.equals(JobStatus.DISABLE) || oldStatus.equals(JobStatus.DELETED)) {
                 //如果是从禁用或废弃状态恢复回来，不需要恢复历史任务，从当前时间计算下一次
                 addJob(jobId);
+                DateTime now = DateTime.now();
+                Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
+                planService.refreshPlan(jobId, range);
             } else if (oldStatus.equals(JobStatus.ENABLE)) {
                 // nothing to do
             }
